@@ -227,6 +227,10 @@ const Orderbump = () => {
   const [bumpAdded, setBumpAdded] = useState(true);
   const total = bumpAdded ? "144€" : "97€";
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div style={{ background: "#0a0a0a", color: "#f2ead8", fontFamily: "'DM Sans', sans-serif", minHeight: "100vh" }}>
       <style>{`
