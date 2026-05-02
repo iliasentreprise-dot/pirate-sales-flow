@@ -1,4 +1,3 @@
-import Stripe from "https://esm.sh/stripe@14.21.0?target=deno";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
@@ -12,6 +11,42 @@ const UPSELL_PRICES: Record<string, { amount: number; label: string }> = {
   upsell1: { amount: 12700, label: "Pirate en Bande Organisée" },
   upsell2: { amount: 9700, label: "Coaching Pirate" },
 };
+
+const STRIPE_API = "https://api.stripe.com/v1";
+
+function formEncode(obj: Record<string, string | number | boolean>): string {
+  const params = new URLSearchParams();
+  for (const [k, v] of Object.entries(obj)) {
+    params.append(k, String(v));
+  }
+  return params.toString();
+}
+
+async function stripeFetch(
+  path: string,
+  secretKey: string,
+  init: { method?: string; body?: Record<string, string | number | boolean> } = {},
+): Promise<any> {
+  const headers: Record<string, string> = {
+    Authorization: `Bearer ${secretKey}`,
+  };
+  let body: string | undefined;
+  if (init.body) {
+    headers["Content-Type"] = "application/x-www-form-urlencoded";
+    body = formEncode(init.body);
+  }
+  const res = await fetch(`${STRIPE_API}${path}`, {
+    method: init.method ?? "GET",
+    headers,
+    body,
+  });
+  const json = await res.json();
+  if (!res.ok) {
+    const msg = json?.error?.message || `Stripe error ${res.status}`;
+    throw new Error(msg);
+  }
+  return json;
+}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -36,9 +71,7 @@ Deno.serve(async (req) => {
       });
     }
 
-    const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
-      apiVersion: "2024-06-20",
-    });
+    const stripeKey = Deno.env.get("STRIPE_SECRET_KEY")!;
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
@@ -51,27 +84,16 @@ Deno.serve(async (req) => {
       .eq("email", email)
       .maybeSingle();
 
-    let stripeCustomerId = customer?.stripe_customer_id;
-    let paymentMethodId = customer?.stripe_payment_method_id;
-
-    // If we don't have it cached, try to find via initial PaymentIntent
-    if (!stripeCustomerId || !paymentMethodId) {
-      const search = await stripe.paymentIntents.search({
-        query: `metadata['email']:'${email}' OR receipt_email:'${email}'`,
-        limit: 5,
-      }).catch(() => null);
-
-      const pi = search?.data?.find((p) => p.customer && p.payment_method && p.status === "succeeded");
-      if (pi) {
-        stripeCustomerId = typeof pi.customer === "string" ? pi.customer : pi.customer?.id;
-        paymentMethodId = typeof pi.payment_method === "string" ? pi.payment_method : pi.payment_method?.id;
-      }
-    }
+    let stripeCustomerId: string | undefined = customer?.stripe_customer_id ?? undefined;
+    let paymentMethodId: string | undefined = customer?.stripe_payment_method_id ?? undefined;
 
     // Fallback: search customers by email
     if (!stripeCustomerId) {
-      const customers = await stripe.customers.list({ email, limit: 1 });
-      if (customers.data[0]) {
+      const customers = await stripeFetch(
+        `/customers?email=${encodeURIComponent(email)}&limit=1`,
+        stripeKey,
+      );
+      if (customers.data?.[0]) {
         stripeCustomerId = customers.data[0].id;
       }
     }
@@ -85,12 +107,11 @@ Deno.serve(async (req) => {
 
     // If no payment method, fetch from customer's saved methods
     if (!paymentMethodId) {
-      const methods = await stripe.paymentMethods.list({
-        customer: stripeCustomerId,
-        type: "card",
-        limit: 1,
-      });
-      paymentMethodId = methods.data[0]?.id;
+      const methods = await stripeFetch(
+        `/payment_methods?customer=${stripeCustomerId}&type=card&limit=1`,
+        stripeKey,
+      );
+      paymentMethodId = methods.data?.[0]?.id;
     }
 
     if (!paymentMethodId) {
@@ -108,14 +129,19 @@ Deno.serve(async (req) => {
     }, { onConflict: "email" });
 
     // Charge off-session
-    const pi = await stripe.paymentIntents.create({
-      amount: product.amount,
-      currency: "eur",
-      customer: stripeCustomerId,
-      payment_method: paymentMethodId,
-      off_session: true,
-      confirm: true,
-      metadata: { email, upsell_type, product: product.label },
+    const pi = await stripeFetch("/payment_intents", stripeKey, {
+      method: "POST",
+      body: {
+        amount: product.amount,
+        currency: "eur",
+        customer: stripeCustomerId,
+        payment_method: paymentMethodId,
+        off_session: "true",
+        confirm: "true",
+        "metadata[email]": email,
+        "metadata[upsell_type]": upsell_type,
+        "metadata[product]": product.label,
+      },
     });
 
     if (pi.status !== "succeeded") {
