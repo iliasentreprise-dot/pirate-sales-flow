@@ -141,24 +141,17 @@ const CheckoutSection = ({ bumpAdded, total }: { bumpAdded: boolean; total: stri
     setClientSecret(null);
     setPiError(null);
     const amount = bumpAdded ? 14400 : 9700;
-    fetch(PI_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: PI_AUTH,
-      },
-      body: JSON.stringify({
-        amount,
-        bump: bumpAdded,
-        payment_method_types: ["card", "klarna"],
-      }),
-    })
-      .then(async (r) => {
-        if (!r.ok) throw new Error(await r.text());
-        return r.json();
+    supabase.functions
+      .invoke("create-payment-intent", {
+        body: {
+          amount,
+          bump: bumpAdded,
+          payment_method_types: ["card", "klarna"],
+        },
       })
-      .then((data) => {
-        const cs = data.clientSecret || data.client_secret;
+      .then(({ data, error }) => {
+        if (error) throw error;
+        const cs = data?.clientSecret || data?.client_secret;
         if (!cs) throw new Error("Réponse invalide du serveur.");
         setClientSecret(cs);
       })
