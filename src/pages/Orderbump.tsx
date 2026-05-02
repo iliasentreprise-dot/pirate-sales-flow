@@ -49,18 +49,13 @@ const PaymentForm = ({
     sessionStorage.setItem("declic_bump", bumpAdded ? "1" : "0");
 
     try {
-      const tokenRes = await fetch(
-        "https://tebqeeyvcgupwaoqfdod.supabase.co/functions/v1/create-upsell-token",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: PI_AUTH,
-          },
-          body: JSON.stringify({ email }),
-        }
+      const { data: tokenData, error: tokenErr } = await supabase.functions.invoke(
+        "create-upsell-token",
+        { body: { email } },
       );
-      const tokenData = await tokenRes.json();
+      if (tokenErr || !tokenData?.token) {
+        throw new Error("Impossible de générer le jeton de session.");
+      }
       const returnUrl = `${window.location.origin}/upsell0?token=${tokenData.token}`;
 
       const { error } = await stripe.confirmPayment({
@@ -106,10 +101,10 @@ const PaymentForm = ({
             onBlur={(e) => {
               const v = e.target.value.trim();
               if (!v) return;
-              fetch("https://tebqeeyvcgupwaoqfdod.supabase.co/rest/v1/email_leads", {
-                method: "POST",
-                headers: {
-                  "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlYnFlZXl2Y2d1cHdhb3FmZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMjUwMjUsImV4cCI6MjA5MjkwMTAyNX0.Tm9BP4sCpefxzX3S2b3hcp7pUtH5yvHyQJhBfRIJ6Ps",
+              supabase.functions.invoke("save-lead", {
+                body: { email: v, source: "orderbump" },
+              }).catch(() => {});
+            }}
                   "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlYnFlZXl2Y2d1cHdhb3FmZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMjUwMjUsImV4cCI6MjA5MjkwMTAyNX0.Tm9BP4sCpefxzX3S2b3hcp7pUtH5yvHyQJhBfRIJ6Ps",
                   "Content-Type": "application/json",
                   "Prefer": "resolution=ignore-duplicates",
