@@ -9,7 +9,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 
 const STRIPE_PK =
-  "pk_test_51TR1ZlLEX9OBZ3JcCEc8hpCioTC4VOhHgRKxSb60I5QM0QMfHq5mprJhjJZ7qSXhX0aMy5Dg2dgKnVOI0tdfLPej00s5kEVoYf";
+  "pk_live_51SNc4KQ9u6EzX6YbcWbV1iXFA96SnuLahor9v5y1IzYIKpFnY3ThpDbsBLZwxJ1Pm5HwX23FHXU1Q5bZc5pl57Hb00mhAZFOcM";
 
 const stripePromise = loadStripe(STRIPE_PK);
 
