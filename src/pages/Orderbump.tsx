@@ -6,13 +6,10 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import { supabase } from "@/integrations/supabase/client";
 
 const STRIPE_PK =
   "pk_live_51SNc4KQ9u6EzX6YbcWbV1iXFA96SnuLahor9v5y1IzYIKpFnY3ThpDbsBLZwxJ1Pm5HwX23FHXU1Q5bZc5pl57Hb00mhAZFOcM";
-const PI_URL =
-  "https://tebqeeyvcgupwaoqfdod.supabase.co/functions/v1/create-payment-intent";
-const PI_AUTH =
-  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlYnFlZXl2Y2d1cHdhb3FmZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMjUwMjUsImV4cCI6MjA5MjkwMTAyNX0.Tm9BP4sCpefxzX3S2b3hcp7pUtH5yvHyQJhBfRIJ6Ps";
 
 const stripePromise = loadStripe(STRIPE_PK);
 
