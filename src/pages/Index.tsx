@@ -15,6 +15,10 @@ const Index = () => {
   const [zoomedImg, setZoomedImg] = useState<string | null>(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const tick = () => {
       setVisitors((prev) => {
         const delta = Math.random() < 0.5 ? -1 : 1;
