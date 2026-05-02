@@ -1,7 +1,13 @@
+import { useEffect } from "react";
+
 const WHATSAPP_URL =
   "https://wa.me/33768299662?text=Bonjour%2C%20je%20viens%20de%20prendre%20Syst%C3%A8me%20Pirate%20et%20je%20voudrais%20acc%C3%A9der%20%C3%A0%20mes%20contenus%20%F0%9F%8F%B4%E2%80%8D%E2%98%A0%EF%B8%8F";
 
 const Merci = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div style={{ background: "#0a0a0a", color: "#f2ead8", fontFamily: "'DM Sans', sans-serif", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <style>{`

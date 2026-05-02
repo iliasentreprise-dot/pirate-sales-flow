@@ -8,6 +8,10 @@ const Upsell0 = () => {
   const token = searchParams.get("token");
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (!token) {
       navigate("/");
       return;
