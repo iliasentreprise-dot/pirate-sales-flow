@@ -6,13 +6,10 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import { supabase } from "@/integrations/supabase/client";
 
 const STRIPE_PK =
   "pk_live_51SNc4KQ9u6EzX6YbcWbV1iXFA96SnuLahor9v5y1IzYIKpFnY3ThpDbsBLZwxJ1Pm5HwX23FHXU1Q5bZc5pl57Hb00mhAZFOcM";
-const PI_URL =
-  "https://tebqeeyvcgupwaoqfdod.supabase.co/functions/v1/create-payment-intent";
-const PI_AUTH =
-  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlYnFlZXl2Y2d1cHdhb3FmZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMjUwMjUsImV4cCI6MjA5MjkwMTAyNX0.Tm9BP4sCpefxzX3S2b3hcp7pUtH5yvHyQJhBfRIJ6Ps";
 
 const stripePromise = loadStripe(STRIPE_PK);
 
@@ -52,18 +49,13 @@ const PaymentForm = ({
     sessionStorage.setItem("declic_bump", bumpAdded ? "1" : "0");
 
     try {
-      const tokenRes = await fetch(
-        "https://tebqeeyvcgupwaoqfdod.supabase.co/functions/v1/create-upsell-token",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: PI_AUTH,
-          },
-          body: JSON.stringify({ email }),
-        }
+      const { data: tokenData, error: tokenErr } = await supabase.functions.invoke(
+        "create-upsell-token",
+        { body: { email } },
       );
-      const tokenData = await tokenRes.json();
+      if (tokenErr || !tokenData?.token) {
+        throw new Error("Impossible de générer le jeton de session.");
+      }
       const returnUrl = `${window.location.origin}/upsell0?token=${tokenData.token}`;
 
       const { error } = await stripe.confirmPayment({
@@ -109,15 +101,8 @@ const PaymentForm = ({
             onBlur={(e) => {
               const v = e.target.value.trim();
               if (!v) return;
-              fetch("https://tebqeeyvcgupwaoqfdod.supabase.co/rest/v1/email_leads", {
-                method: "POST",
-                headers: {
-                  "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlYnFlZXl2Y2d1cHdhb3FmZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMjUwMjUsImV4cCI6MjA5MjkwMTAyNX0.Tm9BP4sCpefxzX3S2b3hcp7pUtH5yvHyQJhBfRIJ6Ps",
-                  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlYnFlZXl2Y2d1cHdhb3FmZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMjUwMjUsImV4cCI6MjA5MjkwMTAyNX0.Tm9BP4sCpefxzX3S2b3hcp7pUtH5yvHyQJhBfRIJ6Ps",
-                  "Content-Type": "application/json",
-                  "Prefer": "resolution=ignore-duplicates",
-                },
-                body: JSON.stringify({ email: v, source: "orderbump" }),
+              supabase.functions.invoke("save-lead", {
+                body: { email: v, source: "orderbump" },
               }).catch(() => {});
             }}
             placeholder="ton@email.com"
@@ -156,24 +141,17 @@ const CheckoutSection = ({ bumpAdded, total }: { bumpAdded: boolean; total: stri
     setClientSecret(null);
     setPiError(null);
     const amount = bumpAdded ? 14400 : 9700;
-    fetch(PI_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: PI_AUTH,
-      },
-      body: JSON.stringify({
-        amount,
-        bump: bumpAdded,
-        payment_method_types: ["card", "klarna"],
-      }),
-    })
-      .then(async (r) => {
-        if (!r.ok) throw new Error(await r.text());
-        return r.json();
+    supabase.functions
+      .invoke("create-payment-intent", {
+        body: {
+          amount,
+          bump: bumpAdded,
+          payment_method_types: ["card", "klarna"],
+        },
       })
-      .then((data) => {
-        const cs = data.clientSecret || data.client_secret;
+      .then(({ data, error }) => {
+        if (error) throw error;
+        const cs = data?.clientSecret || data?.client_secret;
         if (!cs) throw new Error("Réponse invalide du serveur.");
         setClientSecret(cs);
       })

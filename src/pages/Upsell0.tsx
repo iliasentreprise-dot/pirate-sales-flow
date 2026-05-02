@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import tiktokLiveImg from "@/assets/tiktok-live-2037.jpg";
+import { supabase } from "@/integrations/supabase/client";
 
 const Upsell0 = () => {
   const navigate = useNavigate();
@@ -16,20 +17,10 @@ const Upsell0 = () => {
       navigate("/");
       return;
     }
-    fetch(
-      "https://tebqeeyvcgupwaoqfdod.supabase.co/functions/v1/validate-upsell-token",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlYnFlZXl2Y2d1cHdhb3FmZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMjUwMjUsImV4cCI6MjA5MjkwMTAyNX0.Tm9BP4sCpefxzX3S2b3hcp7pUtH5yvHyQJhBfRIJ6Ps",
-        },
-        body: JSON.stringify({ token }),
-      }
-    )
-      .then((r) => r.json())
-      .then((data) => {
-        if (!data.valid) navigate("/");
+    supabase.functions
+      .invoke("validate-upsell-token", { body: { token } })
+      .then(({ data }) => {
+        if (!data?.valid) navigate("/");
       });
   }, [token]);
   const [secondsLeft, setSecondsLeft] = useState(660);
@@ -46,16 +37,10 @@ const Upsell0 = () => {
     setLoadingUpsell(true);
     setPaymentError(false);
     try {
-      const res = await fetch("https://tebqeeyvcgupwaoqfdod.supabase.co/functions/v1/charge-upsell", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlYnFlZXl2Y2d1cHdhb3FmZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMjUwMjUsImV4cCI6MjA5MjkwMTAyNX0.Tm9BP4sCpefxzX3S2b3hcp7pUtH5yvHyQJhBfRIJ6Ps",
-        },
-        body: JSON.stringify({ email, upsell_type: "upsell0" }),
+      const { data, error } = await supabase.functions.invoke("charge-upsell", {
+        body: { email, upsell_type: "upsell0" },
       });
-      const data = await res.json().catch(() => ({} as any));
-      if (res.ok && data && data.success === true) {
+      if (!error && data && data.success === true) {
         navigate(`/upsell1?token=${token}`);
       } else {
         setPaymentError(true);
