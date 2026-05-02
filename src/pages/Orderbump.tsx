@@ -105,13 +105,6 @@ const PaymentForm = ({
                 body: { email: v, source: "orderbump" },
               }).catch(() => {});
             }}
-                  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlYnFlZXl2Y2d1cHdhb3FmZG9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMjUwMjUsImV4cCI6MjA5MjkwMTAyNX0.Tm9BP4sCpefxzX3S2b3hcp7pUtH5yvHyQJhBfRIJ6Ps",
-                  "Content-Type": "application/json",
-                  "Prefer": "resolution=ignore-duplicates",
-                },
-                body: JSON.stringify({ email: v, source: "orderbump" }),
-              }).catch(() => {});
-            }}
             placeholder="ton@email.com"
             required
           />
