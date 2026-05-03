@@ -23,6 +23,21 @@ const Upsell0 = () => {
         if (!data?.valid) navigate("/");
       });
   }, [token]);
+
+  // Save Stripe customer + payment method right after the orderbump payment
+  useEffect(() => {
+    const paymentIntentId = searchParams.get("payment_intent");
+    const email = window.sessionStorage.getItem("declic_email");
+    if (!paymentIntentId || !email) return;
+    const flagKey = `declic_saved_${paymentIntentId}`;
+    if (window.sessionStorage.getItem(flagKey)) return;
+    window.sessionStorage.setItem(flagKey, "1");
+    supabase.functions
+      .invoke("save-customer", {
+        body: { payment_intent_id: paymentIntentId, email },
+      })
+      .catch(() => {});
+  }, [searchParams]);
   const [secondsLeft, setSecondsLeft] = useState(660);
   const [loadingUpsell, setLoadingUpsell] = useState(false);
   const [imgZoom, setImgZoom] = useState(false);
