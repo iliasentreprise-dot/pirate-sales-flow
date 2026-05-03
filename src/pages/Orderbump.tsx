@@ -271,8 +271,9 @@ const Orderbump = () => {
         .ob-field input { background:#0f0f0f; border:1px solid rgba(255,255,255,0.1); color:#f2ead8; font-family:'DM Sans',sans-serif; font-size:16px; padding:14px 16px; outline:none; transition:border-color 0.2s; }
         .ob-field input:focus { border-color:#a78bfa; }
         .ob-card-wrap { background:#0f0f0f; border:1px solid rgba(255,255,255,0.1); padding:16px; transition:border-color 0.2s; }
-        .ob-klarna-banner { display:flex; align-items:center; gap:12px; background:#0f0f0f; border:1px solid rgba(255,168,205,0.35); padding:12px 16px; margin-bottom:10px; }
-        .ob-klarna-banner svg { height:28px; width:auto; flex-shrink:0; }
+        .ob-klarna-banner { display:flex; align-items:center; gap:12px; background:#0f0f0f; border:1px solid rgba(255,168,205,0.35); padding:12px 16px; margin-bottom:10px; cursor:pointer; transition:all 0.2s; }
+        .ob-klarna-banner:hover { border-color:#FFA8CD; background:#141014; }
+        .ob-klarna-banner img { height:22px; width:auto; flex-shrink:0; }
         .ob-klarna-banner span { color:#ffffff; font-size:14px; line-height:1.4; }
         .ob-klarna-banner span strong { color:#FFA8CD; }
         .ob-card-wrap:focus-within { border-color:#a78bfa; }
