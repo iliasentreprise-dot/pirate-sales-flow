@@ -112,12 +112,17 @@ const PaymentForm = ({
       </div>
       <div className="ob-field">
         <label>Mode de paiement</label>
-        <div className="ob-klarna-banner">
-          <svg viewBox="0 0 90 35" xmlns="http://www.w3.org/2000/svg" aria-label="Klarna">
-            <rect width="90" height="35" rx="6" fill="#FFA8CD"/>
-            <text x="45" y="23" textAnchor="middle" fontFamily="Arial, sans-serif" fontSize="14" fontWeight="700" fill="#0a0a0a">Klarna.</text>
-          </svg>
-          <span>Paiement en 3x sans frais disponible avec Klarna</span>
+        <div
+          className="ob-klarna-banner"
+          role="button"
+          tabIndex={0}
+          onClick={() => {
+            const pe = elements?.getElement("payment");
+            pe?.update({ paymentMethodOrder: ["klarna", "card"] });
+          }}
+        >
+          <img src="https://www.klarna.com/assets/sites/5/2020/04/15143314/klarna-logo-pink.png" alt="Klarna" />
+          <span>Paiement en 3x sans frais disponible avec <strong>Klarna</strong></span>
         </div>
         <div className="ob-card-wrap">
           <PaymentElement options={{ layout: "tabs" }} />
