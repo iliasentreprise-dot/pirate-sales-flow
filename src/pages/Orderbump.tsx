@@ -9,7 +9,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 
 const STRIPE_PK =
-  "pk_test_51TR1ZlLEX9OBZ3JcCEc8hpCioTC4VOhHgRKxSb60I5QM0QMfHq5mprJhjJZ7qSXhX0aMy5Dg2dgKnVOI0tdfLPej00s5kEVoYf";
+  "pk_live_51SNc4KQ9u6EzX6YbcWbV1iXFA96SnuLahor9v5y1IzYIKpFnY3ThpDbsBLZwxJ1Pm5HwX23FHXU1Q5bZc5pl57Hb00mhAZFOcM";
 
 const stripePromise = loadStripe(STRIPE_PK);
 
@@ -112,6 +112,13 @@ const PaymentForm = ({
       </div>
       <div className="ob-field">
         <label>Mode de paiement</label>
+        <div className="ob-klarna-banner">
+          <svg viewBox="0 0 90 35" xmlns="http://www.w3.org/2000/svg" aria-label="Klarna">
+            <rect width="90" height="35" rx="6" fill="#FFA8CD"/>
+            <text x="45" y="23" textAnchor="middle" fontFamily="Arial, sans-serif" fontSize="14" fontWeight="700" fill="#0a0a0a">Klarna.</text>
+          </svg>
+          <span>Paiement en 3x sans frais disponible avec Klarna</span>
+        </div>
         <div className="ob-card-wrap">
           <PaymentElement options={{ layout: "tabs" }} />
         </div>
@@ -259,6 +266,10 @@ const Orderbump = () => {
         .ob-field input { background:#0f0f0f; border:1px solid rgba(255,255,255,0.1); color:#f2ead8; font-family:'DM Sans',sans-serif; font-size:16px; padding:14px 16px; outline:none; transition:border-color 0.2s; }
         .ob-field input:focus { border-color:#a78bfa; }
         .ob-card-wrap { background:#0f0f0f; border:1px solid rgba(255,255,255,0.1); padding:16px; transition:border-color 0.2s; }
+        .ob-klarna-banner { display:flex; align-items:center; gap:12px; background:#0f0f0f; border:1px solid rgba(255,168,205,0.35); padding:12px 16px; margin-bottom:10px; }
+        .ob-klarna-banner svg { height:28px; width:auto; flex-shrink:0; }
+        .ob-klarna-banner span { color:#ffffff; font-size:14px; line-height:1.4; }
+        .ob-klarna-banner span strong { color:#FFA8CD; }
         .ob-card-wrap:focus-within { border-color:#a78bfa; }
         .ob-error { background:rgba(255,107,107,0.1); border:1px solid rgba(255,107,107,0.4); color:#ff9b9b; padding:12px 16px; font-size:14px; }
         .ob-pay-btn { width:100%; background:#7c3aed; color:white; font-family:'Bebas Neue',sans-serif; font-size:clamp(20px,4vw,30px); letter-spacing:2px; padding:22px; border:none; cursor:pointer; clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%); box-shadow:0 8px 40px rgba(124,58,237,0.4); animation:ob-pulse 2s ease-in-out infinite; transition:all 0.2s; }
