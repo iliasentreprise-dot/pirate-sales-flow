@@ -13,6 +13,29 @@ const STRIPE_PK =
 
 const stripePromise = loadStripe(STRIPE_PK);
 
+const CountdownTimer = ({ hours }: { hours: number }) => {
+  const [endTs] = useState(() => {
+    const stored = sessionStorage.getItem("declic_bonus_end");
+    if (stored) return parseInt(stored, 10);
+    const ts = Date.now() + hours * 3600 * 1000;
+    sessionStorage.setItem("declic_bonus_end", String(ts));
+    return ts;
+  });
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => {
+    const i = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(i);
+  }, []);
+  const diff = Math.max(0, endTs - now);
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return (
+    <span className="ob-countdown">⏱ Fin de l'offre dans {pad(h)}h {pad(m)}m {pad(s)}s</span>
+  );
+};
+
 const PaymentForm = ({
   bumpAdded,
   total,
