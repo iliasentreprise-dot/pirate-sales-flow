@@ -118,10 +118,28 @@ const PaymentForm = ({
           tabIndex={0}
           onClick={() => {
             const pe = elements?.getElement("payment");
-            pe?.update({ paymentMethodOrder: ["klarna", "card"] });
+            if (!pe) return;
+            pe.update({ paymentMethodOrder: ["klarna", "card"] });
+            setTimeout(() => {
+              const root = document.querySelector(".ob-card-wrap");
+              const klarnaTab =
+                root?.querySelector<HTMLElement>('[data-testid="klarna-tab"]') ||
+                root?.querySelector<HTMLElement>('button[value="klarna"]') ||
+                Array.from(root?.querySelectorAll<HTMLElement>('button, [role="tab"]') || [])
+                  .find((el) => /klarna/i.test(el.textContent || el.getAttribute("aria-label") || ""));
+              klarnaTab?.click();
+              klarnaTab?.focus();
+            }, 150);
           }}
         >
-          <img src="https://www.klarna.com/assets/sites/5/2020/04/15143314/klarna-logo-pink.png" alt="Klarna" />
+          <img
+            src="https://x.klarnacdn.net/payment-method/assets/badges/generic/klarna.svg"
+            alt="Klarna"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src =
+                "https://www.klarna.com/assets/sites/5/2020/04/15143314/klarna-logo-pink.png";
+            }}
+          />
           <span>Paiement en 3x sans frais disponible avec <strong>Klarna</strong></span>
         </div>
         <div className="ob-card-wrap">
