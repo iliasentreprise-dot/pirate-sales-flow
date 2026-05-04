@@ -369,7 +369,17 @@ const Orderbump = () => {
       <div className="ob-summary-box">
         <div className="ob-order-summary">
           <h3>📋 RÉCAPITULATIF DE COMMANDE</h3>
-          <div className="ob-order-line"><span>☠️ Système Pirate (méthode complète + accompagnement)</span><span className="price">97€</span></div>
+          <div className="ob-order-line"><span>☠️ Système Pirate (méthode complète)</span><span className="price">97€</span></div>
+          <div className="ob-order-line ob-bonus-line">
+            <span className="ob-bonus-label">
+              <span className="ob-bonus-title">🎁 Accompagnement 1-1 personnalisé</span>
+              <CountdownTimer hours={32} />
+            </span>
+            <span className="price ob-bonus-price">
+              <span className="ob-old">347€</span>
+              <span className="ob-free">GRATUIT</span>
+            </span>
+          </div>
           {bumpAdded && (
             <div className="ob-order-line"><span>🔒 Accès compte TikTok secret</span><span className="price">47€</span></div>
           )}
