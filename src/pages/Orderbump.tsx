@@ -9,7 +9,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 
 const STRIPE_PK =
-  "pk_test_51TR1ZlLEX9OBZ3JcCEc8hpCioTC4VOhHgRKxSb60I5QM0QMfHq5mprJhjJZ7qSXhX0aMy5Dg2dgKnVOI0tdfLPej00s5kEVoYf";
+  "pk_live_51SNc4KQ9u6EzX6YbcWbV1iXFA96SnuLahor9v5y1IzYIKpFnY3ThpDbsBLZwxJ1Pm5HwX23FHXU1Q5bZc5pl57Hb00mhAZFOcM";
 
 const stripePromise = loadStripe(STRIPE_PK);
 
@@ -400,6 +400,9 @@ const Orderbump = () => {
         <div className="ob-order-summary">
           <h3>📋 RÉCAPITULATIF DE COMMANDE</h3>
           <div className="ob-order-line"><span>☠️ Système Pirate (méthode complète)</span><span className="price">97€</span></div>
+          {bumpAdded && (
+            <div className="ob-order-line"><span>🔒 Accès compte TikTok secret</span><span className="price">47€</span></div>
+          )}
           <div className="ob-order-line ob-bonus-line">
             <span className="ob-bonus-label">
               <span className="ob-bonus-title">🎁 Accompagnement 1-1 personnalisé</span>
@@ -410,9 +413,6 @@ const Orderbump = () => {
               <span className="ob-free">GRATUIT</span>
             </span>
           </div>
-          {bumpAdded && (
-            <div className="ob-order-line"><span>🔒 Accès compte TikTok secret</span><span className="price">47€</span></div>
-          )}
           <div className="ob-order-line total"><span>TOTAL</span><span className="price">{total}</span></div>
         </div>
 
