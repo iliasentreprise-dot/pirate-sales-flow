@@ -139,7 +139,7 @@ const Upsell1 = () => {
       <div className="u1-cta">
         <span className="u1-tag" style={{ display: "block", marginBottom: 16 }}>⚡ ACCÈS IMMÉDIAT</span>
         <div className="u1-pcross">Valeur réelle : 1997€</div>
-        <div className="u1-pmain">127€</div>
+        <div className="u1-pmain">497€</div>
         <div className="u1-pnote">Uniquement sur cette page · Jamais reproposé à ce prix</div>
         <button type="button" className="u1-yes" onClick={handleAccept} disabled={loadingUpsell}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX QUE TU FASSES TOUT À MA PLACE"}</button>
         <div style={{ fontSize: 12, color: "#333", marginTop: 10 }}>🔒 Paiement sécurisé via Stripe · Accès immédiat</div>

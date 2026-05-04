@@ -14,7 +14,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { email, amount } = await req.json();
+    const { email, amount, upsell_type } = await req.json();
 
     if (!email) {
       return new Response(JSON.stringify({ error: "Missing email" }), {
@@ -23,7 +23,15 @@ Deno.serve(async (req) => {
       });
     }
 
-    const chargeAmount = typeof amount === "number" && amount > 0 ? amount : 9700;
+    const upsellAmounts: Record<string, number> = {
+      upsell0: 9700,
+      upsell1: 49700,
+      upsell2: 9700,
+    };
+    const chargeAmount =
+      typeof amount === "number" && amount > 0
+        ? amount
+        : (upsell_type && upsellAmounts[upsell_type]) || 9700;
 
     // Lookup customer in DB
     const lookupRes = await fetch(
