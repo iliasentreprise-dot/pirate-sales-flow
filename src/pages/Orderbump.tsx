@@ -324,6 +324,13 @@ const Orderbump = () => {
         @keyframes ob-pulse { 0%,100%{box-shadow:0 8px 40px rgba(124,58,237,0.4);} 50%{box-shadow:0 8px 60px rgba(124,58,237,0.7);} }
         .ob-pay-btn:hover:not(:disabled) { filter:brightness(1.1); }
         .ob-secure-note { text-align:center; font-size:12px; color:#666; margin-top:4px; }
+        .ob-bonus-line { background:rgba(34,197,94,0.06); border:1px solid rgba(34,197,94,0.25); padding:12px 14px !important; margin:6px 0; }
+        .ob-bonus-label { display:flex; flex-direction:column; gap:6px; }
+        .ob-bonus-title { color:#fff; font-weight:600; }
+        .ob-countdown { color:#22c55e; font-size:12px; font-family:'Bebas Neue',sans-serif; letter-spacing:1.5px; }
+        .ob-bonus-price { display:flex; align-items:center; gap:10px; }
+        .ob-bonus-price .ob-old { color:#666; text-decoration:line-through; font-family:'DM Sans',sans-serif; font-size:16px; }
+        .ob-bonus-price .ob-free { color:#22c55e !important; font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:1px; }
       `}</style>
 
       <div className="ob-hero">
