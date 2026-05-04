@@ -13,6 +13,29 @@ const STRIPE_PK =
 
 const stripePromise = loadStripe(STRIPE_PK);
 
+const CountdownTimer = ({ hours }: { hours: number }) => {
+  const [endTs] = useState(() => {
+    const stored = sessionStorage.getItem("declic_bonus_end");
+    if (stored) return parseInt(stored, 10);
+    const ts = Date.now() + hours * 3600 * 1000;
+    sessionStorage.setItem("declic_bonus_end", String(ts));
+    return ts;
+  });
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => {
+    const i = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(i);
+  }, []);
+  const diff = Math.max(0, endTs - now);
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return (
+    <span className="ob-countdown">⏱ Fin de l'offre dans {pad(h)}h {pad(m)}m {pad(s)}s</span>
+  );
+};
+
 const PaymentForm = ({
   bumpAdded,
   total,
@@ -301,6 +324,13 @@ const Orderbump = () => {
         @keyframes ob-pulse { 0%,100%{box-shadow:0 8px 40px rgba(124,58,237,0.4);} 50%{box-shadow:0 8px 60px rgba(124,58,237,0.7);} }
         .ob-pay-btn:hover:not(:disabled) { filter:brightness(1.1); }
         .ob-secure-note { text-align:center; font-size:12px; color:#666; margin-top:4px; }
+        .ob-bonus-line { background:rgba(34,197,94,0.06); border:1px solid rgba(34,197,94,0.25); padding:12px 14px !important; margin:6px 0; }
+        .ob-bonus-label { display:flex; flex-direction:column; gap:6px; }
+        .ob-bonus-title { color:#fff; font-weight:600; }
+        .ob-countdown { color:#22c55e; font-size:12px; font-family:'Bebas Neue',sans-serif; letter-spacing:1.5px; }
+        .ob-bonus-price { display:flex; align-items:center; gap:10px; }
+        .ob-bonus-price .ob-old { color:#666; text-decoration:line-through; font-family:'DM Sans',sans-serif; font-size:16px; }
+        .ob-bonus-price .ob-free { color:#22c55e !important; font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:1px; }
       `}</style>
 
       <div className="ob-hero">
@@ -369,7 +399,17 @@ const Orderbump = () => {
       <div className="ob-summary-box">
         <div className="ob-order-summary">
           <h3>📋 RÉCAPITULATIF DE COMMANDE</h3>
-          <div className="ob-order-line"><span>☠️ Système Pirate (méthode complète + accompagnement)</span><span className="price">97€</span></div>
+          <div className="ob-order-line"><span>☠️ Système Pirate (méthode complète)</span><span className="price">97€</span></div>
+          <div className="ob-order-line ob-bonus-line">
+            <span className="ob-bonus-label">
+              <span className="ob-bonus-title">🎁 Accompagnement 1-1 personnalisé</span>
+              <CountdownTimer hours={32} />
+            </span>
+            <span className="price ob-bonus-price">
+              <span className="ob-old">347€</span>
+              <span className="ob-free">GRATUIT</span>
+            </span>
+          </div>
           {bumpAdded && (
             <div className="ob-order-line"><span>🔒 Accès compte TikTok secret</span><span className="price">47€</span></div>
           )}
