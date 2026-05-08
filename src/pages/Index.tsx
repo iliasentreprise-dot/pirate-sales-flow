@@ -298,10 +298,10 @@ const Index = () => {
         <div style={{ height: 2, margin: '60px auto', maxWidth: 600, background: 'linear-gradient(90deg, transparent, var(--sp-purple), transparent)', boxShadow: '0 0 20px var(--sp-purple), 0 0 40px var(--sp-purple)', borderRadius: 2 }}></div>
 
         <div style={{ marginTop: 30 }}>
-          <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(30px,5vw,52px)', lineHeight: 1, color: 'white', marginBottom: 30 }}>💬 ILS ONT APPLIQUÉ. VOILÀ CE QU'ILS EN DISENT.</h2>
+          <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(30px,5vw,52px)', lineHeight: 1, color: 'white', marginBottom: 30 }}>💬 CE QUE DISENT <em style={{ color: 'var(--sp-purple)', fontStyle: 'normal' }}>MES ÉLÈVES</em></h2>
         </div>
         <div className="avis-grid">
-          {[avis1, avis2, avis3, avis4, avis5, avis6].map((src, i) => (
+          {[avisNoah, avis1, avis2, avis3, avis4, avis5, avis6].map((src, i) => (
             <div key={i} className="avis-card" onClick={() => setZoomedImg(src)} style={{ cursor: 'zoom-in' }}>
               <img src={src} alt={`Avis client ${i + 1}`} loading="lazy" />
             </div>
