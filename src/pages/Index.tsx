@@ -6,6 +6,7 @@ import avis3 from "@/assets/avis-3.png";
 import avis4 from "@/assets/avis-4.png";
 import avis5 from "@/assets/avis-5.png";
 import avis6 from "@/assets/avis-6.png";
+import avisNoah from "@/assets/avis-noah.png";
 import mockup from "@/assets/mockup-systeme-pirate.png";
 import logo from "@/assets/logo-drop-digital.png";
 
