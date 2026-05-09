@@ -195,7 +195,7 @@ const CheckoutSection = ({ bumpAdded, total }: { bumpAdded: boolean; total: stri
   useEffect(() => {
     setClientSecret(null);
     setPiError(null);
-    const amount = bumpAdded ? 24400 : 19700;
+    const amount = bumpAdded ? 14400 : 9700;
     supabase.functions
       .invoke("create-payment-intent", {
         body: {
@@ -258,7 +258,7 @@ const CheckoutSection = ({ bumpAdded, total }: { bumpAdded: boolean; total: stri
 
 const Orderbump = () => {
   const [bumpAdded, setBumpAdded] = useState(true);
-  const total = bumpAdded ? "244€" : "197€";
+  const total = bumpAdded ? "144€" : "97€";
 
   useEffect(() => {
     window.scrollTo(0, 0);
