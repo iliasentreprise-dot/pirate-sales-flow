@@ -7,6 +7,8 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { supabase } from "@/integrations/supabase/client";
+import bonusTiktokSecret from "@/assets/bonus-tiktok-secret.jpg";
+import bonusBoostUltime from "@/assets/bonus-boost-ultime.jpg";
 
 const STRIPE_PK =
   "pk_live_51SNc4KQ9u6EzX6YbcWbV1iXFA96SnuLahor9v5y1IzYIKpFnY3ThpDbsBLZwxJ1Pm5HwX23FHXU1Q5bZc5pl57Hb00mhAZFOcM";
@@ -331,6 +333,14 @@ const Orderbump = () => {
         .ob-bonus-price { display:flex; align-items:center; gap:10px; }
         .ob-bonus-price .ob-old { color:#666; text-decoration:line-through; font-family:'DM Sans',sans-serif; font-size:16px; }
         .ob-bonus-price .ob-free { color:#22c55e !important; font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:1px; }
+        .ob-bonus-thumbs { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:24px 0 8px; }
+        .ob-bonus-thumb { background:linear-gradient(135deg,#1a1208,#0f0a05); border:2px solid #d4af37; border-radius:8px; overflow:hidden; box-shadow:0 0 30px rgba(212,175,55,0.25), inset 0 0 20px rgba(212,175,55,0.08); transition:transform .2s; }
+        .ob-bonus-thumb:hover { transform:translateY(-3px); box-shadow:0 6px 40px rgba(212,175,55,0.45); }
+        .ob-bonus-thumb img { width:100%; height:auto; display:block; }
+        .ob-bonus-thumb-label { padding:10px 12px; text-align:center; font-family:'Bebas Neue',sans-serif; font-size:14px; letter-spacing:1.5px; color:#d4af37; background:rgba(0,0,0,0.5); border-top:1px solid rgba(212,175,55,0.4); }
+        @media (max-width:480px) { .ob-bonus-thumbs { grid-template-columns:1fr; } }
+        .ob-badge-red { background:#e8110a; color:white; font-size:13px; font-weight:700; padding:4px 10px; border-radius:999px; font-family:'DM Sans',sans-serif; letter-spacing:0.5px; }
+        .ob-total-old { color:#666; text-decoration:line-through; font-size:14px; padding:6px 0 0; text-align:right; font-family:'DM Sans',sans-serif; }
       `}</style>
 
       <div className="ob-hero">
@@ -351,26 +361,36 @@ const Orderbump = () => {
               tabIndex={0}
             >✓</div>
             <div className="ob-bump-title-block">
-              <div className="subtitle">Ajouter à ma commande</div>
-              <h2>☠️ Accès à mon compte TikTok secret<br />— Analyse & Copie ma machine à vendre</h2>
+              <div className="subtitle">✓ Ajouter à ma commande</div>
+              <h2>👑 Pack Bonus Secret<br />— Les 2 Logiciels qui font tourner le système en automatique</h2>
             </div>
           </div>
           <div className="ob-bump-body">
-            <div className="ob-secret-badge">🔒 JAMAIS MONTRÉ PUBLIQUEMENT</div>
-            <p>J'ai plusieurs dizaines de comptes TikTok qui vendent des produits digitaux chaque jour à ma place. <strong>Je ne les montre jamais.</strong> Pourquoi ? Parce que si tout le monde les connaît, ils perdent de leur efficacité.</p>
-            <p>Mais aujourd'hui, <em>uniquement sur cette page</em>, je t'ouvre les portes d'un de mes meilleurs comptes — celui qui convertit le plus. Tu verras exactement :</p>
+            <div className="ob-secret-badge">🔒 JAMAIS VENDU PUBLIQUEMENT</div>
+            <p>Ces 2 logiciels, c'est ce que j'utilise en coulisses pour que mon système tourne sans moi. <strong>Je ne les montre jamais.</strong> Pourquoi ? Parce que le jour où tout le monde les utilise, ils perdent leur avantage.</p>
+            <p>Mais aujourd'hui, <em>uniquement sur cette page</em>, je te donne accès aux 2 outils qui alimentent ma machine à vendre. Tu récupères exactement :</p>
             <ul className="ob-bump-features">
-              <li><span className="icon">👁️</span><span>La structure exacte de mes carrousels qui génèrent des ventes avec 1000 vues seulement</span></li>
-              <li><span className="icon">🎯</span><span>Les hooks que j'utilise et qui stoppent le scroll en moins de 2 secondes</span></li>
-              <li><span className="icon">💰</span><span>Comment j'ai organisé mon compte pour que l'algo me pousse en continu</span></li>
-              <li><span className="icon">📋</span><span>Mes templates de carrousels à copier-coller directement dans ta stratégie</span></li>
+              <li><span className="icon">🤖</span><span><strong>L'Outil d'Automatisation TikTok SECRET</strong> — il publie, optimise et fait tourner tes comptes pendant que tu dors</span></li>
+              <li><span className="icon">🚀</span><span><strong>Le Logiciel de BOOST d'abonnés ULTIME</strong> — +100k abonnés en 24h, boost de vente et de confiance client intégré</span></li>
             </ul>
-            <p>Cette offre <strong>n'existe nulle part ailleurs.</strong> Elle n'est pas dans la formation. Elle n'est pas sur mon TikTok. Elle n'existera plus après cette page. C'est la seule et unique fois que je l'ouvre.</p>
+            <p>Ces outils <strong>n'existent nulle part ailleurs à ce prix.</strong> Ils ne sont pas dans la formation. Ils ne sont pas sur mon TikTok. Ils ne seront plus disponibles après cette page. C'est la seule et unique fois que je les ouvre.</p>
             <div className="ob-urgency-bar">⚠️ Cette offre disparaît dès que tu quittes cette page. Impossible d'y revenir après.</div>
+
+            <div className="ob-bonus-thumbs">
+              <div className="ob-bonus-thumb">
+                <img src={bonusTiktokSecret} alt="Automatisation TikTok Secret" loading="lazy" width={1024} height={1024} />
+                <div className="ob-bonus-thumb-label">🤖 Automatisation TikTok</div>
+              </div>
+              <div className="ob-bonus-thumb">
+                <img src={bonusBoostUltime} alt="Boost Abonnés Ultime" loading="lazy" width={1024} height={1024} />
+                <div className="ob-bonus-thumb-label">🚀 Boost Abonnés Ultime</div>
+              </div>
+            </div>
+
             <div className="ob-bump-price-row">
-              <span className="ob-bump-price-old">Valeur réelle : 197€</span>
+              <span className="ob-bump-price-old">Valeur réelle : 127€</span>
               <span className="ob-bump-price-new">47€</span>
-              <span className="ob-bump-price-tag">-76%</span>
+              <span className="ob-bump-price-tag">-63%</span>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12, margin: "24px 0" }}>
               <div
@@ -380,7 +400,7 @@ const Orderbump = () => {
                 <div style={{ width: 28, height: 28, borderRadius: 6, background: bumpAdded ? "#22c55e" : "#2a2a2a", boxShadow: "inset 0 2px 4px rgba(0,0,0,0.4)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "all 0.2s" }}>
                   {bumpAdded && <span style={{ color: "white", fontSize: 16, fontWeight: 700 }}>✓</span>}
                 </div>
-                <span style={{ color: "#22c55e", fontWeight: 700, fontSize: 15, lineHeight: 1.4 }}>OUI, je veux voir ton compte secret qui fait 2000€/mois en anonyme</span>
+                <span style={{ color: "#22c55e", fontWeight: 700, fontSize: 15, lineHeight: 1.4 }}>✓ OUI, je veux les 2 logiciels secrets qui automatisent mon système TikTok</span>
               </div>
               <div
                 onClick={() => setBumpAdded(false)}
@@ -389,7 +409,7 @@ const Orderbump = () => {
                 <div style={{ width: 28, height: 28, borderRadius: 6, background: !bumpAdded ? "#e8110a" : "#2a2a2a", boxShadow: "inset 0 2px 4px rgba(0,0,0,0.4)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "all 0.2s" }}>
                   {!bumpAdded && <span style={{ color: "white", fontSize: 16, fontWeight: 700 }}>✗</span>}
                 </div>
-                <span style={{ color: "#e8110a", fontWeight: 600, fontSize: 14, lineHeight: 1.4 }}>NON, je préfère louper l'opportunité de pouvoir voir comment tu vends tes produits digitaux avec tes vrais comptes</span>
+                <span style={{ color: "#e8110a", fontWeight: 600, fontSize: 14, lineHeight: 1.4 }}>NON, je préfère construire mon système sans les outils qui le font tourner en automatique</span>
               </div>
             </div>
           </div>
@@ -401,7 +421,7 @@ const Orderbump = () => {
           <h3>📋 RÉCAPITULATIF DE COMMANDE</h3>
           <div className="ob-order-line"><span>☠️ Système Pirate (méthode complète)</span><span className="price">97€</span></div>
           {bumpAdded && (
-            <div className="ob-order-line"><span>🔒 Accès compte TikTok secret</span><span className="price">47€</span></div>
+            <div className="ob-order-line"><span>🤖 Pack Bonus Secret (2 logiciels)</span><span className="price">47€</span></div>
           )}
           <div className="ob-order-line ob-bonus-line">
             <span className="ob-bonus-label">
@@ -413,6 +433,8 @@ const Orderbump = () => {
               <span className="ob-free">GRATUIT</span>
             </span>
           </div>
+          <div className="ob-order-line"><span>🔴 Réduction Offre Live</span><span className="ob-badge-red">-100€</span></div>
+          <div className="ob-total-old">Prix total : <span style={{ textDecoration: "line-through" }}>{bumpAdded ? "244€" : "197€"}</span></div>
           <div className="ob-order-line total"><span>TOTAL</span><span className="price">{total}</span></div>
         </div>
 
