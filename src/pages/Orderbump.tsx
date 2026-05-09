@@ -333,6 +333,14 @@ const Orderbump = () => {
         .ob-bonus-price { display:flex; align-items:center; gap:10px; }
         .ob-bonus-price .ob-old { color:#666; text-decoration:line-through; font-family:'DM Sans',sans-serif; font-size:16px; }
         .ob-bonus-price .ob-free { color:#22c55e !important; font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:1px; }
+        .ob-bonus-thumbs { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:24px 0 8px; }
+        .ob-bonus-thumb { background:linear-gradient(135deg,#1a1208,#0f0a05); border:2px solid #d4af37; border-radius:8px; overflow:hidden; box-shadow:0 0 30px rgba(212,175,55,0.25), inset 0 0 20px rgba(212,175,55,0.08); transition:transform .2s; }
+        .ob-bonus-thumb:hover { transform:translateY(-3px); box-shadow:0 6px 40px rgba(212,175,55,0.45); }
+        .ob-bonus-thumb img { width:100%; height:auto; display:block; }
+        .ob-bonus-thumb-label { padding:10px 12px; text-align:center; font-family:'Bebas Neue',sans-serif; font-size:14px; letter-spacing:1.5px; color:#d4af37; background:rgba(0,0,0,0.5); border-top:1px solid rgba(212,175,55,0.4); }
+        @media (max-width:480px) { .ob-bonus-thumbs { grid-template-columns:1fr; } }
+        .ob-badge-red { background:#e8110a; color:white; font-size:13px; font-weight:700; padding:4px 10px; border-radius:999px; font-family:'DM Sans',sans-serif; letter-spacing:0.5px; }
+        .ob-total-old { color:#666; text-decoration:line-through; font-size:14px; padding:6px 0 0; text-align:right; font-family:'DM Sans',sans-serif; }
       `}</style>
 
       <div className="ob-hero">
