@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import avis1 from "@/assets/avis-1.jpeg";
-import avis2 from "@/assets/avis-2.png";
 import avis3 from "@/assets/avis-3.png";
 import avis4 from "@/assets/avis-4.png";
 import avis5 from "@/assets/avis-5.png";
 import avis6 from "@/assets/avis-6.png";
 import avisNoah from "@/assets/avis-noah.png";
+import avisLamine from "@/assets/avis-lamine.png";
+import avisStripeLock from "@/assets/avis-stripe-lock.png";
 import mockup from "@/assets/mockup-systeme-pirate.png";
 import logo from "@/assets/logo-drop-digital.png";
 
@@ -301,7 +302,7 @@ const Index = () => {
           <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(30px,5vw,52px)', lineHeight: 1, color: 'white', marginBottom: 30 }}>💬 CE QUE DISENT <em style={{ color: 'var(--sp-purple)', fontStyle: 'normal' }}>MES ÉLÈVES</em></h2>
         </div>
         <div className="avis-grid">
-          {[avisNoah, avis1, avis2, avis3, avis4, avis5, avis6].map((src, i) => (
+          {[avisLamine, avisStripeLock, avisNoah, avis1, avis3, avis4, avis5, avis6].map((src, i) => (
             <div key={i} className="avis-card" onClick={() => setZoomedImg(src)} style={{ cursor: 'zoom-in' }}>
               <img src={src} alt={`Avis client ${i + 1}`} loading="lazy" />
             </div>
