@@ -421,7 +421,7 @@ const Orderbump = () => {
           <h3>📋 RÉCAPITULATIF DE COMMANDE</h3>
           <div className="ob-order-line"><span>☠️ Système Pirate (méthode complète)</span><span className="price">97€</span></div>
           {bumpAdded && (
-            <div className="ob-order-line"><span>🔒 Accès compte TikTok secret</span><span className="price">47€</span></div>
+            <div className="ob-order-line"><span>🤖 Pack Bonus Secret (2 logiciels)</span><span className="price">47€</span></div>
           )}
           <div className="ob-order-line ob-bonus-line">
             <span className="ob-bonus-label">
@@ -433,6 +433,8 @@ const Orderbump = () => {
               <span className="ob-free">GRATUIT</span>
             </span>
           </div>
+          <div className="ob-order-line"><span>🔴 Réduction Offre Live</span><span className="ob-badge-red">-100€</span></div>
+          <div className="ob-total-old">Prix total : <span style={{ textDecoration: "line-through" }}>{bumpAdded ? "244€" : "197€"}</span></div>
           <div className="ob-order-line total"><span>TOTAL</span><span className="price">{total}</span></div>
         </div>
 
