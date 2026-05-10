@@ -340,7 +340,7 @@ const Index = () => {
             <div className="urgency-progress"><div className="urgency-fill" style={{ width: '75%' }}></div></div>
             <div className="urgency-labels"><span style={{ color: '#a78bfa' }}>17 places prises</span><span style={{ color: '#e8110a' }}>3 places restantes</span></div>
           </div>
-          <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(18px,3.5vw,30px)', marginTop: 10 }}>☠️ OUI — JE VEUX LA MÉTHODE PIRATE MAINTENANT</a>
+          <a href="https://buy.stripe.com/4gM6oI2aS1uU4Nbao43Ru04" className="btn-cta" style={{ fontSize: 'clamp(18px,3.5vw,30px)', marginTop: 10 }}>ACCÉDER À LA FORMATION + L'ACCOMPAGNEMENT<span className="cta-arrow">↓</span></a>
           <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
         </div>
       </div>
