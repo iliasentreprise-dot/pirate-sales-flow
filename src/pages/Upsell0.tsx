@@ -604,16 +604,6 @@ const Upsell0 = () => {
 
         <div className="u0-divider"></div>
 
-        {/* COUNTDOWN */}
-        <div className="u0-cd">
-          <div className="ttl">⚠️ ATTENTION — Cette page se DÉTRUIT automatiquement dans exactement :</div>
-          <div className="timer">{m}:{s}</div>
-          <p className="sub">
-            Parce que ces armes sont TROP efficaces. L'accès est limité à 5 places par mois.<br />
-            Le prochain accès sera à 467€ à partir du 1er du mois prochain.<br />
-            Tu ne reverras <strong>JAMAIS</strong> cette offre à 97€.
-          </p>
-        </div>
 
         {/* RARETÉ */}
         <div className="u0-rare">
