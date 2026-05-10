@@ -248,6 +248,21 @@ const Upsell0 = () => {
         {/* ALERT */}
         <div className="u0-alert">⚠️ PERSONNALISATION DE TA COMMANDE EN COURS — NE FERME SURTOUT PAS CETTE PAGE ⚠️</div>
 
+        {/* TOP TIMER */}
+        <div className="u0-toptimer">
+          <div className="ttl">⚠️ CETTE OFFRE EXPIRE DANS :</div>
+          <div className="timer">{m}:{s}</div>
+          <p className="desc">Dès que ce compteur atteint zéro, cette page se supprime définitivement de nos serveurs. Impossible d'y revenir — même si tu recharges la page.</p>
+        </div>
+
+        {expired && (
+          <div className="u0-expired">
+            <h1>⛔ TROP TARD.</h1>
+            <p>Cette page a disparu à jamais.</p>
+            <p>Tu n'auras plus jamais accès à cette offre.</p>
+          </div>
+        )}
+
         {/* HERO */}
         <div className="u0-hero">
           <div className="u0-fomo">🏴‍☠️ TA COMMANDE N'EST PAS TERMINÉE</div>
