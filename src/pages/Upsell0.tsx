@@ -73,14 +73,14 @@ const Upsell0 = () => {
       setSecondsLeft((s) => {
         if (s <= 1) {
           clearInterval(t);
-          navigate(`/upsell1?token=${token}`);
+          setExpired(true);
           return 0;
         }
         return s - 1;
       });
     }, 1000);
     return () => clearInterval(t);
-  }, [navigate]);
+  }, []);
 
   const m = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
   const s = String(secondsLeft % 60).padStart(2, "0");
