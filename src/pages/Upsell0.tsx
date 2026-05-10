@@ -38,10 +38,11 @@ const Upsell0 = () => {
       })
       .catch(() => {});
   }, [searchParams]);
-  const [secondsLeft, setSecondsLeft] = useState(660);
+  const [secondsLeft, setSecondsLeft] = useState(600);
   const [loadingUpsell, setLoadingUpsell] = useState(false);
   const [imgZoom, setImgZoom] = useState(false);
   const [paymentError, setPaymentError] = useState(false);
+  const [expired, setExpired] = useState(false);
 
   const handleAccept = async () => {
     const email = window.sessionStorage.getItem("declic_email");
