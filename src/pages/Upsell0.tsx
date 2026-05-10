@@ -88,7 +88,7 @@ const Upsell0 = () => {
   const goRefuse = () => navigate(`/upsell1?token=${token}`);
 
   return (
-    <div style={{ background: "#0a0a0a", color: "#f2ead8", fontFamily: "'DM Sans', sans-serif", overflowX: "hidden" }}>
+    <div style={{ background: "#ffffff", color: "#111111", fontFamily: "'DM Sans', sans-serif", overflowX: "hidden" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap');
         .u0 { --black:#0a0a0a; --red:#e8110a; --gold:#f5c518; --cream:#f2ead8; --grey:#1a1a1a; }
