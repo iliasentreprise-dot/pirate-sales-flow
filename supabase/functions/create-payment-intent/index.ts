@@ -34,7 +34,14 @@ Deno.serve(async (req) => {
       amount,
       currency: "eur",
       payment_method_types: paymentMethodTypes,
-      setup_future_usage: "off_session",
+      ...(paymentMethodTypes.includes("card") && {
+        setup_future_usage: "off_session",
+      }),
+      payment_method_options: {
+        klarna: {
+          preferred_locale: "fr-FR",
+        },
+      },
       metadata: {
         bump: bump ? "1" : "0",
         product: bump ? "systeme_pirate_bump" : "systeme_pirate",
