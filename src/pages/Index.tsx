@@ -84,6 +84,8 @@ const Index = () => {
         .btn-cta { display: inline-block; background: var(--sp-purple); color: white; font-family: 'Bebas Neue', sans-serif; font-size: clamp(26px, 5vw, 40px); letter-spacing: 2px; padding: 22px 60px; border: none; cursor: pointer; position: relative; clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%); transition: all 0.2s; box-shadow: 0 8px 40px rgba(124,58,237,0.5); animation: pulse-btn 2s ease-in-out infinite; margin: 10px 0; }
         @keyframes pulse-btn { 0%, 100% { box-shadow: 0 8px 40px rgba(124,58,237,0.5); transform: scale(1); } 50% { box-shadow: 0 8px 60px rgba(124,58,237,0.8); transform: scale(1.02); } }
         .btn-cta:hover { background: var(--sp-purple-dark); transform: scale(1.04) !important; }
+        .cta-arrow { display: inline-block; margin-left: 12px; animation: cta-bounce 0.7s ease-in-out infinite alternate; }
+        @keyframes cta-bounce { from { transform: translateY(0); } to { transform: translateY(6px); } }
         .btn-sub { display: block; font-size: 12px; color: #666; margin-top: 10px; }
         .divider { width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--sp-purple), transparent); margin: 0; }
         .section-tag { font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 5px; color: var(--sp-purple); margin-bottom: 16px; display: block; }
@@ -227,7 +229,7 @@ const Index = () => {
           <div className="urgency-progress"><div className="urgency-fill" style={{ width: '75%' }}></div></div>
           <div className="urgency-labels"><span style={{ color: '#a78bfa' }}>17 places prises</span><span style={{ color: '#e8110a' }}>3 places restantes</span></div>
         </div>
-        <a href="/orderbump" onClick={goOrderbump} className="btn-cta">☠️ OUI — JE VEUX LA MÉTHODE PIRATE MAINTENANT</a>
+        <a href="https://buy.stripe.com/4gM6oI2aS1uU4Nbao43Ru04" className="btn-cta">ACCÉDER À LA FORMATION + L'ACCOMPAGNEMENT<span className="cta-arrow">↓</span></a>
         <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
         <span className="btn-sub">Accès immédiat · Paiement sécurisé · Garanti ou remboursé</span>
       </section>
@@ -338,7 +340,7 @@ const Index = () => {
             <div className="urgency-progress"><div className="urgency-fill" style={{ width: '75%' }}></div></div>
             <div className="urgency-labels"><span style={{ color: '#a78bfa' }}>17 places prises</span><span style={{ color: '#e8110a' }}>3 places restantes</span></div>
           </div>
-          <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(18px,3.5vw,30px)', marginTop: 10 }}>☠️ OUI — JE VEUX LA MÉTHODE PIRATE MAINTENANT</a>
+          <a href="https://buy.stripe.com/4gM6oI2aS1uU4Nbao43Ru04" className="btn-cta" style={{ fontSize: 'clamp(18px,3.5vw,30px)', marginTop: 10 }}>ACCÉDER À LA FORMATION + L'ACCOMPAGNEMENT<span className="cta-arrow">↓</span></a>
           <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
         </div>
       </div>
@@ -359,7 +361,7 @@ const Index = () => {
           <div className="urgency-progress"><div className="urgency-fill" style={{ width: '75%' }}></div></div>
           <div className="urgency-labels"><span style={{ color: '#a78bfa' }}>17 places prises</span><span style={{ color: '#e8110a' }}>3 places restantes</span></div>
         </div>
-        <a href="/orderbump" onClick={goOrderbump} className="btn-cta">☠️ OUI — JE VEUX LA MÉTHODE PIRATE MAINTENANT</a>
+        <a href="https://buy.stripe.com/4gM6oI2aS1uU4Nbao43Ru04" className="btn-cta">ACCÉDER À LA FORMATION + L'ACCOMPAGNEMENT<span className="cta-arrow">↓</span></a>
         <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
         <span className="btn-sub">Accès immédiat après paiement · 100% sécurisé</span>
       </div>
@@ -398,7 +400,7 @@ const Index = () => {
           <div className="urgency-progress"><div className="urgency-fill" style={{ width: '75%' }}></div></div>
           <div className="urgency-labels"><span style={{ color: '#a78bfa' }}>17 places prises</span><span style={{ color: '#e8110a' }}>3 places restantes</span></div>
         </div>
-        <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(22px,4vw,36px)' }}>☠️ OUI — JE VEUX LA MÉTHODE PIRATE MAINTENANT</a>
+        <a href="https://buy.stripe.com/4gM6oI2aS1uU4Nbao43Ru04" className="btn-cta" style={{ fontSize: 'clamp(22px,4vw,36px)' }}>ACCÉDER À LA FORMATION + L'ACCOMPAGNEMENT<span className="cta-arrow">↓</span></a>
         <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
       </div>
 

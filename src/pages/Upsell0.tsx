@@ -38,10 +38,11 @@ const Upsell0 = () => {
       })
       .catch(() => {});
   }, [searchParams]);
-  const [secondsLeft, setSecondsLeft] = useState(660);
+  const [secondsLeft, setSecondsLeft] = useState(600);
   const [loadingUpsell, setLoadingUpsell] = useState(false);
   const [imgZoom, setImgZoom] = useState(false);
   const [paymentError, setPaymentError] = useState(false);
+  const [expired, setExpired] = useState(false);
 
   const handleAccept = async () => {
     const email = window.sessionStorage.getItem("declic_email");
@@ -72,14 +73,14 @@ const Upsell0 = () => {
       setSecondsLeft((s) => {
         if (s <= 1) {
           clearInterval(t);
-          navigate(`/upsell1?token=${token}`);
+          setExpired(true);
           return 0;
         }
         return s - 1;
       });
     }, 1000);
     return () => clearInterval(t);
-  }, [navigate]);
+  }, []);
 
   const m = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
   const s = String(secondsLeft % 60).padStart(2, "0");
@@ -87,161 +88,180 @@ const Upsell0 = () => {
   const goRefuse = () => navigate(`/upsell1?token=${token}`);
 
   return (
-    <div style={{ background: "#0a0a0a", color: "#f2ead8", fontFamily: "'DM Sans', sans-serif", overflowX: "hidden" }}>
+    <div style={{ background: "#ffffff", color: "#111111", fontFamily: "'DM Sans', sans-serif", overflowX: "hidden" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap');
-        .u0 { --black:#0a0a0a; --red:#e8110a; --gold:#f5c518; --cream:#f2ead8; --grey:#1a1a1a; }
+        .u0 { --black:#111111; --red:#e8110a; --cream:#ffffff; --grey:#f8f8f8; }
         .u0 * { box-sizing:border-box; }
+        .u0 strong, .u0 b { color:#e8110a; font-weight:800; }
 
         .u0-alert { background:#e8110a; color:white; text-align:center; padding:14px 20px; font-family:'Bebas Neue',sans-serif; font-size:clamp(14px,3vw,20px); letter-spacing:2px; animation:u0blink 1.5s infinite; }
         @keyframes u0blink { 0%,100%{background:#e8110a;} 50%{background:#b50d08;} }
 
-        .u0-hero { background:radial-gradient(ellipse at 50% 0%,rgba(232,17,10,0.2) 0%,transparent 60%),#0a0a0a; padding:60px 20px; text-align:center; border-bottom:2px solid rgba(255,255,255,0.06); }
+        /* TOP TIMER */
+        .u0-toptimer { background:#ffffff; padding:40px 20px 30px; text-align:center; border-bottom:2px solid #e8110a; }
+        .u0-toptimer .ttl { font-family:'Bebas Neue',sans-serif; font-size:clamp(22px,5vw,38px); color:#e8110a; letter-spacing:2px; margin-bottom:14px; line-height:1.1; }
+        .u0-toptimer .timer { font-family:'Bebas Neue',sans-serif; font-size:clamp(72px,18vw,140px); color:#e8110a; letter-spacing:6px; line-height:1; margin:8px 0; font-weight:700; animation:u0timerPulse 1s infinite; }
+        @keyframes u0timerPulse { 0%,100%{opacity:1;} 50%{opacity:0.7;} }
+        .u0-toptimer .desc { font-size:16px; color:#111111; max-width:640px; margin:14px auto 0; line-height:1.6; }
+
+        /* EXPIRED OVERLAY */
+        .u0-expired { position:fixed; inset:0; background:#ffffff; z-index:99999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; text-align:center; }
+        .u0-expired h1 { font-family:'Bebas Neue',sans-serif; color:#e8110a; font-size:clamp(48px,10vw,120px); margin:0 0 24px; line-height:1; font-weight:900; }
+        .u0-expired p { color:#e8110a; font-weight:800; font-size:clamp(20px,4vw,32px); margin:8px 0; line-height:1.4; max-width:800px; }
+
+        .u0-hero { background:#ffffff; padding:60px 20px; text-align:center; border-bottom:1px solid #e8110a; }
         .u0-fomo { display:inline-block; border:2px solid #e8110a; color:#e8110a; font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:4px; padding:8px 24px; margin-bottom:30px; animation:u0border 1.5s infinite; }
         @keyframes u0border { 0%,100%{border-color:#e8110a;color:#e8110a;} 50%{border-color:#ff4444;color:#ff4444;} }
-        .u0-hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(40px,8vw,90px); line-height:0.95; color:white; margin:0 0 16px; }
-        .u0-hero h1 span { color:#f5c518; display:block; }
+        .u0-hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(40px,8vw,90px); line-height:0.95; color:#111111; margin:0 0 16px; text-transform:uppercase; }
+        .u0-hero h1 span { color:#111111; display:block; }
         .u0-hero h1 em { color:#e8110a; font-style:normal; }
-        .u0-hero .lead { font-size:clamp(16px,3vw,20px); color:#bbb; max-width:700px; margin:20px auto; line-height:1.65; }
-        .u0-hero .lead strong { color:white; }
-        .u0-disappear { background:rgba(232,17,10,0.08); border:1px solid rgba(232,17,10,0.25); color:#e87070; font-size:14px; padding:14px 24px; max-width:600px; margin:24px auto 0; line-height:1.6; }
+        .u0-hero .lead { font-size:clamp(16px,3vw,20px); color:#333333; max-width:700px; margin:20px auto; line-height:1.65; }
+        .u0-hero .lead strong { color:#e8110a; }
+        .u0-disappear { background:#ffffff; border:1px solid #e8110a; color:#e8110a; font-size:14px; padding:14px 24px; max-width:600px; margin:24px auto 0; line-height:1.6; font-weight:700; }
 
-        .u0-section { max-width:860px; margin:0 auto; padding:70px 20px; }
+        .u0-section { max-width:860px; margin:0 auto; padding:70px 20px; background:#ffffff; }
         .u0-tag { font-family:'Bebas Neue',sans-serif; font-size:12px; letter-spacing:5px; color:#e8110a; display:block; margin-bottom:14px; }
-        .u0-section h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(32px,6vw,60px); color:white; line-height:1; margin:0 0 24px; }
-        .u0-section h2 em { color:#f5c518; font-style:normal; }
+        .u0-section h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(32px,6vw,60px); color:#111111; line-height:1; margin:0 0 24px; text-transform:uppercase; }
+        .u0-section h2 em { color:#e8110a; font-style:normal; }
         .u0-section h2 span { color:#e8110a; }
-        .u0-section p { font-size:17px; color:#bbb; line-height:1.75; margin:0 0 18px; }
-        .u0-section p strong { color:white; }
-        .u0-section p em { color:#f5c518; font-style:normal; }
+        .u0-section p { font-size:17px; color:#333333; line-height:1.75; margin:0 0 18px; }
+        .u0-section p strong { color:#e8110a; }
+        .u0-section p em { color:#e8110a; font-style:normal; }
 
-        .u0-dark { background:#1a1a1a; border-top:1px solid rgba(255,255,255,0.05); border-bottom:1px solid rgba(255,255,255,0.05); padding:70px 20px; }
+        .u0-dark { background:#f8f8f8; border-top:1px solid #e8110a; border-bottom:1px solid #e8110a; padding:70px 20px; }
         .u0-dark .inner { max-width:860px; margin:0 auto; }
 
-        .u0-upgrade { background:rgba(232,17,10,0.08); border:1px solid rgba(232,17,10,0.3); border-left:4px solid #e8110a; padding:30px; margin:30px 0; }
-        .u0-upgrade h3 { font-family:'Bebas Neue',sans-serif; font-size:clamp(22px,4vw,36px); color:white; margin:0 0 16px; letter-spacing:1px; }
-        .u0-upgrade p { font-size:16px; color:#bbb; line-height:1.7; margin:0; }
-        .u0-upgrade p strong { color:white; }
+        .u0-upgrade { background:#f8f8f8; border:1px solid #e8110a; border-left:4px solid #e8110a; padding:30px; margin:30px 0; }
+        .u0-upgrade h3 { font-family:'Bebas Neue',sans-serif; font-size:clamp(22px,4vw,36px); color:#111111; margin:0 0 16px; letter-spacing:1px; text-transform:uppercase; }
+        .u0-upgrade p { font-size:16px; color:#333333; line-height:1.7; margin:0; }
+        .u0-upgrade p strong { color:#e8110a; }
 
-        .u0-proof { background:#111; border-left:4px solid #f5c518; padding:24px 28px; margin:30px 0; }
-        .u0-proof .pt { font-family:'Bebas Neue',sans-serif; font-size:20px; color:#f5c518; letter-spacing:2px; margin-bottom:14px; }
+        .u0-proof { background:#ffffff; border:1px solid #e8110a; border-left:4px solid #e8110a; padding:24px 28px; margin:30px 0; }
+        .u0-proof .pt { font-family:'Bebas Neue',sans-serif; font-size:20px; color:#e8110a; letter-spacing:2px; margin-bottom:14px; text-transform:uppercase; }
         .u0-proof ul { list-style:none; padding:0; margin:0; }
-        .u0-proof li { font-size:16px; color:#ccc; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+        .u0-proof li { font-size:16px; color:#333333; padding:6px 0; border-bottom:1px solid #eee; }
         .u0-proof li:last-child { border:none; }
-        .u0-proof li strong { color:white; }
-
-        .u0-img { background:#111; border:2px dashed rgba(255,255,255,0.12); border-radius:8px; height:200px; display:flex; flex-direction:column; align-items:center; justify-content:center; margin:24px 0; gap:10px; }
-        .u0-img span { font-size:40px; }
-        .u0-img p { font-size:13px; color:#444; margin:0; }
+        .u0-proof li strong { color:#e8110a; }
 
         .u0-armes { display:grid; gap:12px; margin:36px 0; }
-        .u0-arme { background:#111; border:1px solid rgba(255,255,255,0.05); border-left:3px solid #e8110a; padding:20px 24px; }
+        .u0-arme { background:#f8f8f8; border:1px solid #eee; border-left:3px solid #e8110a; padding:20px 24px; }
         .u0-arme .lbl { font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:4px; color:#e8110a; margin-bottom:6px; display:block; }
-        .u0-arme h3 { font-family:'Bebas Neue',sans-serif; font-size:22px; color:white; margin:0 0 8px; letter-spacing:1px; }
-        .u0-arme p { font-size:15px; color:#999; line-height:1.6; margin:0; }
-        .u0-bonus { background:linear-gradient(135deg,#1a1400,#0a0a0a); border:2px solid #f5c518; padding:24px; margin-top:12px; text-align:center; }
-        .u0-bonus h3 { font-family:'Bebas Neue',sans-serif; font-size:24px; color:#f5c518; margin:0 0 8px; }
-        .u0-bonus p { font-size:15px; color:#bbb; margin:0; }
+        .u0-arme h3 { font-family:'Bebas Neue',sans-serif; font-size:22px; color:#111111; margin:0 0 8px; letter-spacing:1px; text-transform:uppercase; }
+        .u0-arme p { font-size:15px; color:#555555; line-height:1.6; margin:0; }
+        .u0-bonus { background:#ffffff; border:2px solid #e8110a; padding:24px; margin-top:12px; text-align:center; }
+        .u0-bonus h3 { font-family:'Bebas Neue',sans-serif; font-size:24px; color:#e8110a; margin:0 0 8px; text-transform:uppercase; }
+        .u0-bonus p { font-size:15px; color:#333333; margin:0; }
 
-        .u0-value { background:#111; border:1px solid rgba(255,255,255,0.06); border-left:3px solid #e8110a; padding:24px 28px; margin:30px 0; }
+        .u0-value { background:#ffffff; border:1px solid #eee; border-left:3px solid #e8110a; padding:24px 28px; margin:30px 0; }
         .u0-value ul { list-style:none; padding:0; margin:0; }
-        .u0-value li { font-size:15px; color:#999; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
-        .u0-value li:last-child { border:none; color:white; font-weight:700; }
-
-        .u0-cd { background:rgba(232,17,10,0.06); border:1px solid rgba(232,17,10,0.25); padding:40px 20px; text-align:center; }
-        .u0-cd .ttl { font-family:'Bebas Neue',sans-serif; font-size:clamp(20px,4vw,32px); color:white; letter-spacing:1px; margin-bottom:20px; }
-        .u0-cd .timer { font-family:'Bebas Neue',sans-serif; font-size:clamp(60px,12vw,90px); color:#f5c518; letter-spacing:4px; line-height:1; margin-bottom:20px; }
-        .u0-cd .sub { font-size:15px; color:#888; max-width:500px; margin:0 auto; line-height:1.6; }
-        .u0-cd .sub strong { color:white; }
+        .u0-value li { font-size:15px; color:#555555; padding:8px 0; border-bottom:1px solid #eee; }
+        .u0-value li:last-child { border:none; color:#e8110a; font-weight:800; }
 
         .u0-rare { text-align:center; padding:30px 20px; max-width:600px; margin:0 auto; }
         .u0-rare .text { font-family:'Bebas Neue',sans-serif; font-size:18px; color:#e8110a; letter-spacing:2px; margin-bottom:14px; animation:u0blinkText 1s infinite; }
         @keyframes u0blinkText { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
-        .u0-pbar { background:#222; height:12px; border-radius:6px; overflow:hidden; margin-bottom:8px; }
+        .u0-pbar { background:#eee; height:12px; border-radius:6px; overflow:hidden; margin-bottom:8px; }
         .u0-pfill { height:100%; width:94%; background:#e8110a; border-radius:6px; }
-        .u0-plabel { font-size:12px; color:#555; }
+        .u0-plabel { font-size:12px; color:#555555; }
 
-        .u0-cta { text-align:center; padding:60px 20px; max-width:700px; margin:0 auto; }
-        .u0-choix { text-align:center; max-width:600px; margin:0 auto 30px; font-size:18px; color:#bbb; line-height:1.7; }
-        .u0-choix strong { color:white; }
-        .u0-pcross { font-size:22px; color:#555; text-decoration:line-through; margin-bottom:6px; }
-        .u0-pmain { font-family:'Bebas Neue',sans-serif; font-size:clamp(70px,14vw,100px); color:#f5c518; line-height:1; letter-spacing:-3px; }
-        .u0-pnote { font-size:14px; color:#555; margin:8px 0 32px; }
-        .u0-badge { display:inline-block; background:rgba(232,17,10,0.15); border:1px solid rgba(232,17,10,0.3); color:#e87070; font-size:13px; padding:6px 16px; margin-bottom:20px; letter-spacing:1px; }
+        .u0-cta { text-align:center; padding:60px 20px; max-width:700px; margin:0 auto; background:#ffffff; }
+        .u0-choix { text-align:center; max-width:600px; margin:0 auto 30px; font-size:18px; color:#333333; line-height:1.7; }
+        .u0-choix strong { color:#e8110a; }
+        .u0-pcross { font-size:22px; color:#999; text-decoration:line-through; margin-bottom:6px; }
+        .u0-pmain { font-family:'Bebas Neue',sans-serif; font-size:clamp(70px,14vw,100px); color:#e8110a; line-height:1; letter-spacing:-3px; font-weight:800; }
+        .u0-pnote { font-size:14px; color:#555555; margin:8px 0 32px; }
+        .u0-badge { display:inline-block; background:#ffffff; border:1px solid #e8110a; color:#e8110a; font-size:13px; padding:6px 16px; margin-bottom:20px; letter-spacing:1px; font-weight:700; }
 
         .u0-yes { display:block; background:#e8110a; color:white; font-family:'Bebas Neue',sans-serif; font-size:clamp(18px,4vw,28px); letter-spacing:2px; padding:22px 40px; text-decoration:none; border:none; cursor:pointer; clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%); box-shadow:0 8px 50px rgba(232,17,10,0.5); animation:u0pulse 2s infinite; margin:0 auto 12px; width:100%; max-width:700px; }
+        .u0-yes:disabled { opacity:0.6; cursor:not-allowed; }
         @keyframes u0pulse { 0%,100%{box-shadow:0 8px 50px rgba(232,17,10,0.5);} 50%{box-shadow:0 8px 70px rgba(232,17,10,0.8);} }
-        .u0-secure { font-size:12px; color:#333; margin-top:10px; }
-        .u0-no { display:block; font-size:13px; color:#333; text-decoration:underline; cursor:pointer; margin-top:20px; background:none; border:none; width:100%; text-align:center; line-height:1.5; font-family:'DM Sans',sans-serif; }
+        .u0-secure { font-size:12px; color:#555555; margin-top:10px; }
+        .u0-no { display:block; font-size:13px; color:#111111; text-decoration:underline; cursor:pointer; margin-top:20px; background:#ffffff; border:1px solid #111111; width:100%; text-align:center; line-height:1.5; font-family:'DM Sans',sans-serif; padding:12px; }
 
-        .u0-divider { height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.08),transparent); }
+        .u0-divider { height:1px; background:#e8110a; opacity:0.3; }
 
         /* LIVE VS ALGO */
-        .u0-vs { background:#0a0a0a; padding:70px 20px; }
+        .u0-vs { background:#ffffff; padding:70px 20px; }
         .u0-vs .inner { max-width:860px; margin:0 auto; }
         .u0-vsgrid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:36px; }
         @media (max-width:600px){ .u0-vsgrid{grid-template-columns:1fr;} }
-        .u0-vscard { padding:28px 24px; border:1px solid rgba(255,255,255,0.06); }
-        .u0-vscard.bad { background:rgba(232,17,10,0.05); border-left:3px solid #444; opacity:0.7; }
-        .u0-vscard.good { background:rgba(245,197,24,0.05); border-left:3px solid #f5c518; }
+        .u0-vscard { padding:28px 24px; border:1px solid #eee; background:#f8f8f8; }
+        .u0-vscard.bad { background:#f8f8f8; border-left:3px solid #999; opacity:0.85; }
+        .u0-vscard.good { background:#f8f8f8; border-left:3px solid #e8110a; }
         .u0-vscard .vs-label { font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:5px; margin-bottom:14px; display:block; }
-        .u0-vscard.bad .vs-label { color:#555; }
-        .u0-vscard.good .vs-label { color:#f5c518; }
-        .u0-vscard h3 { font-family:'Bebas Neue',sans-serif; font-size:22px; margin:0 0 16px; letter-spacing:1px; }
-        .u0-vscard.bad h3 { color:#666; }
-        .u0-vscard.good h3 { color:white; }
+        .u0-vscard.bad .vs-label { color:#777; }
+        .u0-vscard.good .vs-label { color:#e8110a; }
+        .u0-vscard h3 { font-family:'Bebas Neue',sans-serif; font-size:22px; margin:0 0 16px; letter-spacing:1px; text-transform:uppercase; }
+        .u0-vscard.bad h3 { color:#777; }
+        .u0-vscard.good h3 { color:#111111; }
         .u0-vscard ul { list-style:none; padding:0; margin:0; }
-        .u0-vscard ul li { font-size:14px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.04); line-height:1.5; }
-        .u0-vscard.bad ul li { color:#555; }
-        .u0-vscard.bad ul li::before { content:"✗ "; color:#444; }
-        .u0-vscard.good ul li { color:#ccc; }
-        .u0-vscard.good ul li::before { content:"✓ "; color:#f5c518; }
+        .u0-vscard ul li { font-size:14px; padding:6px 0; border-bottom:1px solid #eee; line-height:1.5; }
+        .u0-vscard.bad ul li { color:#777; }
+        .u0-vscard.bad ul li::before { content:"✗ "; color:#999; }
+        .u0-vscard.good ul li { color:#111111; }
+        .u0-vscard.good ul li::before { content:"✓ "; color:#e8110a; }
 
         /* TIMELINE CERVEAU */
-        .u0-cerveau { background:#0d0d0d; border-top:1px solid rgba(255,255,255,0.04); border-bottom:1px solid rgba(255,255,255,0.04); padding:70px 20px; }
+        .u0-cerveau { background:#f8f8f8; border-top:1px solid #e8110a; border-bottom:1px solid #e8110a; padding:70px 20px; }
         .u0-cerveau .inner { max-width:860px; margin:0 auto; }
-        .u0-timeline { position:relative; margin-top:40px; padding-left:24px; border-left:2px solid rgba(232,17,10,0.3); }
+        .u0-timeline { position:relative; margin-top:40px; padding-left:24px; border-left:2px solid #e8110a; }
         .u0-tstep { position:relative; padding:0 0 36px 32px; }
         .u0-tstep:last-child { padding-bottom:0; }
         .u0-tstep::before { content:''; position:absolute; left:-7px; top:6px; width:12px; height:12px; background:#e8110a; border-radius:50%; }
         .u0-tstep .t-min { font-family:'Bebas Neue',sans-serif; font-size:12px; letter-spacing:4px; color:#e8110a; margin-bottom:6px; display:block; }
-        .u0-tstep h3 { font-family:'Bebas Neue',sans-serif; font-size:22px; color:white; margin:0 0 6px; letter-spacing:1px; }
-        .u0-tstep p { font-size:15px; color:#888; line-height:1.6; margin:0; }
-        .u0-biais-tag { display:inline-block; background:rgba(245,197,24,0.08); border:1px solid rgba(245,197,24,0.2); color:#f5c518; font-size:11px; letter-spacing:3px; padding:3px 10px; margin-bottom:8px; font-family:'Bebas Neue',sans-serif; }
+        .u0-tstep h3 { font-family:'Bebas Neue',sans-serif; font-size:22px; color:#111111; margin:0 0 6px; letter-spacing:1px; text-transform:uppercase; }
+        .u0-tstep p { font-size:15px; color:#555555; line-height:1.6; margin:0; }
+        .u0-biais-tag { display:inline-block; background:#ffffff; border:1px solid #e8110a; color:#e8110a; font-size:11px; letter-spacing:3px; padding:3px 10px; margin-bottom:8px; font-family:'Bebas Neue',sans-serif; }
 
         /* HATER */
-        .u0-hater-sec { background:#0a0a0a; padding:70px 20px; position:relative; overflow:hidden; }
+        .u0-hater-sec { background:#ffffff; padding:70px 20px; position:relative; overflow:hidden; }
         .u0-hater-sec .inner { max-width:860px; margin:0 auto; position:relative; }
-        .u0-he { background:#111; border:1px solid rgba(255,255,255,0.06); border-left:3px solid #333; padding:20px 24px; margin:12px 0; }
-        .u0-he .lbl { font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:4px; color:#444; margin-bottom:8px; display:block; }
-        .u0-he .comment { font-size:16px; color:#777; font-style:italic; margin-bottom:12px; }
-        .u0-he .reaction { font-size:14px; color:#bbb; line-height:1.6; }
-        .u0-he .reaction strong { color:#f5c518; }
+        .u0-he { background:#f8f8f8; border:1px solid #eee; border-left:3px solid #999; padding:20px 24px; margin:12px 0; }
+        .u0-he .lbl { font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:4px; color:#999; margin-bottom:8px; display:block; }
+        .u0-he .comment { font-size:16px; color:#555555; font-style:italic; margin-bottom:12px; }
+        .u0-he .reaction { font-size:14px; color:#111111; line-height:1.6; }
+        .u0-he .reaction strong { color:#e8110a; }
         .u0-arrow { text-align:center; font-size:28px; color:#e8110a; padding:4px 0; display:block; }
-        .u0-hresult { background:rgba(245,197,24,0.05); border:1px solid rgba(245,197,24,0.2); border-left:3px solid #f5c518; padding:20px 24px; margin-top:12px; }
-        .u0-hresult p { font-size:16px; color:#ccc; line-height:1.7; margin:0; }
-        .u0-hresult p strong { color:#f5c518; }
+        .u0-hresult { background:#f8f8f8; border:1px solid #e8110a; border-left:3px solid #e8110a; padding:20px 24px; margin-top:12px; }
+        .u0-hresult p { font-size:16px; color:#111111; line-height:1.7; margin:0; }
+        .u0-hresult p strong { color:#e8110a; }
 
         /* BIAIS */
-        .u0-biais { background:#1a1a1a; border-top:1px solid rgba(255,255,255,0.05); border-bottom:1px solid rgba(255,255,255,0.05); padding:70px 20px; }
+        .u0-biais { background:#f8f8f8; border-top:1px solid #e8110a; border-bottom:1px solid #e8110a; padding:70px 20px; }
         .u0-biais .inner { max-width:860px; margin:0 auto; }
         .u0-bgrid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:36px; }
         @media (max-width:600px){ .u0-bgrid{grid-template-columns:1fr;} }
-        .u0-bcard { background:#111; border:1px solid rgba(255,255,255,0.05); padding:22px; position:relative; overflow:hidden; }
-        .u0-bcard .b-name { font-family:'Bebas Neue',sans-serif; font-size:18px; color:#f5c518; letter-spacing:2px; margin-bottom:6px; display:block; }
-        .u0-bcard h3 { font-family:'Bebas Neue',sans-serif; font-size:20px; color:white; margin:0 0 10px; letter-spacing:1px; }
-        .u0-bcard p { font-size:14px; color:#888; line-height:1.6; margin:0; }
-        .u0-bcard p strong { color:#ccc; }
+        .u0-bcard { background:#f5f5f5; border:1px solid #eee; padding:22px; position:relative; overflow:hidden; }
+        .u0-bcard .b-name { font-family:'Bebas Neue',sans-serif; font-size:18px; color:#e8110a; letter-spacing:2px; margin-bottom:6px; display:block; }
+        .u0-bcard h3 { font-family:'Bebas Neue',sans-serif; font-size:20px; color:#e8110a; margin:0 0 10px; letter-spacing:1px; text-transform:uppercase; }
+        .u0-bcard p { font-size:14px; color:#111111; line-height:1.6; margin:0; }
+        .u0-bcard p strong { color:#e8110a; }
 
-        .u0-mini-cta { text-align:center; padding:50px 20px; max-width:700px; margin:0 auto; }
-        .u0-mini-cta .ph { font-family:'Bebas Neue',sans-serif; font-size:clamp(20px,4vw,36px); color:white; margin-bottom:20px; letter-spacing:1px; }
-        .u0-mini-cta .ph span { color:#f5c518; }
-        .u0-mini-cta .sub { font-size:13px; color:#444; margin-top:8px; }
+        .u0-mini-cta { text-align:center; padding:50px 20px; max-width:700px; margin:0 auto; background:#ffffff; }
+        .u0-mini-cta .ph { font-family:'Bebas Neue',sans-serif; font-size:clamp(20px,4vw,36px); color:#111111; margin-bottom:20px; letter-spacing:1px; text-transform:uppercase; }
+        .u0-mini-cta .ph span { color:#e8110a; }
+        .u0-mini-cta .sub { font-size:13px; color:#555555; margin-top:8px; }
       `}</style>
 
       <div className="u0">
         {/* ALERT */}
         <div className="u0-alert">⚠️ PERSONNALISATION DE TA COMMANDE EN COURS — NE FERME SURTOUT PAS CETTE PAGE ⚠️</div>
+
+        {/* TOP TIMER */}
+        <div className="u0-toptimer">
+          <div className="ttl">⚠️ CETTE OFFRE EXPIRE DANS :</div>
+          <div className="timer">{m}:{s}</div>
+          <p className="desc">Dès que ce compteur atteint zéro, cette page se supprime définitivement de nos serveurs. Impossible d'y revenir — même si tu recharges la page.</p>
+        </div>
+
+        {expired && (
+          <div className="u0-expired">
+            <h1>⛔ TROP TARD.</h1>
+            <p>Cette page a disparu à jamais.</p>
+            <p>Tu n'auras plus jamais accès à cette offre.</p>
+          </div>
+        )}
 
         {/* HERO */}
         <div className="u0-hero">
@@ -259,7 +279,7 @@ const Upsell0 = () => {
         {/* CTA HERO */}
         <div style={{ textAlign: "center", padding: "36px 20px", background: "rgba(232,17,10,0.06)", borderBottom: "1px solid rgba(232,17,10,0.15)" }}>
           <div className="u0-badge">Tu viens d'acheter pendant mon live — c'est la preuve que ça marche</div>
-          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
+          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
           <p style={{ fontSize: 13, color: "#444", marginTop: 8 }}>Ou continue à lire pour comprendre exactement ce que tu vas recevoir ↓</p>
         </div>
 
@@ -319,7 +339,7 @@ const Upsell0 = () => {
         {/* CTA mini */}
         <div className="u0-mini-cta">
           <p className="ph">Tu veux contrôler tes revenus<br /><span>ou attendre que l'algo décide pour toi ?</span></p>
-          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
+          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
           <p className="sub">Ou continue à lire ↓</p>
         </div>
 
@@ -419,7 +439,7 @@ const Upsell0 = () => {
 
         {/* CTA après cerveau timeline */}
         <div className="u0-mini-cta">
-          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
+          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
           {paymentError && (
             <p style={{ color: "#e8110a", fontWeight: 700, fontSize: 16, textAlign: "center", margin: "16px 0" }}>❌ Paiement refusé, veuillez vérifier votre carte ou contacter votre banque.</p>
           )}
@@ -480,7 +500,7 @@ const Upsell0 = () => {
         <div className="u0-mini-cta">
           <p className="ph">Les haters travaillent pour toi.</p>
           <p style={{ fontSize: 15, color: "#888", marginBottom: 24 }}>Apprends à transformer chaque commentaire négatif en vente.</p>
-          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
+          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
           <p className="sub">Ou continue à lire ↓</p>
         </div>
 
@@ -535,7 +555,7 @@ const Upsell0 = () => {
         <div className="u0-mini-cta">
           <p className="ph">6 biais. 1 script. Des ventes à chaque live.</p>
           <p style={{ fontSize: 15, color: "#888", marginBottom: 24 }}>Tu veux que je t'explique comment les activer dans l'ordre exact ?</p>
-          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
+          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
           <p className="sub">Ou continue à lire ↓</p>
         </div>
 
@@ -556,7 +576,7 @@ const Upsell0 = () => {
           </div>
           <div style={{ textAlign: "center", marginTop: 40 }}>
             <div className="u0-badge">Accès immédiat · Plus que 3 places disponibles</div>
-            <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1500€ PAR LIVE"}</button>
+            <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1500€ PAR LIVE"}</button>
             <p style={{ fontSize: 13, color: "#444", marginTop: 8 }}>Tu rentabilises en un seul live · Accès immédiat</p>
           </div>
         </div>
@@ -584,16 +604,6 @@ const Upsell0 = () => {
 
         <div className="u0-divider"></div>
 
-        {/* COUNTDOWN */}
-        <div className="u0-cd">
-          <div className="ttl">⚠️ ATTENTION — Cette page se DÉTRUIT automatiquement dans exactement :</div>
-          <div className="timer">{m}:{s}</div>
-          <p className="sub">
-            Parce que ces armes sont TROP efficaces. L'accès est limité à 5 places par mois.<br />
-            Le prochain accès sera à 467€ à partir du 1er du mois prochain.<br />
-            Tu ne reverras <strong>JAMAIS</strong> cette offre à 97€.
-          </p>
-        </div>
 
         {/* RARETÉ */}
         <div className="u0-rare">
@@ -615,7 +625,7 @@ const Upsell0 = () => {
           <div className="u0-pmain">97€</div>
           <div className="u0-pnote">Uniquement sur cette page · Jamais reproposé à ce prix</div>
           <div className="u0-badge">3 places restantes · Accès immédiat</div>
-          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1500€ PAR LIVE"}</button>
+          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1500€ PAR LIVE"}</button>
           <div className="u0-secure">🔒 Paiement sécurisé via Stripe · Accès immédiat</div>
           {paymentError && (
             <p style={{ color: "#e8110a", fontWeight: 700, textAlign: "center", marginTop: 16, fontSize: 16 }}>
