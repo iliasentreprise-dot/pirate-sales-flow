@@ -1,19 +1,6 @@
-import { useState, useEffect, FormEvent } from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import {
-  Elements,
-  PaymentElement,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
-import { supabase } from "@/integrations/supabase/client";
+import { useState, useEffect } from "react";
 import bonusTiktokSecret from "@/assets/bonus-tiktok-secret.jpg";
 import bonusBoostUltime from "@/assets/bonus-boost-ultime.jpg";
-
-const STRIPE_PK =
-  "pk_live_51SNc4KQ9u6EzX6YbcWbV1iXFA96SnuLahor9v5y1IzYIKpFnY3ThpDbsBLZwxJ1Pm5HwX23FHXU1Q5bZc5pl57Hb00mhAZFOcM";
-
-const stripePromise = loadStripe(STRIPE_PK);
 
 const CountdownTimer = ({ hours }: { hours: number }) => {
   const [endTs] = useState(() => {
@@ -38,223 +25,6 @@ const CountdownTimer = ({ hours }: { hours: number }) => {
   );
 };
 
-const PaymentForm = ({
-  bumpAdded,
-  total,
-  prenom,
-  setPrenom,
-  email,
-  setEmail,
-}: {
-  bumpAdded: boolean;
-  total: string;
-  prenom: string;
-  setPrenom: (v: string) => void;
-  email: string;
-  setEmail: (v: string) => void;
-}) => {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setErrorMsg(null);
-
-    if (!stripe || !elements) return;
-    if (!prenom.trim() || !email.trim()) {
-      setErrorMsg("Merci de renseigner ton prénom et ton email.");
-      return;
-    }
-
-    setLoading(true);
-
-    sessionStorage.setItem("declic_email", email);
-    sessionStorage.setItem("declic_bump", bumpAdded ? "1" : "0");
-
-    try {
-      const { data: tokenData, error: tokenErr } = await supabase.functions.invoke(
-        "create-upsell-token",
-        { body: { email } },
-      );
-      if (tokenErr || !tokenData?.token) {
-        throw new Error("Impossible de générer le jeton de session.");
-      }
-      const returnUrl = `${window.location.origin}/upsell0?token=${tokenData.token}`;
-
-      const { error } = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: returnUrl,
-          payment_method_data: {
-            billing_details: { name: prenom, email },
-          },
-        },
-      });
-
-      if (error) {
-        setErrorMsg(error.message || "Le paiement a échoué.");
-        setLoading(false);
-        return;
-      }
-    } catch (err: any) {
-      setErrorMsg(err?.message || "Une erreur est survenue.");
-      setLoading(false);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="ob-pay-form">
-      <div className="ob-field-row">
-        <div className="ob-field">
-          <label>Prénom</label>
-          <input
-            type="text"
-            value={prenom}
-            onChange={(e) => setPrenom(e.target.value)}
-            placeholder="Ton prénom"
-            required
-          />
-        </div>
-        <div className="ob-field">
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onBlur={(e) => {
-              const v = e.target.value.trim();
-              if (!v) return;
-              supabase.functions.invoke("save-lead", {
-                body: { email: v, source: "orderbump" },
-              }).catch(() => {});
-            }}
-            placeholder="ton@email.com"
-            required
-          />
-        </div>
-      </div>
-      <div className="ob-field">
-        <label>Mode de paiement</label>
-        <div
-          className="ob-klarna-banner"
-          role="button"
-          tabIndex={0}
-          onClick={() => {
-            const pe = elements?.getElement("payment");
-            if (!pe) return;
-            pe.update({ paymentMethodOrder: ["klarna", "card"] });
-            setTimeout(() => {
-              const root = document.querySelector(".ob-card-wrap");
-              const klarnaTab =
-                root?.querySelector<HTMLElement>('[data-testid="klarna-tab"]') ||
-                root?.querySelector<HTMLElement>('button[value="klarna"]') ||
-                Array.from(root?.querySelectorAll<HTMLElement>('button, [role="tab"]') || [])
-                  .find((el) => /klarna/i.test(el.textContent || el.getAttribute("aria-label") || ""));
-              klarnaTab?.click();
-              klarnaTab?.focus();
-            }, 150);
-          }}
-        >
-          <img
-            src="https://x.klarnacdn.net/payment-method/assets/badges/generic/klarna.svg"
-            alt="Klarna"
-            onError={(e) => {
-              (e.currentTarget as HTMLImageElement).src =
-                "https://www.klarna.com/assets/sites/5/2020/04/15143314/klarna-logo-pink.png";
-            }}
-          />
-          <span>Paiement en 3x sans frais disponible avec <strong>Klarna</strong></span>
-        </div>
-        <div className="ob-card-wrap">
-          <PaymentElement options={{ layout: "tabs" }} />
-        </div>
-      </div>
-      {errorMsg && <div className="ob-error">⚠️ {errorMsg}</div>}
-      <button
-        type="submit"
-        className="ob-pay-btn"
-        disabled={!stripe || loading}
-      >
-        {loading ? "PAIEMENT EN COURS…" : `☠️ PAYER ${total} ET ACCÉDER MAINTENANT`}
-      </button>
-      <div className="ob-secure-note">
-        🔒 Paiement 100% sécurisé via Stripe · Carte & Klarna disponibles
-      </div>
-    </form>
-  );
-};
-
-const CheckoutSection = ({ bumpAdded, total }: { bumpAdded: boolean; total: string }) => {
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
-  const [piError, setPiError] = useState<string | null>(null);
-  const [prenom, setPrenom] = useState("");
-  const [email, setEmail] = useState("");
-
-  useEffect(() => {
-    setClientSecret(null);
-    setPiError(null);
-    const amount = bumpAdded ? 14400 : 9700;
-    supabase.functions
-      .invoke("create-payment-intent", {
-        body: {
-          amount,
-          bump: bumpAdded,
-          payment_method_types: ["card", "klarna"],
-        },
-      })
-      .then(({ data, error }) => {
-        if (error) throw error;
-        const cs = data?.clientSecret || data?.client_secret;
-        if (!cs) throw new Error("Réponse invalide du serveur.");
-        setClientSecret(cs);
-      })
-      .catch((err) => {
-        setPiError(err?.message || "Impossible d'initialiser le paiement.");
-      });
-  }, [bumpAdded]);
-
-  if (piError) {
-    return <div className="ob-error">⚠️ {piError}</div>;
-  }
-
-  if (!clientSecret) {
-    return (
-      <div className="ob-pay-form" style={{ textAlign: "center", color: "#888" }}>
-        Chargement du paiement…
-      </div>
-    );
-  }
-
-  return (
-    <Elements
-      key={clientSecret}
-      stripe={stripePromise}
-      options={{
-        clientSecret,
-        appearance: {
-          theme: "night",
-          variables: {
-            colorPrimary: "#a78bfa",
-            colorBackground: "#0f0f0f",
-            colorText: "#f2ead8",
-            fontFamily: "'DM Sans', sans-serif",
-          },
-        },
-      }}
-    >
-      <PaymentForm
-        bumpAdded={bumpAdded}
-        total={total}
-        prenom={prenom}
-        setPrenom={setPrenom}
-        email={email}
-        setEmail={setEmail}
-      />
-    </Elements>
-  );
-};
 
 const Orderbump = () => {
   const [bumpAdded, setBumpAdded] = useState(true);
@@ -438,7 +208,14 @@ const Orderbump = () => {
           <div className="ob-order-line total"><span>TOTAL</span><span className="price">{total}</span></div>
         </div>
 
-        <CheckoutSection bumpAdded={bumpAdded} total={total} />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '24px' }}>
+          <a href="https://buy.stripe.com/dRmfZjgsocRMdRK2xe8IU0n" className="ob-pay-btn" style={{ textAlign: 'center', textDecoration: 'none', display: 'block' }}>
+            ☠️ PAYER 144€ ET ACCÉDER MAINTENANT
+          </a>
+          <a href="https://buy.stripe.com/aFacN73FCcRM14Yc7O8IU07" className="ob-pay-btn" style={{ textAlign: 'center', textDecoration: 'none', display: 'block', background: 'transparent', border: '2px solid #7c3aed', color: '#a78bfa', boxShadow: 'none', animation: 'none' }}>
+            ☠️ PAYER 97€ SANS LES LOGICIELS
+          </a>
+        </div>
       </div>
     </div>
   );
