@@ -1,19 +1,6 @@
-import { useState, useEffect, FormEvent } from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import {
-  Elements,
-  PaymentElement,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
-import { supabase } from "@/integrations/supabase/client";
+import { useState, useEffect } from "react";
 import bonusTiktokSecret from "@/assets/bonus-tiktok-secret.jpg";
 import bonusBoostUltime from "@/assets/bonus-boost-ultime.jpg";
-
-const STRIPE_PK =
-  "pk_live_51SNc4KQ9u6EzX6YbcWbV1iXFA96SnuLahor9v5y1IzYIKpFnY3ThpDbsBLZwxJ1Pm5HwX23FHXU1Q5bZc5pl57Hb00mhAZFOcM";
-
-const stripePromise = loadStripe(STRIPE_PK);
 
 const CountdownTimer = ({ hours }: { hours: number }) => {
   const [endTs] = useState(() => {
