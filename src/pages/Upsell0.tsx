@@ -233,11 +233,12 @@ const Upsell0 = () => {
         {/* HERO */}
         <div className="u0-hero">
           <div className="u0-fomo">🏴‍☠️ ATTENDS — AVANT D'ACCÉDER À TA FORMATION</div>
-          <h1>Attends —<span>Tu vas faire tes premières ventes avec les carrousels.</span><em>Mais les vrais Pirates, eux, font 10 000€ par mois.</em><span>La différence ? Un seul live de 30 minutes.</span></h1>
+          <h1>Attends —<span>Tu vas recevoir</span><em>la Méthode Pirate...</em></h1>
           <p className="lead">
-            Le <strong>Live TikTok</strong> est la seule méthode où <strong>TU</strong> décides quand tu encaisses.<br />
-            Pas l'algorithme. Toi.<br />
-            <strong>7 spectateurs suffisent pour faire 2 000€.</strong> En une session.
+            Mais avant de continuer, lis bien ce qui suit.<br />
+            Tu vas pouvoir faire tes premières ventes avec les carrousels.<br />
+            Mais <strong>3 000€/mois avec des carrousels — c'est le niveau DÉBUTANT.</strong><br />
+            Les vrais Pirates font 10 000€/mois minimum. Et ils maîtrisent UN seul truc que 99% ignorent.
           </p>
           <div className="u0-disappear">⚠️ Cette page n'existera plus après cette session. C'est maintenant ou jamais.</div>
         </div>
@@ -245,7 +246,7 @@ const Upsell0 = () => {
         {/* CTA HERO */}
         <div style={{ textAlign: "center", padding: "36px 20px", background: "rgba(232,17,10,0.06)", borderBottom: "1px solid rgba(232,17,10,0.15)" }}>
           <div className="u0-badge">Tu viens d'acheter pendant mon live — c'est la preuve que ça marche</div>
-          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX LE SCRIPT LIVE À 47€"}</button>
+          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
           <p className="u0-secure">Tu rentabilises sur ton premier live · Accès immédiat</p>
         </div>
 
@@ -305,7 +306,7 @@ const Upsell0 = () => {
         {/* CTA mini */}
         <div className="u0-mini-cta">
           <p className="ph">Tu veux contrôler tes revenus<br /><span>ou attendre que l'algo décide pour toi ?</span></p>
-          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX LE SCRIPT LIVE À 47€"}</button>
+          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
           <p className="u0-secure">Tu rentabilises sur ton premier live · Accès immédiat</p>
         </div>
 
@@ -403,7 +404,7 @@ const Upsell0 = () => {
 
         {/* CTA après cerveau timeline */}
         <div className="u0-mini-cta">
-          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX LE SCRIPT LIVE À 47€"}</button>
+          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
           <p className="u0-secure">Tu rentabilises sur ton premier live · Accès immédiat</p>
           {paymentError && (
             <p style={{ color: "#e8110a", fontWeight: 700, fontSize: 16, textAlign: "center", margin: "16px 0" }}>❌ Paiement refusé, veuillez vérifier votre carte ou contacter votre banque.</p>
@@ -468,7 +469,7 @@ const Upsell0 = () => {
 
         {/* CTA après hater */}
         <div className="u0-mini-cta">
-          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX LE SCRIPT LIVE À 47€"}</button>
+          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
           <p className="u0-secure">Tu rentabilises sur ton premier live · Accès immédiat</p>
         </div>
 
@@ -488,7 +489,7 @@ const Upsell0 = () => {
             <div className="u0-bonus"><h3>🎁 BONUS — Le Script Live Complet Minute Par Minute</h3><p>Copie-colle et exécute. 1 000€+ garanti dès le premier live.<br />Accès immédiat · Plus que 3 places disponibles</p></div>
           </div>
           <div style={{ textAlign: "center", marginTop: 40 }}>
-            <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX LE SCRIPT LIVE À 47€"}</button>
+            <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
             <p className="u0-secure">Tu rentabilises sur ton premier live · Accès immédiat</p>
           </div>
         </div>
@@ -514,7 +515,7 @@ const Upsell0 = () => {
           <div className="u0-pcross">467€</div>
           <div className="u0-pmain">47€</div>
           <div className="u0-pnote">Uniquement sur cette page · Jamais reproposé à ce prix · 3 places restantes · Accès immédiat</div>
-          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX LE SCRIPT LIVE À 47€"}</button>
+          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
           <div className="u0-secure">🔒 Paiement sécurisé via Stripe · Accès immédiat · Garanti 30 jours</div>
           {paymentError && (
             <p style={{ color: "#e8110a", fontWeight: 700, textAlign: "center", marginTop: 16, fontSize: 16 }}>
