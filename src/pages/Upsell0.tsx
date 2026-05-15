@@ -237,7 +237,7 @@ const Upsell0 = () => {
           <p className="lead">
             Le <strong>Live TikTok</strong> est la seule méthode où <strong>TU</strong> décides quand tu encaisses.<br />
             Pas l'algorithme. Toi.<br />
-            <strong>50 spectateurs suffisent pour faire 2 000€.</strong> En une session.
+            <strong>7 spectateurs suffisent pour faire 2 000€.</strong> En une session.
           </p>
           <div className="u0-disappear">⚠️ Cette page n'existera plus après cette session. C'est maintenant ou jamais.</div>
         </div>
@@ -290,7 +290,7 @@ const Upsell0 = () => {
                 <h3>Tu contrôles tout</h3>
                 <ul>
                   <li>Tu décides quand tu vends</li>
-                  <li>50 spectateurs suffisent pour 2 000€</li>
+                  <li>7 spectateurs suffisent pour 2 000€</li>
                   <li>Pas besoin de followers</li>
                   <li>Chaque live = revenu prévisible et contrôlé</li>
                   <li>8 lives par mois = 10 000€ minimum garanti</li>
@@ -315,12 +315,12 @@ const Upsell0 = () => {
         <div className="u0-dark">
           <div className="inner">
             <span className="u0-tag">⚓ LA VÉRITÉ QUE JE N'AI JAMAIS MONTRÉE EN PUBLIC</span>
-            <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(32px,6vw,60px)", color: "#111111", lineHeight: 1, margin: "0 0 24px" }}>J'ai fait <em style={{ color: "#e8110a", fontStyle: "normal" }}>2 037€</em> en un seul live TikTok.<br />Pas avec 10 000 followers. Pas avec un budget pub.<br />Avec <em style={{ color: "#e8110a", fontStyle: "normal" }}>50 spectateurs</em> et un script de 30 minutes.</h2>
+            <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(32px,6vw,60px)", color: "#111111", lineHeight: 1, margin: "0 0 24px" }}>J'ai fait <em style={{ color: "#e8110a", fontStyle: "normal" }}>2 037€</em> en un seul live TikTok.<br />Pas avec 10 000 followers. Pas avec un budget pub.<br />Avec <em style={{ color: "#e8110a", fontStyle: "normal" }}>7 spectateurs</em> et un script de 30 minutes.</h2>
             <div className="u0-proof">
               <div className="pt">MES RÉSULTATS EN LIVE :</div>
               <ul>
                 <li>⚡ <strong>1 live = 1 103€</strong> en 30 minutes chrono</li>
-                <li>👥 <strong>50 spectateurs = 2 000€</strong> encaissés</li>
+                <li>👥 <strong>7 spectateurs = 2 000€</strong> encaissés</li>
                 <li>📅 <strong>8 lives par mois = 10 000€ minimum</strong></li>
               </ul>
             </div>
