@@ -44,28 +44,8 @@ const Upsell0 = () => {
   const [paymentError, setPaymentError] = useState(false);
   const [expired, setExpired] = useState(false);
 
-  const handleAccept = async () => {
-    const email = window.sessionStorage.getItem("declic_email");
-    if (!email) {
-      navigate(`/upsell1?token=${token}`);
-      return;
-    }
-    setLoadingUpsell(true);
-    setPaymentError(false);
-    try {
-      const { data, error } = await supabase.functions.invoke("charge-upsell", {
-        body: { email, upsell_type: "upsell0" },
-      });
-      if (!error && data && data.success === true) {
-        navigate(`/upsell1?token=${token}`);
-      } else {
-        setPaymentError(true);
-        setLoadingUpsell(false);
-      }
-    } catch {
-      setPaymentError(true);
-      setLoadingUpsell(false);
-    }
+  const handleAccept = () => {
+    window.location.href = "https://buy.stripe.com/9B63cvafw3Fm0Zacp46wE02";
   };
 
   useEffect(() => {
