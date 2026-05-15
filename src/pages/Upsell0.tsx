@@ -316,7 +316,7 @@ const Upsell0 = () => {
         <div className="u0-dark">
           <div className="inner">
             <span className="u0-tag">⚓ LA VÉRITÉ QUE JE N'AI JAMAIS MONTRÉE EN PUBLIC</span>
-            <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(32px,6vw,60px)", color: "#111111", lineHeight: 1, margin: "0 0 24px" }}>J'ai fait <em style={{ color: "#e8110a", fontStyle: "normal" }}>2 037€</em> en un seul live TikTok.<br />Pas avec 10 000 followers. Pas avec un budget pub.<br />Avec <em style={{ color: "#e8110a", fontStyle: "normal" }}>7 spectateurs</em> et un script de 30 minutes.</h2>
+            <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(32px,6vw,60px)", color: "#111111", lineHeight: 1, margin: "0 0 24px" }}>J'ai fait <em style={{ color: "#e8110a", fontStyle: "normal" }}>2 037€</em> en un seul live TikTok.<br />Pas avec 10 000 followers. Pas avec un budget pub.<br />Avec <em style={{ color: "#e8110a", fontStyle: "normal" }}>22 spectateurs</em> et un script de 30 minutes.</h2>
             <div className="u0-proof">
               <div className="pt">MES RÉSULTATS EN LIVE :</div>
               <ul>
