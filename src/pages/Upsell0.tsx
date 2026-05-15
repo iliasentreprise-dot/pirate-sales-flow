@@ -543,8 +543,8 @@ const Upsell0 = () => {
           </div>
           <div style={{ textAlign: "center", marginTop: 40 }}>
             <div className="u0-badge">Accès immédiat · Plus que 3 places disponibles</div>
-            <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1500€ PAR LIVE"}</button>
-            <p style={{ fontSize: 13, color: "#444", marginTop: 8 }}>Tu rentabilises en un seul live · Accès immédiat</p>
+            <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX LE SCRIPT LIVE À 47€"}</button>
+            <p className="u0-secure">Tu rentabilises sur ton premier live · Accès immédiat</p>
           </div>
         </div>
 
