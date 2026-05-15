@@ -522,8 +522,8 @@ const Upsell0 = () => {
         <div className="u0-mini-cta">
           <p className="ph">6 biais. 1 script. Des ventes à chaque live.</p>
           <p style={{ fontSize: 15, color: "#888", marginBottom: 24 }}>Tu veux que je t'explique comment les activer dans l'ordre exact ?</p>
-          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
-          <p className="sub">Ou continue à lire ↓</p>
+          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX LE SCRIPT LIVE À 47€"}</button>
+          <p className="u0-secure">Tu rentabilises sur ton premier live · Accès immédiat</p>
         </div>
 
         <div className="u0-divider"></div>
