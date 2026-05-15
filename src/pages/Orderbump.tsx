@@ -208,6 +208,11 @@ const Orderbump = () => {
           <div className="ob-order-line total"><span>TOTAL</span><span className="price">{total}</span></div>
         </div>
 
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#fdf0f6', border: '1px solid #ffb3d1', borderRadius: '6px', padding: '12px 16px', marginBottom: '12px', marginTop: '24px' }}>
+          <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '13px', color: '#111', letterSpacing: '1px' }}>
+            💳 PAIEMENT EN 3X SANS FRAIS DISPONIBLE AVEC <strong style={{ color: '#ff69b4' }}>KLARNA</strong> — Sélectionne Klarna sur la page de paiement
+          </span>
+        </div>
         <a
           href={bumpAdded ? "https://buy.stripe.com/7sY4gzbjA1xegY83Sy6wE01" : "https://buy.stripe.com/6oUeVd9bsfo4dLWdt86wE00"}
           className="ob-pay-btn"
