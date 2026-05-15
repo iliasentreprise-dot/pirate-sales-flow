@@ -291,7 +291,7 @@ const Upsell0 = () => {
                 <h3>Tu contrôles tout</h3>
                 <ul>
                   <li>Tu décides quand tu vends</li>
-                  <li>50 spectateurs suffisent pour 2 000€</li>
+                  <li>7 spectateurs suffisent pour 2 000€</li>
                   <li>Pas besoin de followers</li>
                   <li>Chaque live = revenu prévisible</li>
                   <li>8 lives par mois = 10 000€ minimum</li>
@@ -324,7 +324,7 @@ const Upsell0 = () => {
               <div className="pt">MES RÉSULTATS EN LIVE :</div>
               <ul>
                 <li>⚡ <strong>1 live = 1 103€</strong> avec seulement 30 minutes</li>
-                <li>👥 <strong>50 spectateurs = 2 000€</strong> encaissés</li>
+                <li>👥 <strong>7 spectateurs = 2 000€</strong> encaissés</li>
                 <li>📅 <strong>8 lives par mois = 10 000€ minimum</strong></li>
               </ul>
             </div>
@@ -406,11 +406,11 @@ const Upsell0 = () => {
 
         {/* CTA après cerveau timeline */}
         <div className="u0-mini-cta">
-          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
+          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX LE SCRIPT LIVE À 47€"}</button>
+          <p className="u0-secure">Tu rentabilises sur ton premier live · Accès immédiat</p>
           {paymentError && (
             <p style={{ color: "#e8110a", fontWeight: 700, fontSize: 16, textAlign: "center", margin: "16px 0" }}>❌ Paiement refusé, veuillez vérifier votre carte ou contacter votre banque.</p>
           )}
-          <p className="sub">Ou continue à lire ↓</p>
         </div>
 
         <div className="u0-divider"></div>
@@ -467,8 +467,8 @@ const Upsell0 = () => {
         <div className="u0-mini-cta">
           <p className="ph">Les haters travaillent pour toi.</p>
           <p style={{ fontSize: 15, color: "#888", marginBottom: 24 }}>Apprends à transformer chaque commentaire négatif en vente.</p>
-          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
-          <p className="sub">Ou continue à lire ↓</p>
+          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX LE SCRIPT LIVE À 47€"}</button>
+          <p className="u0-secure">Tu rentabilises sur ton premier live · Accès immédiat</p>
         </div>
 
         <div className="u0-divider"></div>
@@ -522,8 +522,8 @@ const Upsell0 = () => {
         <div className="u0-mini-cta">
           <p className="ph">6 biais. 1 script. Des ventes à chaque live.</p>
           <p style={{ fontSize: 15, color: "#888", marginBottom: 24 }}>Tu veux que je t'explique comment les activer dans l'ordre exact ?</p>
-          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
-          <p className="sub">Ou continue à lire ↓</p>
+          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX LE SCRIPT LIVE À 47€"}</button>
+          <p className="u0-secure">Tu rentabilises sur ton premier live · Accès immédiat</p>
         </div>
 
         <div className="u0-divider"></div>
@@ -543,8 +543,8 @@ const Upsell0 = () => {
           </div>
           <div style={{ textAlign: "center", marginTop: 40 }}>
             <div className="u0-badge">Accès immédiat · Plus que 3 places disponibles</div>
-            <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1500€ PAR LIVE"}</button>
-            <p style={{ fontSize: 13, color: "#444", marginTop: 8 }}>Tu rentabilises en un seul live · Accès immédiat</p>
+            <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX LE SCRIPT LIVE À 47€"}</button>
+            <p className="u0-secure">Tu rentabilises sur ton premier live · Accès immédiat</p>
           </div>
         </div>
 
