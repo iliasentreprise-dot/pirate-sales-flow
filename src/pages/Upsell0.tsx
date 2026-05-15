@@ -52,7 +52,7 @@ const Upsell0 = () => {
   const m = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
   const s = String(secondsLeft % 60).padStart(2, "0");
 
-  const goRefuse = () => navigate(`/upsell1?token=${token}`);
+  const goRefuse = () => navigate(`/merci`);
 
   return (
     <div style={{ background: "#ffffff", color: "#111111", fontFamily: "'DM Sans', sans-serif", overflowX: "hidden" }}>
