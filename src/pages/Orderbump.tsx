@@ -209,10 +209,10 @@ const Orderbump = () => {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '24px' }}>
-          <a href="https://buy.stripe.com/dRmfZjgsocRMdRK2xe8IU0n" className="ob-pay-btn" style={{ textAlign: 'center', textDecoration: 'none', display: 'block' }}>
+          <a href="https://buy.stripe.com/7sY4gzbjA1xegY83Sy6wE01" className="ob-pay-btn" style={{ textAlign: 'center', textDecoration: 'none', display: 'block' }}>
             ☠️ PAYER 144€ ET ACCÉDER MAINTENANT
           </a>
-          <a href="https://buy.stripe.com/aFacN73FCcRM14Yc7O8IU07" className="ob-pay-btn" style={{ textAlign: 'center', textDecoration: 'none', display: 'block', background: 'transparent', border: '2px solid #7c3aed', color: '#a78bfa', boxShadow: 'none', animation: 'none' }}>
+          <a href="https://buy.stripe.com/6oUeVd9bsfo4dLWdt86wE00" className="ob-pay-btn" style={{ textAlign: 'center', textDecoration: 'none', display: 'block', background: 'transparent', border: '2px solid #7c3aed', color: '#a78bfa', boxShadow: 'none', animation: 'none' }}>
             ☠️ PAYER 97€ SANS LES LOGICIELS
           </a>
         </div>
