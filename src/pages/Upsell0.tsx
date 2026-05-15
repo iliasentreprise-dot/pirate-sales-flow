@@ -6,23 +6,10 @@ import { supabase } from "@/integrations/supabase/client";
 const Upsell0 = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const token = searchParams.get("token");
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  useEffect(() => {
-    if (!token) {
-      navigate("/");
-      return;
-    }
-    supabase.functions
-      .invoke("validate-upsell-token", { body: { token } })
-      .then(({ data }) => {
-        if (!data?.valid) navigate("/");
-      });
-  }, [token]);
 
   // Save Stripe customer + payment method right after the orderbump payment
   useEffect(() => {
@@ -65,7 +52,7 @@ const Upsell0 = () => {
   const m = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
   const s = String(secondsLeft % 60).padStart(2, "0");
 
-  const goRefuse = () => navigate(`/upsell1?token=${token}`);
+  const goRefuse = () => navigate(`/merci`);
 
   return (
     <div style={{ background: "#ffffff", color: "#111111", fontFamily: "'DM Sans', sans-serif", overflowX: "hidden" }}>
