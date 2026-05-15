@@ -6,23 +6,10 @@ import { supabase } from "@/integrations/supabase/client";
 const Upsell0 = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const token = searchParams.get("token");
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  useEffect(() => {
-    if (!token) {
-      navigate("/");
-      return;
-    }
-    supabase.functions
-      .invoke("validate-upsell-token", { body: { token } })
-      .then(({ data }) => {
-        if (!data?.valid) navigate("/");
-      });
-  }, [token]);
 
   // Save Stripe customer + payment method right after the orderbump payment
   useEffect(() => {
