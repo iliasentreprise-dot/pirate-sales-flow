@@ -467,8 +467,8 @@ const Upsell0 = () => {
         <div className="u0-mini-cta">
           <p className="ph">Les haters travaillent pour toi.</p>
           <p style={{ fontSize: 15, color: "#888", marginBottom: 24 }}>Apprends à transformer chaque commentaire négatif en vente.</p>
-          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
-          <p className="sub">Ou continue à lire ↓</p>
+          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX LE SCRIPT LIVE À 47€"}</button>
+          <p className="u0-secure">Tu rentabilises sur ton premier live · Accès immédiat</p>
         </div>
 
         <div className="u0-divider"></div>
