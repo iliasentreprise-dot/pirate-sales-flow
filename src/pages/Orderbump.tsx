@@ -68,7 +68,7 @@ const Orderbump = () => {
         .ob-refuse-btn { width:100%; background:transparent; color:#666; font-family:'DM Sans',sans-serif; font-size:clamp(12px,2.2vw,14px); letter-spacing:1px; padding:14px; border:1px solid rgba(255,255,255,0.1); cursor:pointer; transition:all 0.2s; text-transform:uppercase; }
         .ob-refuse-btn:hover { color:#999; border-color:rgba(255,255,255,0.2); }
         .ob-refuse-btn.active { color:#a78bfa; border-color:#a78bfa; }
-        .ob-summary-box { max-width:780px; margin:0 auto 60px; padding:0 20px; }
+        .ob-summary-box { max-width:780px; margin:0 auto; padding:0 20px 60px; }
         .ob-order-summary { background:#1a1a1a; border:1px solid rgba(255,255,255,0.08); padding:30px; margin-bottom:24px; }
         .ob-order-summary h3 { font-family:'Bebas Neue',sans-serif; font-size:24px; color:white; margin-bottom:20px; letter-spacing:1px; }
         .ob-order-line { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.06); font-size:15px; color:#bbb; gap:12px; }
@@ -208,14 +208,13 @@ const Orderbump = () => {
           <div className="ob-order-line total"><span>TOTAL</span><span className="price">{total}</span></div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '24px' }}>
-          <a href="https://buy.stripe.com/7sY4gzbjA1xegY83Sy6wE01" className="ob-pay-btn" style={{ textAlign: 'center', textDecoration: 'none', display: 'block' }}>
-            ☠️ PAYER 144€ ET ACCÉDER MAINTENANT
-          </a>
-          <a href="https://buy.stripe.com/6oUeVd9bsfo4dLWdt86wE00" className="ob-pay-btn" style={{ textAlign: 'center', textDecoration: 'none', display: 'block', background: 'transparent', border: '2px solid #7c3aed', color: '#a78bfa', boxShadow: 'none', animation: 'none' }}>
-            ☠️ PAYER 97€ SANS LES LOGICIELS
-          </a>
-        </div>
+        <a
+          href={bumpAdded ? "https://buy.stripe.com/7sY4gzbjA1xegY83Sy6wE01" : "https://buy.stripe.com/6oUeVd9bsfo4dLWdt86wE00"}
+          className="ob-pay-btn"
+          style={{ textAlign: 'center', textDecoration: 'none', display: 'block', marginTop: '24px' }}
+        >
+          {bumpAdded ? "☠️ PAYER 144€ ET ACCÉDER MAINTENANT" : "☠️ PAYER 97€ ET ACCÉDER MAINTENANT"}
+        </a>
       </div>
     </div>
   );
