@@ -269,9 +269,9 @@ const Upsell0 = () => {
         <div className="u0-vs">
           <div className="inner">
             <span className="u0-tag">⚓ CARROUSELS VS LIVE</span>
-            <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(32px,6vw,60px)", color: "white", lineHeight: 1, margin: "0 0 16px" }}>Les carrousels dépendent de l'algo.<br /><em style={{ color: "#f5c518", fontStyle: "normal" }}>Le Live — toi tu le contrôles.</em></h2>
-            <p style={{ fontSize: 17, color: "#bbb", lineHeight: 1.75, marginBottom: 8 }}>
-              Si TikTok décide de ne plus te pousser demain matin — tes revenus tombent à zéro. C'est ce qui arrive à <strong style={{ color: "white" }}>tout le monde qui compte uniquement sur les carrousels.</strong><br />
+            <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(32px,6vw,60px)", color: "#111111", lineHeight: 1, margin: "0 0 16px" }}>Les carrousels dépendent de l'algo.<br /><em style={{ color: "#f5c518", fontStyle: "normal" }}>Le Live — toi tu le contrôles.</em></h2>
+            <p style={{ fontSize: 17, color: "#111111", lineHeight: 1.75, marginBottom: 8 }}>
+              Si TikTok décide de ne plus te pousser demain matin — tes revenus tombent à zéro. C'est ce qui arrive à <strong style={{ color: "#111111" }}>tout le monde qui compte uniquement sur les carrousels.</strong><br />
               Avec le Live, tu décides quand tu vends. Tu allumes le Live, tu appliques le script, tu encaisses.
             </p>
             <div className="u0-vsgrid">
@@ -316,9 +316,9 @@ const Upsell0 = () => {
         <div className="u0-dark">
           <div className="inner">
             <span className="u0-tag">⚓ LE MÉCANISME SECRET</span>
-            <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(32px,6vw,60px)", color: "white", lineHeight: 1, margin: "0 0 24px" }}>Le mécanisme secret<br />que les Pirates utilisent :</h2>
-            <p style={{ fontSize: 17, color: "#bbb", lineHeight: 1.75, marginBottom: 24 }}>
-              La <strong style={{ color: "white" }}>Méthode de Conversion Live.</strong> Elle court-circuite le cerveau qui hésite et active directement la partie qui achète. Résultat : tes spectateurs sortent leur CB avant même de comprendre pourquoi.
+            <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(32px,6vw,60px)", color: "#111111", lineHeight: 1, margin: "0 0 24px" }}>Le mécanisme secret<br />que les Pirates utilisent :</h2>
+            <p style={{ fontSize: 17, color: "#111111", lineHeight: 1.75, marginBottom: 24 }}>
+              La <strong style={{ color: "#111111" }}>Méthode de Conversion Live.</strong> Elle court-circuite le cerveau qui hésite et active directement la partie qui achète. Résultat : tes spectateurs sortent leur CB avant même de comprendre pourquoi.
             </p>
             <div className="u0-proof">
               <div className="pt">MES RÉSULTATS EN LIVE :</div>
@@ -328,7 +328,7 @@ const Upsell0 = () => {
                 <li>📅 <strong>8 lives par mois = 10 000€ minimum</strong></li>
               </ul>
             </div>
-            <p style={{ fontSize: 16, color: "#bbb", lineHeight: 1.7, marginBottom: 20 }}>
+            <p style={{ fontSize: 16, color: "#111111", lineHeight: 1.7, marginBottom: 20 }}>
               Preuve que ça marche : tu viens d'acheter la Méthode Pirate pendant mon live. Je suis en train de générer 2 000€ durant ce live grâce exactement à ce que je vais te révéler.
             </p>
             <div style={{ background: "#f1f1f1", border: "1px solid #d9d9d9", borderRadius: 16, padding: "28px 24px", margin: "24px 0", textAlign: "center", boxShadow: "0 4px 18px rgba(0,0,0,0.25)" }}>
@@ -357,9 +357,9 @@ const Upsell0 = () => {
         <div className="u0-cerveau">
           <div className="inner">
             <span className="u0-tag">🧠 PSYCHOLOGIE DU LIVE</span>
-            <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(32px,6vw,60px)", color: "white", lineHeight: 1, margin: "0 0 16px" }}>Ce qui se passe dans le cerveau<br />de ton spectateur <em style={{ color: "#f5c518", fontStyle: "normal" }}>minute par minute</em></h2>
-            <p style={{ fontSize: 17, color: "#bbb", lineHeight: 1.75, marginBottom: 8 }}>
-              Un spectateur qui entre dans ton live ne va pas acheter tout de suite. Son cerveau passe par <strong style={{ color: "white" }}>7 états précis</strong> avant de sortir sa CB. La plupart des gens font des lives sans savoir ça — ils perdent leurs prospects entre l'étape 3 et 4.
+            <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(32px,6vw,60px)", color: "#111111", lineHeight: 1, margin: "0 0 16px" }}>Ce qui se passe dans le cerveau<br />de ton spectateur <em style={{ color: "#f5c518", fontStyle: "normal" }}>minute par minute</em></h2>
+            <p style={{ fontSize: 17, color: "#111111", lineHeight: 1.75, marginBottom: 8 }}>
+              Un spectateur qui entre dans ton live ne va pas acheter tout de suite. Son cerveau passe par <strong style={{ color: "#111111" }}>7 états précis</strong> avant de sortir sa CB. La plupart des gens font des lives sans savoir ça — ils perdent leurs prospects entre l'étape 3 et 4.
             </p>
             <div className="u0-timeline">
               <div className="u0-tstep">
@@ -419,10 +419,10 @@ const Upsell0 = () => {
         <div className="u0-hater-sec">
           <div className="inner">
             <span className="u0-tag">💀 L'ARME LA PLUS CONTRE-INTUITIVE</span>
-            <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(32px,6vw,60px)", color: "white", lineHeight: 1, margin: "0 0 16px" }}>Les haters ne détruisent pas ton live.<br /><em style={{ color: "#f5c518", fontStyle: "normal" }}>Ils le financent.</em></h2>
-            <p style={{ fontSize: 17, color: "#bbb", lineHeight: 1.75, marginBottom: 30 }}>
+            <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(32px,6vw,60px)", color: "#111111", lineHeight: 1, margin: "0 0 16px" }}>Les haters ne détruisent pas ton live.<br /><em style={{ color: "#f5c518", fontStyle: "normal" }}>Ils le financent.</em></h2>
+            <p style={{ fontSize: 17, color: "#111111", lineHeight: 1.75, marginBottom: 30 }}>
               99% des créateurs ont peur des commentaires négatifs. Ils s'excusent, ils ignorent, ou ils pètent un câble en live.<br />
-              <strong style={{ color: "white" }}>C'est la pire chose à faire.</strong> Et c'est pour ça qu'ils restent à 0 vente.<br /><br />
+              <strong style={{ color: "#111111" }}>C'est la pire chose à faire.</strong> Et c'est pour ça qu'ils restent à 0 vente.<br /><br />
               Les vrais Pirates savent que chaque commentaire négatif est une opportunité de vente déguisée. Voici exactement comment.
             </p>
 
@@ -477,8 +477,8 @@ const Upsell0 = () => {
         <div className="u0-biais">
           <div className="inner">
             <span className="u0-tag">🧠 LES BIAIS QUE TU VAS ACTIVER</span>
-            <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(32px,6vw,60px)", color: "white", lineHeight: 1, margin: "0 0 16px" }}>Les 6 biais psychologiques<br />que tu vas <em style={{ color: "#f5c518", fontStyle: "normal" }}>déclencher dans l'ordre exact</em></h2>
-            <p style={{ fontSize: 17, color: "#bbb", lineHeight: 1.75, marginBottom: 8 }}>
+            <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(32px,6vw,60px)", color: "#111111", lineHeight: 1, margin: "0 0 16px" }}>Les 6 biais psychologiques<br />que tu vas <em style={{ color: "#f5c518", fontStyle: "normal" }}>déclencher dans l'ordre exact</em></h2>
+            <p style={{ fontSize: 17, color: "#111111", lineHeight: 1.75, marginBottom: 8 }}>
               Ces biais existent dans le cerveau de chaque spectateur. La plupart des vendeurs en activent 1 ou 2 par accident. Toi tu vas les activer tous les 6, dans le bon ordre, au bon moment.
             </p>
             <div className="u0-bgrid">
@@ -554,7 +554,7 @@ const Upsell0 = () => {
         <div className="u0-dark">
           <div className="inner">
             <span className="u0-tag">💰 VALEUR RÉELLE</span>
-            <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(32px,6vw,60px)", color: "white", lineHeight: 1, margin: "0 0 24px" }}>Pour maîtriser ces 6 armes<br />tu devrais normalement payer :</h2>
+            <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(32px,6vw,60px)", color: "#111111", lineHeight: 1, margin: "0 0 24px" }}>Pour maîtriser ces 6 armes<br />tu devrais normalement payer :</h2>
             <div className="u0-value">
               <ul>
                 <li>• Formation psychologie de la persuasion .............. 2 500€</li>
@@ -563,7 +563,7 @@ const Upsell0 = () => {
                 <li>• Total : 8 500€ et 2 ans de ta vie</li>
               </ul>
             </div>
-            <p style={{ fontSize: 17, color: "#bbb", lineHeight: 1.75, textAlign: "center", marginTop: 24 }}>
+            <p style={{ fontSize: 17, color: "#111111", lineHeight: 1.75, textAlign: "center", marginTop: 24 }}>
               Mais parce que tu fais partie des rares personnes<br />qui viennent d'acquérir la Méthode Pirate...
             </p>
           </div>
