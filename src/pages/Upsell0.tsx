@@ -406,11 +406,11 @@ const Upsell0 = () => {
 
         {/* CTA après cerveau timeline */}
         <div className="u0-mini-cta">
-          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
+          <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX LE SCRIPT LIVE À 47€"}</button>
+          <p className="u0-secure">Tu rentabilises sur ton premier live · Accès immédiat</p>
           {paymentError && (
             <p style={{ color: "#e8110a", fontWeight: 700, fontSize: 16, textAlign: "center", margin: "16px 0" }}>❌ Paiement refusé, veuillez vérifier votre carte ou contacter votre banque.</p>
           )}
-          <p className="sub">Ou continue à lire ↓</p>
         </div>
 
         <div className="u0-divider"></div>
