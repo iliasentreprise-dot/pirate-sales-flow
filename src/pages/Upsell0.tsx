@@ -55,7 +55,7 @@ const Upsell0 = () => {
   const goRefuse = () => navigate(`/merci`);
 
   return (
-    <div style={{ background: "#ffffff", color: "#111111", fontFamily: "'DM Sans', sans-serif", overflowX: "hidden" }}>
+    <div style={{ background: "#ffffff", color: "#111111", fontFamily: "'DM Sans', sans-serif", overflowX: "hidden", minHeight: "100vh" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap');
         .u0 { --black:#111111; --red:#e8110a; --cream:#ffffff; --grey:#f8f8f8; }
@@ -209,6 +209,10 @@ const Upsell0 = () => {
         .u0-mini-cta .ph { font-family:'Bebas Neue',sans-serif; font-size:clamp(20px,4vw,36px); color:#111111; margin-bottom:20px; letter-spacing:1px; text-transform:uppercase; }
         .u0-mini-cta .ph span { color:#e8110a; }
         .u0-mini-cta .sub { font-size:13px; color:#555555; margin-top:8px; }
+        .u0, .u0 * { color: inherit; }
+        .u0 { background: #ffffff; color: #111111; }
+        .u0 strong, .u0 b { color: #e8110a; }
+        .u0 a { color: #e8110a; }
       `}</style>
 
       <div className="u0">
