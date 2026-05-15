@@ -208,14 +208,13 @@ const Orderbump = () => {
           <div className="ob-order-line total"><span>TOTAL</span><span className="price">{total}</span></div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '24px' }}>
-          <a href="https://buy.stripe.com/7sY4gzbjA1xegY83Sy6wE01" className="ob-pay-btn" style={{ textAlign: 'center', textDecoration: 'none', display: 'block' }}>
-            ☠️ PAYER 144€ ET ACCÉDER MAINTENANT
-          </a>
-          <a href="https://buy.stripe.com/6oUeVd9bsfo4dLWdt86wE00" className="ob-pay-btn" style={{ textAlign: 'center', textDecoration: 'none', display: 'block', background: 'transparent', border: '2px solid #7c3aed', color: '#a78bfa', boxShadow: 'none', animation: 'none' }}>
-            ☠️ PAYER 97€ SANS LES LOGICIELS
-          </a>
-        </div>
+        <a
+          href={bumpAdded ? "https://buy.stripe.com/7sY4gzbjA1xegY83Sy6wE01" : "https://buy.stripe.com/6oUeVd9bsfo4dLWdt86wE00"}
+          className="ob-pay-btn"
+          style={{ textAlign: 'center', textDecoration: 'none', display: 'block', marginTop: '24px' }}
+        >
+          {bumpAdded ? "☠️ PAYER 144€ ET ACCÉDER MAINTENANT" : "☠️ PAYER 97€ ET ACCÉDER MAINTENANT"}
+        </a>
       </div>
     </div>
   );
