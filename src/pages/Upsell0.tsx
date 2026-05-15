@@ -291,7 +291,7 @@ const Upsell0 = () => {
                 <h3>Tu contrôles tout</h3>
                 <ul>
                   <li>Tu décides quand tu vends</li>
-                  <li>50 spectateurs suffisent pour 2 000€</li>
+                  <li>7 spectateurs suffisent pour 2 000€</li>
                   <li>Pas besoin de followers</li>
                   <li>Chaque live = revenu prévisible</li>
                   <li>8 lives par mois = 10 000€ minimum</li>
@@ -324,7 +324,7 @@ const Upsell0 = () => {
               <div className="pt">MES RÉSULTATS EN LIVE :</div>
               <ul>
                 <li>⚡ <strong>1 live = 1 103€</strong> avec seulement 30 minutes</li>
-                <li>👥 <strong>50 spectateurs = 2 000€</strong> encaissés</li>
+                <li>👥 <strong>7 spectateurs = 2 000€</strong> encaissés</li>
                 <li>📅 <strong>8 lives par mois = 10 000€ minimum</strong></li>
               </ul>
             </div>
