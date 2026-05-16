@@ -9,6 +9,7 @@ import Upsell0 from "./pages/Upsell0.tsx";
 import Upsell1 from "./pages/Upsell1.tsx";
 import Upsell2 from "./pages/Upsell2.tsx";
 import Merci from "./pages/Merci.tsx";
+import CGV from "./pages/CGV.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/upsell1" element={<Upsell1 />} />
           <Route path="/upsell2" element={<Upsell2 />} />
           <Route path="/merci" element={<Merci />} />
+          <Route path="/cgv" element={<CGV />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

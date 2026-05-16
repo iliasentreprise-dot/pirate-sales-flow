@@ -405,7 +405,8 @@ const Index = () => {
       </div>
 
       <footer className="sp-footer">
-        <p>© 2025 Système Pirate · Tous droits réservés · <a href="#" style={{ color: '#444' }}>Mentions légales</a> · <a href="#" style={{ color: '#444' }}>CGV</a></p>
+        <p>© 2025 Système Pirate · Tous droits réservés · <a href="#" style={{ color: '#444' }}>Mentions légales</a> · <a href="/cgv" style={{ color: '#444' }}>CGV</a></p>
+        <p style={{ marginTop: 8 }}>Support : <a href="mailto:support@systempirate.fr" style={{ color: '#666' }}>support@systempirate.fr</a></p>
       </footer>
 
       <div id="social-proof-container"></div>

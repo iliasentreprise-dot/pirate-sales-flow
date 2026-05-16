@@ -1,6 +1,71 @@
 import { useState, useEffect } from "react";
 import bonusTiktokSecret from "@/assets/bonus-tiktok-secret.jpg";
 import bonusBoostUltime from "@/assets/bonus-boost-ultime.jpg";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string);
+
+const CARD_STYLE = {
+  style: {
+    base: { color: "#f2ead8", fontFamily: "'DM Sans', sans-serif", fontSize: "16px", "::placeholder": { color: "#555" } },
+    invalid: { color: "#ff9b9b" },
+  },
+};
+
+function PayForm({ bumpAdded, total }: { bumpAdded: boolean; total: string }) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState(() => sessionStorage.getItem("declic_email") ?? "");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handlePay = async () => {
+    if (!stripe || !elements) return;
+    if (!email.trim() || !email.includes("@")) { setError("Saisis une adresse email valide."); return; }
+    setError(null);
+    setLoading(true);
+    const card = elements.getElement(CardElement);
+    if (!card) { setLoading(false); return; }
+    const amount = bumpAdded ? 14400 : 9700;
+    const { data: piData, error: piError } = await supabase.functions.invoke("create-payment-intent", {
+      body: { amount, bump: bumpAdded },
+    });
+    if (piError || !piData?.clientSecret) { setError("Erreur lors de la création du paiement."); setLoading(false); return; }
+    const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(piData.clientSecret, {
+      payment_method: { card, billing_details: { email: email.trim() } },
+    });
+    if (confirmError) { setError(confirmError.message ?? "Paiement refusé."); setLoading(false); return; }
+    if (paymentIntent?.status === "succeeded") {
+      sessionStorage.setItem("declic_email", email.trim());
+      const { data: tokenData } = await supabase.functions.invoke("create-upsell-token", {
+        body: { email: email.trim(), payment_intent_id: paymentIntent.id },
+      });
+      navigate(`/upsell0?payment_intent=${paymentIntent.id}&token=${tokenData?.token ?? ""}`);
+    }
+  };
+
+  return (
+    <div className="ob-pay-form">
+      <div className="ob-field">
+        <label htmlFor="ob-email">ADRESSE EMAIL</label>
+        <input id="ob-email" type="email" placeholder="ton@email.com" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
+      </div>
+      <div className="ob-field">
+        <label>CARTE BANCAIRE</label>
+        <div className="ob-card-wrap"><CardElement options={CARD_STYLE} /></div>
+      </div>
+      {error && <div className="ob-error">{error}</div>}
+      <button className="ob-pay-btn" onClick={handlePay} disabled={loading || !stripe} type="button">
+        {loading ? "Traitement..." : `☠️ PAYER ${total} ET ACCÉDER MAINTENANT`}
+      </button>
+      <p className="ob-secure-note">🔒 Paiement 100% sécurisé par Stripe · SSL 256 bits</p>
+    </div>
+  );
+}
 
 const CountdownTimer = ({ hours }: { hours: number }) => {
   const [endTs] = useState(() => {
@@ -208,34 +273,9 @@ const Orderbump = () => {
           <div className="ob-order-line total"><span>TOTAL</span><span className="price">{total}</span></div>
         </div>
 
-        <a
-          href={bumpAdded ? "https://buy.stripe.com/7sY4gzbjA1xegY83Sy6wE01" : "https://buy.stripe.com/6oUeVd9bsfo4dLWdt86wE00"}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '14px',
-            background: '#000000',
-            border: '2px solid #ffb3d1',
-            borderRadius: '8px',
-            padding: '18px 24px',
-            marginBottom: '12px',
-            textDecoration: 'none',
-            cursor: 'pointer',
-          }}
-        >
-          <img src="https://x.klarnacdn.net/payment-method/assets/badges/generic/klarna.svg" alt="Klarna" style={{ height: '32px', width: 'auto' }} />
-          <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '20px', color: '#ffffff', letterSpacing: '2px' }}>
-            PAYER EN 3X SANS FRAIS AVEC <span style={{ color: '#ffb3d1' }}>KLARNA</span>
-          </span>
-        </a>
-        <a
-          href={bumpAdded ? "https://buy.stripe.com/7sY4gzbjA1xegY83Sy6wE01" : "https://buy.stripe.com/6oUeVd9bsfo4dLWdt86wE00"}
-          className="ob-pay-btn"
-          style={{ textAlign: 'center', textDecoration: 'none', display: 'block', marginTop: '24px' }}
-        >
-          {bumpAdded ? "☠️ PAYER 144€ ET ACCÉDER MAINTENANT" : "☠️ PAYER 97€ ET ACCÉDER MAINTENANT"}
-        </a>
+        <Elements stripe={stripePromise}>
+          <PayForm bumpAdded={bumpAdded} total={total} />
+        </Elements>
       </div>
     </div>
   );

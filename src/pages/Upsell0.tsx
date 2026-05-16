@@ -25,14 +25,27 @@ const Upsell0 = () => {
       })
       .catch(() => {});
   }, [searchParams]);
+  const token = searchParams.get("token");
   const [secondsLeft, setSecondsLeft] = useState(600);
   const [loadingUpsell, setLoadingUpsell] = useState(false);
   const [imgZoom, setImgZoom] = useState(false);
   const [paymentError, setPaymentError] = useState(false);
   const [expired, setExpired] = useState(false);
 
-  const handleAccept = () => {
-    window.location.href = "https://buy.stripe.com/9B63cvafw3Fm0Zacp46wE02";
+  const handleAccept = async () => {
+    const email = window.sessionStorage.getItem("declic_email");
+    if (!email) { setPaymentError(true); return; }
+    setLoadingUpsell(true);
+    setPaymentError(false);
+    const { data, error } = await supabase.functions.invoke("charge-upsell", {
+      body: { email, upsell_type: "upsell0" },
+    });
+    if (!error && data?.success === true) {
+      navigate(`/upsell1?token=${token ?? ""}`);
+    } else {
+      setPaymentError(true);
+      setLoadingUpsell(false);
+    }
   };
 
   useEffect(() => {
@@ -52,7 +65,7 @@ const Upsell0 = () => {
   const m = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
   const s = String(secondsLeft % 60).padStart(2, "0");
 
-  const goRefuse = () => navigate(`/merci`);
+  const goRefuse = () => navigate(`/merci?token=${token ?? ""}`);
 
   return (
     <div style={{ background: "#ffffff", color: "#111111", fontFamily: "'DM Sans', sans-serif", overflowX: "hidden" }}>
