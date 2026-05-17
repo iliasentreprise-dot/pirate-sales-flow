@@ -3,8 +3,11 @@ import bonusTiktokSecret from "@/assets/bonus-tiktok-secret.jpg";
 import bonusBoostUltime from "@/assets/bonus-boost-ultime.jpg";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+
+const PAYPAL_CLIENT_ID = "AbwLv3_GiqKnxihz6BZBDHHYRmOjlLtONZtpj5nhAeWDEX9wEgUQ9mrhyt6TUal1lqG1gdZwZLANm8D3";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string);
 
@@ -90,6 +93,41 @@ const CountdownTimer = ({ hours }: { hours: number }) => {
   );
 };
 
+function PayPalSection({ bumpAdded }: { bumpAdded: boolean }) {
+  const navigate = useNavigate();
+  const amount = bumpAdded ? "144.00" : "97.00";
+  const description = bumpAdded ? "Système Pirate + Pack Bonus Secret" : "Système Pirate";
+
+  const createOrder = (_data: unknown, actions: { order: { create: (o: object) => Promise<string> } }) =>
+    actions.order.create({
+      intent: "CAPTURE",
+      purchase_units: [{ amount: { currency_code: "EUR", value: amount }, description }],
+    });
+
+  const onApprove = async (_data: unknown, actions: { order?: { capture: () => Promise<{ payer?: { email_address?: string } }> } }) => {
+    const order = await actions.order!.capture();
+    const email = order.payer?.email_address ?? "";
+    if (email) {
+      sessionStorage.setItem("declic_email", email);
+      await supabase.functions.invoke("save-lead", { body: { email } }).catch(() => {});
+    }
+    navigate("/merci");
+  };
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      {(["paypal", "card", "installment"] as const).map((funding) => (
+        <PayPalButtons
+          key={funding}
+          fundingSource={funding}
+          style={{ layout: "horizontal", height: 48, shape: "rect", label: funding === "paypal" ? "pay" : undefined }}
+          createOrder={createOrder}
+          onApprove={onApprove}
+        />
+      ))}
+    </div>
+  );
+}
 
 const Orderbump = () => {
   const [bumpAdded, setBumpAdded] = useState(true);
@@ -276,6 +314,22 @@ const Orderbump = () => {
         <Elements stripe={stripePromise}>
           <PayForm bumpAdded={bumpAdded} total={total} />
         </Elements>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "24px 0" }}>
+          <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.1)" }} />
+          <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 14, color: "#555", letterSpacing: 3 }}>OU PAYER AVEC</span>
+          <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.1)" }} />
+        </div>
+
+        <PayPalScriptProvider options={{
+          clientId: PAYPAL_CLIENT_ID,
+          currency: "EUR",
+          components: "buttons",
+          enableFunding: "installment",
+          disableFunding: "paylater",
+        }}>
+          <PayPalSection bumpAdded={bumpAdded} />
+        </PayPalScriptProvider>
       </div>
     </div>
   );
