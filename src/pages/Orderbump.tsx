@@ -1,74 +1,11 @@
 import { useState, useEffect } from "react";
 import bonusTiktokSecret from "@/assets/bonus-tiktok-secret.jpg";
 import bonusBoostUltime from "@/assets/bonus-boost-ultime.jpg";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 
 const PAYPAL_CLIENT_ID = "AbwLv3_GiqKnxihz6BZBDHHYRmOjlLtONZtpj5nhAeWDEX9wEgUQ9mrhyt6TUal1lqG1gdZwZLANm8D3";
-
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string);
-
-const CARD_STYLE = {
-  style: {
-    base: { color: "#f2ead8", fontFamily: "'DM Sans', sans-serif", fontSize: "16px", "::placeholder": { color: "#555" } },
-    invalid: { color: "#ff9b9b" },
-  },
-};
-
-function PayForm({ bumpAdded, total }: { bumpAdded: boolean; total: string }) {
-  const stripe = useStripe();
-  const elements = useElements();
-  const navigate = useNavigate();
-  const [email, setEmail] = useState(() => sessionStorage.getItem("declic_email") ?? "");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handlePay = async () => {
-    if (!stripe || !elements) return;
-    if (!email.trim() || !email.includes("@")) { setError("Saisis une adresse email valide."); return; }
-    setError(null);
-    setLoading(true);
-    const card = elements.getElement(CardElement);
-    if (!card) { setLoading(false); return; }
-    const amount = bumpAdded ? 14400 : 9700;
-    const { data: piData, error: piError } = await supabase.functions.invoke("create-payment-intent", {
-      body: { amount, bump: bumpAdded },
-    });
-    if (piError || !piData?.clientSecret) { setError("Erreur lors de la création du paiement."); setLoading(false); return; }
-    const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(piData.clientSecret, {
-      payment_method: { card, billing_details: { email: email.trim() } },
-    });
-    if (confirmError) { setError(confirmError.message ?? "Paiement refusé."); setLoading(false); return; }
-    if (paymentIntent?.status === "succeeded") {
-      sessionStorage.setItem("declic_email", email.trim());
-      const { data: tokenData } = await supabase.functions.invoke("create-upsell-token", {
-        body: { email: email.trim(), payment_intent_id: paymentIntent.id },
-      });
-      navigate(`/upsell0?payment_intent=${paymentIntent.id}&token=${tokenData?.token ?? ""}`);
-    }
-  };
-
-  return (
-    <div className="ob-pay-form">
-      <div className="ob-field">
-        <label htmlFor="ob-email">ADRESSE EMAIL</label>
-        <input id="ob-email" type="email" placeholder="ton@email.com" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
-      </div>
-      <div className="ob-field">
-        <label>CARTE BANCAIRE</label>
-        <div className="ob-card-wrap"><CardElement options={CARD_STYLE} /></div>
-      </div>
-      {error && <div className="ob-error">{error}</div>}
-      <button className="ob-pay-btn" onClick={handlePay} disabled={loading || !stripe} type="button">
-        {loading ? "Traitement..." : `☠️ PAYER ${total} ET ACCÉDER MAINTENANT`}
-      </button>
-      <p className="ob-secure-note">🔒 Paiement 100% sécurisé par Stripe · SSL 256 bits</p>
-    </div>
-  );
-}
 
 const CountdownTimer = ({ hours }: { hours: number }) => {
   const [endTs] = useState(() => {
@@ -115,16 +52,22 @@ function PayPalSection({ bumpAdded }: { bumpAdded: boolean }) {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+    <div style={{ background: "#1a1a1a", border: "1px solid rgba(167,139,250,0.25)", padding: 30, display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 13, color: "#a78bfa", letterSpacing: 3, marginBottom: 4 }}>
+        CHOISISSEZ VOTRE MODE DE PAIEMENT
+      </div>
       {(["paypal", "card", "installment"] as const).map((funding) => (
         <PayPalButtons
           key={funding}
           fundingSource={funding}
-          style={{ layout: "horizontal", height: 48, shape: "rect", label: funding === "paypal" ? "pay" : undefined }}
+          style={{ layout: "horizontal", height: 50, shape: "rect", label: funding === "paypal" ? "pay" : undefined }}
           createOrder={createOrder}
           onApprove={onApprove}
         />
       ))}
+      <p style={{ textAlign: "center", fontSize: 12, color: "#555", margin: "4px 0 0" }}>
+        🔒 Paiement 100% sécurisé par PayPal · SSL 256 bits
+      </p>
     </div>
   );
 }
@@ -165,12 +108,6 @@ const Orderbump = () => {
         .ob-bump-price-old { font-size:18px; color:#555; text-decoration:line-through; }
         .ob-bump-price-new { font-family:'Bebas Neue',sans-serif; font-size:52px; color:#a78bfa; line-height:1; }
         .ob-bump-price-tag { background:#7c3aed; color:white; font-size:12px; padding:4px 12px; font-weight:700; letter-spacing:1px; }
-        .ob-add-btn { width:100%; background:#a78bfa; color:black; font-family:'Bebas Neue',sans-serif; font-size:clamp(15px,2.6vw,20px); letter-spacing:2px; padding:18px; border:none; cursor:pointer; clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%); transition:all 0.2s; margin-bottom:12px; }
-        .ob-add-btn:hover { filter:brightness(1.1); }
-        .ob-add-btn.active { box-shadow:0 0 0 3px rgba(167,139,250,0.4), 0 0 30px rgba(167,139,250,0.5); }
-        .ob-refuse-btn { width:100%; background:transparent; color:#666; font-family:'DM Sans',sans-serif; font-size:clamp(12px,2.2vw,14px); letter-spacing:1px; padding:14px; border:1px solid rgba(255,255,255,0.1); cursor:pointer; transition:all 0.2s; text-transform:uppercase; }
-        .ob-refuse-btn:hover { color:#999; border-color:rgba(255,255,255,0.2); }
-        .ob-refuse-btn.active { color:#a78bfa; border-color:#a78bfa; }
         .ob-summary-box { max-width:780px; margin:0 auto; padding:0 20px 60px; }
         .ob-order-summary { background:#1a1a1a; border:1px solid rgba(255,255,255,0.08); padding:30px; margin-bottom:24px; }
         .ob-order-summary h3 { font-family:'Bebas Neue',sans-serif; font-size:24px; color:white; margin-bottom:20px; letter-spacing:1px; }
@@ -178,27 +115,6 @@ const Orderbump = () => {
         .ob-order-line.total { border-bottom:none; font-weight:700; font-size:18px; color:white; margin-top:8px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.1); }
         .ob-order-line .price { color:#a78bfa; font-family:'Bebas Neue',sans-serif; font-size:20px; white-space:nowrap; }
         .ob-order-line.total .price { font-size:28px; }
-
-        .ob-pay-form { background:#1a1a1a; border:1px solid rgba(167,139,250,0.25); padding:30px; display:flex; flex-direction:column; gap:18px; }
-        .ob-field-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-        @media (max-width:560px) { .ob-field-row { grid-template-columns:1fr; } }
-        .ob-field { display:flex; flex-direction:column; gap:8px; }
-        .ob-field label { font-family:'Bebas Neue',sans-serif; letter-spacing:2px; font-size:13px; color:#a78bfa; }
-        .ob-field input { background:#0f0f0f; border:1px solid rgba(255,255,255,0.1); color:#f2ead8; font-family:'DM Sans',sans-serif; font-size:16px; padding:14px 16px; outline:none; transition:border-color 0.2s; }
-        .ob-field input:focus { border-color:#a78bfa; }
-        .ob-card-wrap { background:#0f0f0f; border:1px solid rgba(255,255,255,0.1); padding:16px; transition:border-color 0.2s; }
-        .ob-klarna-banner { display:flex; align-items:center; gap:12px; background:#0f0f0f; border:1px solid rgba(255,168,205,0.35); padding:12px 16px; margin-bottom:10px; cursor:pointer; transition:all 0.2s; }
-        .ob-klarna-banner:hover { border-color:#FFA8CD; background:#141014; }
-        .ob-klarna-banner img { height:22px; width:auto; flex-shrink:0; }
-        .ob-klarna-banner span { color:#ffffff; font-size:14px; line-height:1.4; }
-        .ob-klarna-banner span strong { color:#FFA8CD; }
-        .ob-card-wrap:focus-within { border-color:#a78bfa; }
-        .ob-error { background:rgba(255,107,107,0.1); border:1px solid rgba(255,107,107,0.4); color:#ff9b9b; padding:12px 16px; font-size:14px; }
-        .ob-pay-btn { width:100%; background:#7c3aed; color:white; font-family:'Bebas Neue',sans-serif; font-size:clamp(20px,4vw,30px); letter-spacing:2px; padding:22px; border:none; cursor:pointer; clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%); box-shadow:0 8px 40px rgba(124,58,237,0.4); animation:ob-pulse 2s ease-in-out infinite; transition:all 0.2s; }
-        .ob-pay-btn:disabled { opacity:0.6; cursor:not-allowed; animation:none; }
-        @keyframes ob-pulse { 0%,100%{box-shadow:0 8px 40px rgba(124,58,237,0.4);} 50%{box-shadow:0 8px 60px rgba(124,58,237,0.7);} }
-        .ob-pay-btn:hover:not(:disabled) { filter:brightness(1.1); }
-        .ob-secure-note { text-align:center; font-size:12px; color:#666; margin-top:4px; }
         .ob-bonus-line { background:rgba(34,197,94,0.06); border:1px solid rgba(34,197,94,0.25); padding:12px 14px !important; margin:6px 0; }
         .ob-bonus-label { display:flex; flex-direction:column; gap:6px; }
         .ob-bonus-title { color:#fff; font-weight:600; }
@@ -309,16 +225,6 @@ const Orderbump = () => {
           <div className="ob-order-line"><span>🔴 Réduction Offre Live</span><span className="ob-badge-red">-100€</span></div>
           <div className="ob-total-old">Prix total : <span style={{ textDecoration: "line-through" }}>{bumpAdded ? "244€" : "197€"}</span></div>
           <div className="ob-order-line total"><span>TOTAL</span><span className="price">{total}</span></div>
-        </div>
-
-        <Elements stripe={stripePromise}>
-          <PayForm bumpAdded={bumpAdded} total={total} />
-        </Elements>
-
-        <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "24px 0" }}>
-          <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.1)" }} />
-          <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 14, color: "#555", letterSpacing: 3 }}>OU PAYER AVEC</span>
-          <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.1)" }} />
         </div>
 
         <PayPalScriptProvider options={{
