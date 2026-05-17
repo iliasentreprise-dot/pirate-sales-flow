@@ -142,7 +142,7 @@ const Upsell1 = () => {
         <div className="u1-pmain">497€</div>
         <div className="u1-pnote">Uniquement sur cette page · Jamais reproposé à ce prix</div>
         <button type="button" className="u1-yes" onClick={handleAccept} disabled={loadingUpsell}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX QUE TU FASSES TOUT À MA PLACE"}</button>
-        <div style={{ fontSize: 12, color: "#333", marginTop: 10 }}>🔒 Paiement sécurisé via Stripe · Accès immédiat</div>
+        <div style={{ fontSize: 12, color: "#333", marginTop: 10 }}>🔒 Paiement 100% sécurisé par PayPal · Accès immédiat</div>
         {paymentError && (
           <p style={{ color: "#e8110a", fontWeight: 700, textAlign: "center", marginTop: 16, fontSize: 16 }}>
             ❌ Paiement refusé, veuillez vérifier votre carte ou contacter votre banque.

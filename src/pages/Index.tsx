@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import avis1 from "@/assets/avis-1.jpeg";
 import avis3 from "@/assets/avis-3.png";
@@ -7,9 +7,10 @@ import avis5 from "@/assets/avis-5.png";
 import avis6 from "@/assets/avis-6.png";
 import avisNoah from "@/assets/avis-noah.png";
 import avisLamine from "@/assets/avis-lamine.png";
-import avisStripeLock from "@/assets/avis-stripe-lock.png";
+import avisProofLock from "@/assets/avis-proof-lock.png";
 import mockup from "@/assets/mockup-systeme-pirate.png";
 import logo from "@/assets/logo-drop-digital.png";
+import PayPalCheckout from "@/components/PayPalCheckout";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -193,6 +194,11 @@ const Index = () => {
     navigate('/orderbump');
   };
 
+  const handlePayPalSuccess = useCallback((email: string) => {
+    if (email) sessionStorage.setItem("declic_email", email);
+    navigate("/merci");
+  }, [navigate]);
+
   return (
     <div className="sp-page">
       <div className="live-visitors" aria-live="polite">
@@ -304,7 +310,7 @@ const Index = () => {
           <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(30px,5vw,52px)', lineHeight: 1, color: 'white', marginBottom: 30 }}>💬 CE QUE DISENT <em style={{ color: 'var(--sp-purple)', fontStyle: 'normal' }}>MES ÉLÈVES</em></h2>
         </div>
         <div className="avis-grid">
-          {[avisLamine, avisStripeLock, avisNoah, avis1, avis3, avis4, avis5, avis6].map((src, i) => (
+          {[avisLamine, avisProofLock, avisNoah, avis1, avis3, avis4, avis5, avis6].map((src, i) => (
             <div key={i} className="avis-card" onClick={() => setZoomedImg(src)} style={{ cursor: 'zoom-in' }}>
               <img src={src} alt={`Avis client ${i + 1}`} loading="lazy" />
             </div>
@@ -352,8 +358,8 @@ const Index = () => {
         <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(36px,6vw,64px)', color: 'white', lineHeight: 1, marginBottom: 20 }}>Tu es prêt à <span style={{ color: 'var(--sp-purple)' }}>passer pirate</span> ?</h2>
         <div className="price-block" style={{ margin: '24px 0' }}>
           <div className="price-old">697€</div>
-          <div className="price-new">97€</div>
-          <div className="price-note">Offre Live uniquement · Disparaît à la fin du live</div>
+          <div className="price-new">144€</div>
+          <div className="price-note">Formation + Pack Bonus Secret · Offre Live uniquement</div>
         </div>
         <div className="urgency-bar">
           <div style={{ fontSize: 13, color: '#888', textAlign: 'center', marginBottom: 10, letterSpacing: 0.5 }}>La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels automatisés</div>
@@ -361,8 +367,10 @@ const Index = () => {
           <div className="urgency-progress"><div className="urgency-fill" style={{ width: '75%' }}></div></div>
           <div className="urgency-labels"><span style={{ color: '#a78bfa' }}>17 places prises</span><span style={{ color: '#e8110a' }}>3 places restantes</span></div>
         </div>
-        <a href="/orderbump" onClick={goOrderbump} className="btn-cta">ACCÉDER À LA FORMATION + L'ACCOMPAGNEMENT<span className="cta-arrow">↓</span></a>
-        <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
+        <div style={{ maxWidth: 560, margin: '32px auto 0' }}>
+          <PayPalCheckout amount={144} onSuccess={handlePayPalSuccess} />
+        </div>
+        <span className="warning-text" style={{ display: 'block', marginTop: 16 }}>⚠️ Cette offre disparaît dès la fin du live</span>
         <span className="btn-sub">Accès immédiat après paiement · 100% sécurisé</span>
       </div>
 

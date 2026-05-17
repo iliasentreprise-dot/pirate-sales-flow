@@ -11,7 +11,7 @@ const Upsell0 = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Save Stripe customer + payment method right after the orderbump payment
+  // Save customer after orderbump payment if payment_intent is in URL
   useEffect(() => {
     const paymentIntentId = searchParams.get("payment_intent");
     const email = window.sessionStorage.getItem("declic_email");
@@ -455,7 +455,7 @@ const Upsell0 = () => {
               ✅ Pirate : <strong>"Tu as raison de demander des preuves. C'est ce que font les gens intelligents avant d'acheter."</strong></div>
               <img
                 src={tiktokLiveImg}
-                alt="Preuve Stripe — 2037€ en un live TikTok"
+                alt="Preuve de résultats — 2037€ en un live TikTok"
                 onClick={() => setImgZoom(true)}
                 style={{ maxWidth: "320px", width: "100%", height: "auto", borderRadius: 8, cursor: "zoom-in", display: "block", marginTop: 14 }}
               />
@@ -529,7 +529,7 @@ const Upsell0 = () => {
           <div className="u0-pmain">47€</div>
           <div className="u0-pnote">Uniquement sur cette page · Jamais reproposé à ce prix · 3 places restantes · Accès immédiat</div>
           <button type="button" className="u0-yes" onClick={handleAccept} disabled={loadingUpsell || expired}>{loadingUpsell ? "Traitement en cours..." : "🏴‍☠️ OUI — JE VEUX ENCAISSER 1 500€ PAR LIVE"}</button>
-          <div className="u0-secure">🔒 Paiement sécurisé via Stripe · Accès immédiat · Garanti 30 jours</div>
+          <div className="u0-secure">🔒 Paiement 100% sécurisé par PayPal · Accès immédiat · Garanti 30 jours</div>
           {paymentError && (
             <p style={{ color: "#e8110a", fontWeight: 700, textAlign: "center", marginTop: 16, fontSize: 16 }}>
               ❌ Paiement refusé, veuillez vérifier votre carte ou contacter votre banque.

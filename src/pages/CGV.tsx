@@ -37,7 +37,7 @@ const CGV = () => {
         <p>Les produits commercialisés sont des formations et ressources digitales à téléchargement immédiat. Les prix sont indiqués en euros TTC. Système Pirate se réserve le droit de modifier ses tarifs à tout moment, sans préavis, les prix applicables étant ceux affichés au moment de la commande.</p>
 
         <h2>4. Commande et paiement</h2>
-        <p>Le paiement est effectué en ligne par carte bancaire via Stripe (plateforme de paiement sécurisée). La commande est confirmée dès réception du paiement. Aucune commande n'est validée sans paiement préalable.</p>
+        <p>Le paiement est effectué en ligne via PayPal (plateforme de paiement sécurisée). La commande est confirmée dès réception du paiement. Aucune commande n'est validée sans paiement préalable.</p>
         <p>Options de paiement disponibles :</p>
         <ul>
           <li>Paiement en 1 fois par carte bancaire</li>
