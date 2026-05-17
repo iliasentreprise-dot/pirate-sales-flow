@@ -235,7 +235,10 @@ const Orderbump = () => {
           target="_blank"
           rel="noopener noreferrer"
           style={{
-            display: "block",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 12,
             width: "100%",
             background: "#FFC439",
             color: "#000",
@@ -247,9 +250,17 @@ const Orderbump = () => {
             marginBottom: 8,
             textDecoration: "none",
             fontWeight: 700,
+            boxSizing: "border-box",
           }}
         >
-          🅿 Payer maintenant — {bumpAdded ? "144" : "97"}€
+          <img
+            src="https://www.paypalobjects.com/webstatic/icon/pp258.png"
+            alt="PayPal"
+            width={24}
+            height={24}
+            style={{ display: "block", flexShrink: 0 }}
+          />
+          Payer maintenant — {bumpAdded ? "144" : "97"}€
         </a>
         <p style={{ textAlign: "center", fontSize: 12, color: "#555", marginBottom: 24 }}>
           🔒 Paiement 100% sécurisé par PayPal · SSL 256 bits
