@@ -230,6 +230,31 @@ const Orderbump = () => {
           <div className="ob-order-line total"><span>TOTAL</span><span className="price">{total}</span></div>
         </div>
 
+        <a
+          href={bumpAdded ? "https://paypal.me/iliassdz/144" : "https://paypal.me/iliassdz/97"}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "block",
+            width: "100%",
+            background: "#FFC439",
+            color: "#000",
+            fontFamily: "'Bebas Neue', sans-serif",
+            fontSize: 28,
+            letterSpacing: 1,
+            textAlign: "center",
+            padding: "18px 20px",
+            marginBottom: 8,
+            textDecoration: "none",
+            fontWeight: 700,
+          }}
+        >
+          🅿 Payer maintenant — {bumpAdded ? "144" : "97"}€
+        </a>
+        <p style={{ textAlign: "center", fontSize: 12, color: "#555", marginBottom: 24 }}>
+          🔒 Paiement 100% sécurisé par PayPal · SSL 256 bits
+        </p>
+
         <PayPalScriptProvider options={{
           clientId: PAYPAL_CLIENT_ID,
           currency: "EUR",
