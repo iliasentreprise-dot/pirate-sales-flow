@@ -1,14 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 
 const PAYPAL_CLIENT_ID =
+  import.meta.env.VITE_PAYPAL_CLIENT_ID ||
   "AbwLv3_GiqKnxihz6BZBDHHYRmOjlLtONZtpj5nhAeWDEX9wEgUQ9mrhyt6TUal1lqG1gdZwZLANm8D3";
+
+const IS_SANDBOX = import.meta.env.VITE_PAYPAL_ENV === "sandbox";
+
 const PAYPAL_SDK_URL =
   `https://www.paypal.com/sdk/js` +
   `?client-id=${PAYPAL_CLIENT_ID}` +
   `&currency=EUR` +
   `&components=buttons` +
   `&enable-funding=installment` +
-  `&disable-funding=paylater,venmo`;
+  `&disable-funding=paylater,venmo` +
+  (IS_SANDBOX ? `&debug=true` : ``);
 
 interface Props {
   amount: number;
@@ -25,9 +30,14 @@ const PayPalCheckout = ({ amount, onSuccess }: Props) => {
     onSuccessRef.current = onSuccess;
   }, [onSuccess]);
 
-  // Step 1: load SDK script
   useEffect(() => {
+    console.log(
+      `[PayPal] Init — env=${IS_SANDBOX ? "sandbox" : "production"} clientId=${PAYPAL_CLIENT_ID.slice(0, 12)}...`
+    );
+    console.log(`[PayPal] SDK URL: ${PAYPAL_SDK_URL}`);
+
     if ((window as any).paypal) {
+      console.log("[PayPal] SDK already in window, skipping load");
       setSdkReady(true);
       return;
     }
@@ -36,7 +46,7 @@ const PayPalCheckout = ({ amount, onSuccess }: Props) => {
     if (existing) {
       const onLoad = () => setSdkReady(true);
       const onError = () => {
-        console.error("[PayPal] SDK script failed to load (already in DOM)");
+        console.error("[PayPal] Existing script tag errored");
         setSdkError(true);
       };
       existing.addEventListener("load", onLoad);
@@ -51,20 +61,20 @@ const PayPalCheckout = ({ amount, onSuccess }: Props) => {
     script.id = "paypal-sdk";
     script.src = PAYPAL_SDK_URL;
     script.onload = () => {
-      console.log("[PayPal] SDK loaded successfully");
+      console.log("[PayPal] SDK loaded OK");
       setSdkReady(true);
     };
     script.onerror = () => {
       console.error(
-        "[PayPal] SDK failed to load — likely blocked by Content-Security-Policy. " +
-        "Check Network tab > paypal.com entries, or Console for CSP errors."
+        "[PayPal] SDK 400/failed — client ID invalide ou compte non approuvé pour le mode Live.\n" +
+        `URL tentée : ${PAYPAL_SDK_URL}\n` +
+        "→ Passe VITE_PAYPAL_ENV=sandbox et utilise ton Client ID Sandbox sur developer.paypal.com"
       );
       setSdkError(true);
     };
     document.head.appendChild(script);
   }, []);
 
-  // Step 2: render buttons once SDK is ready AND container is in the DOM
   useEffect(() => {
     if (!sdkReady) return;
     const container = containerRef.current;
@@ -72,7 +82,7 @@ const PayPalCheckout = ({ amount, onSuccess }: Props) => {
 
     const paypal = (window as any).paypal;
     if (!paypal) {
-      console.error("[PayPal] window.paypal not found despite sdkReady=true");
+      console.error("[PayPal] window.paypal absent malgré sdkReady=true");
       return;
     }
 
@@ -96,9 +106,7 @@ const PayPalCheckout = ({ amount, onSuccess }: Props) => {
             actions.order.create({
               intent: "CAPTURE",
               purchase_units: [
-                {
-                  amount: { currency_code: "EUR", value: amount.toFixed(2) },
-                },
+                { amount: { currency_code: "EUR", value: amount.toFixed(2) } },
               ],
             }),
           onApprove: async (_data: unknown, actions: any) => {
@@ -138,29 +146,19 @@ const PayPalCheckout = ({ amount, onSuccess }: Props) => {
         }}
       >
         CHOISISSEZ VOTRE MODE DE PAIEMENT
+        {IS_SANDBOX && (
+          <span style={{ color: "#f59e0b", marginLeft: 12, fontSize: 11 }}>
+            [MODE SANDBOX]
+          </span>
+        )}
       </div>
 
       {sdkError ? (
-        <div
-          style={{
-            padding: "16px",
-            textAlign: "center",
-            color: "#e8110a",
-            fontSize: 14,
-          }}
-        >
+        <div style={{ padding: "16px", textAlign: "center", color: "#e8110a", fontSize: 14 }}>
           ⚠️ Impossible de charger PayPal. Vérifiez votre connexion ou désactivez votre bloqueur de publicités.
         </div>
       ) : !sdkReady ? (
-        <div
-          style={{
-            padding: "20px",
-            textAlign: "center",
-            color: "#888",
-            fontSize: 14,
-            letterSpacing: 0.5,
-          }}
-        >
+        <div style={{ padding: "20px", textAlign: "center", color: "#888", fontSize: 14, letterSpacing: 0.5 }}>
           <span
             style={{
               display: "inline-block",
@@ -175,11 +173,7 @@ const PayPalCheckout = ({ amount, onSuccess }: Props) => {
             }}
           />
           Chargement des options de paiement...
-          <style>{`
-            @keyframes paypal-spin {
-              to { transform: rotate(360deg); }
-            }
-          `}</style>
+          <style>{`@keyframes paypal-spin { to { transform: rotate(360deg); } }`}</style>
         </div>
       ) : (
         <div

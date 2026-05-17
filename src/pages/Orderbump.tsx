@@ -5,7 +5,10 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 
-const PAYPAL_CLIENT_ID = "AbwLv3_GiqKnxihz6BZBDHHYRmOjlLtONZtpj5nhAeWDEX9wEgUQ9mrhyt6TUal1lqG1gdZwZLANm8D3";
+const PAYPAL_CLIENT_ID =
+  import.meta.env.VITE_PAYPAL_CLIENT_ID ||
+  "AbwLv3_GiqKnxihz6BZBDHHYRmOjlLtONZtpj5nhAeWDEX9wEgUQ9mrhyt6TUal1lqG1gdZwZLANm8D3";
+const IS_SANDBOX = import.meta.env.VITE_PAYPAL_ENV === "sandbox";
 
 const CountdownTimer = ({ hours }: { hours: number }) => {
   const [endTs] = useState(() => {
@@ -232,7 +235,8 @@ const Orderbump = () => {
           currency: "EUR",
           components: "buttons",
           enableFunding: "installment",
-          disableFunding: "paylater",
+          disableFunding: IS_SANDBOX ? "paylater,venmo" : "paylater,venmo",
+          ...(IS_SANDBOX && { debug: true }),
         }}>
           <PayPalSection bumpAdded={bumpAdded} />
         </PayPalScriptProvider>
