@@ -231,7 +231,9 @@ const Orderbump = () => {
         </div>
 
         <a
-          href={bumpAdded ? "https://paypal.me/iliassdz/144" : "https://paypal.me/iliassdz/97"}
+          href={bumpAdded
+            ? "https://revolut.me/ilias_business?currency=EUR&amount=14400&note=Formation%20%20%20Logiciel%20d%27automatisation"
+            : "https://revolut.me/ilias_business?currency=EUR&amount=9700&note=Le%20Système%20pirate%20complet"}
           target="_blank"
           rel="noopener noreferrer"
           style={{
@@ -240,8 +242,8 @@ const Orderbump = () => {
             justifyContent: "center",
             gap: 12,
             width: "100%",
-            background: "#FFC439",
-            color: "#000",
+            background: "#191C1F",
+            color: "#fff",
             fontFamily: "'Bebas Neue', sans-serif",
             fontSize: 28,
             letterSpacing: 1,
@@ -254,28 +256,17 @@ const Orderbump = () => {
           }}
         >
           <img
-            src="https://www.paypalobjects.com/webstatic/icon/pp258.png"
-            alt="PayPal"
+            src="https://assets.revolut.com/assets/brand/Revolut-favicon.png"
+            alt="Revolut"
             width={24}
             height={24}
             style={{ display: "block", flexShrink: 0 }}
           />
-          Payer maintenant — {bumpAdded ? "144" : "97"}€
+          Payer par carte — {bumpAdded ? "144" : "97"}€
         </a>
         <p style={{ textAlign: "center", fontSize: 12, color: "#555", marginBottom: 24 }}>
-          🔒 Paiement 100% sécurisé par PayPal · SSL 256 bits
+          🔒 Paiement 100% sécurisé · SSL 256 bits
         </p>
-
-        <PayPalScriptProvider options={{
-          clientId: PAYPAL_CLIENT_ID,
-          currency: "EUR",
-          components: "buttons",
-          enableFunding: "installment",
-          disableFunding: IS_SANDBOX ? "paylater,venmo" : "paylater,venmo",
-          ...(IS_SANDBOX && { debug: true }),
-        }}>
-          <PayPalSection bumpAdded={bumpAdded} />
-        </PayPalScriptProvider>
       </div>
     </div>
   );
