@@ -234,7 +234,9 @@ const Orderbump = () => {
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 16 }}>
-          <input
+          <div>
+            <div style={{ color: "#a855f7", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>Nom & Prénom</div>
+            <input
             type="text"
             required
             placeholder="Jean Dupont"
@@ -253,7 +255,10 @@ const Orderbump = () => {
               boxSizing: "border-box",
             }}
           />
-          <input
+          </div>
+          <div>
+            <div style={{ color: "#a855f7", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>Email</div>
+            <input
             type="email"
             required
             placeholder="jean@example.com"
@@ -272,6 +277,7 @@ const Orderbump = () => {
               boxSizing: "border-box",
             }}
           />
+          </div>
         </div>
 
         {fieldError && (
