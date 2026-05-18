@@ -79,8 +79,8 @@ const Orderbump = () => {
   const [bumpAdded, setBumpAdded] = useState(true);
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
+  const [fieldError, setFieldError] = useState("");
   const total = bumpAdded ? "144€" : "97€";
-  const canPay = customerName.trim().length > 0 && customerEmail.trim().length > 0;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -274,9 +274,28 @@ const Orderbump = () => {
           />
         </div>
 
+        {fieldError && (
+          <p style={{ color: "#e8110a", fontSize: 13, marginBottom: 10, lineHeight: 1.5 }}>
+            {fieldError}
+          </p>
+        )}
         <button
-          disabled={!canPay}
           onClick={() => {
+            const nameMissing = customerName.trim().length === 0;
+            const emailMissing = customerEmail.trim().length === 0;
+            if (nameMissing && emailMissing) {
+              setFieldError("* Veuillez renseigner votre prénom & nom et votre email avant de continuer.");
+              return;
+            }
+            if (nameMissing) {
+              setFieldError("* Veuillez renseigner votre prénom et nom.");
+              return;
+            }
+            if (emailMissing) {
+              setFieldError("* Veuillez renseigner votre adresse email.");
+              return;
+            }
+            setFieldError("");
             sessionStorage.setItem("declic_name", customerName.trim());
             sessionStorage.setItem("declic_email", customerEmail.trim());
             const url = bumpAdded
@@ -289,10 +308,8 @@ const Orderbump = () => {
             alignItems: "center",
             justifyContent: "center",
             width: "100%",
-            background: canPay
-              ? "linear-gradient(135deg, #7c3aed, #a855f7)"
-              : "#2a2a2a",
-            color: canPay ? "#fff" : "#555",
+            background: "linear-gradient(135deg, #7c3aed, #a855f7)",
+            color: "#fff",
             fontFamily: "'Bebas Neue', sans-serif",
             fontSize: 28,
             letterSpacing: 1,
@@ -300,11 +317,9 @@ const Orderbump = () => {
             padding: "18px 20px",
             marginBottom: 8,
             border: "none",
-            cursor: canPay ? "pointer" : "not-allowed",
+            cursor: "pointer",
             fontWeight: 700,
             boxSizing: "border-box",
-            transition: "background 0.2s, color 0.2s",
-            width: "100%",
           }}
         >
           Payer par carte — {bumpAdded ? "144" : "97"}€
