@@ -77,7 +77,10 @@ function PayPalSection({ bumpAdded }: { bumpAdded: boolean }) {
 
 const Orderbump = () => {
   const [bumpAdded, setBumpAdded] = useState(true);
+  const [customerName, setCustomerName] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
   const total = bumpAdded ? "144€" : "97€";
+  const canPay = customerName.trim().length > 0 && customerEmail.trim().length > 0;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -230,42 +233,84 @@ const Orderbump = () => {
           <div className="ob-order-line total"><span>TOTAL</span><span className="price">{total}</span></div>
         </div>
 
-        <a
-          href={bumpAdded
-            ? "https://revolut.me/ilias_business?currency=EUR&amount=14400&note=Formation%20%20%20Logiciel%20d%27automatisation"
-            : "https://revolut.me/ilias_business?currency=EUR&amount=9700&note=Le%20Système%20pirate%20complet"}
-          target="_blank"
-          rel="noopener noreferrer"
+        <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 16 }}>
+          <input
+            type="text"
+            required
+            placeholder="Jean Dupont"
+            value={customerName}
+            onChange={(e) => setCustomerName(e.target.value)}
+            style={{
+              width: "100%",
+              background: "#111",
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: 4,
+              color: "#f2ead8",
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 15,
+              padding: "14px 16px",
+              outline: "none",
+              boxSizing: "border-box",
+            }}
+          />
+          <input
+            type="email"
+            required
+            placeholder="jean@example.com"
+            value={customerEmail}
+            onChange={(e) => setCustomerEmail(e.target.value)}
+            style={{
+              width: "100%",
+              background: "#111",
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: 4,
+              color: "#f2ead8",
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 15,
+              padding: "14px 16px",
+              outline: "none",
+              boxSizing: "border-box",
+            }}
+          />
+        </div>
+
+        <button
+          disabled={!canPay}
+          onClick={() => {
+            sessionStorage.setItem("declic_name", customerName.trim());
+            sessionStorage.setItem("declic_email", customerEmail.trim());
+            const url = bumpAdded
+              ? "https://revolut.me/ilias_business?currency=EUR&amount=14400&note=Formation%20%20%20Logiciel%20d%27automatisation"
+              : "https://revolut.me/ilias_business?currency=EUR&amount=9700&note=Le%20Système%20pirate%20complet";
+            window.open(url, "_blank", "noopener,noreferrer");
+          }}
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: 12,
             width: "100%",
-            background: "#191C1F",
-            color: "#fff",
+            background: canPay
+              ? "linear-gradient(135deg, #7c3aed, #a855f7)"
+              : "#2a2a2a",
+            color: canPay ? "#fff" : "#555",
             fontFamily: "'Bebas Neue', sans-serif",
             fontSize: 28,
             letterSpacing: 1,
             textAlign: "center",
             padding: "18px 20px",
             marginBottom: 8,
-            textDecoration: "none",
+            border: "none",
+            cursor: canPay ? "pointer" : "not-allowed",
             fontWeight: 700,
             boxSizing: "border-box",
+            transition: "background 0.2s, color 0.2s",
+            width: "100%",
           }}
         >
-          <img
-            src="https://assets.revolut.com/assets/brand/Revolut-favicon.png"
-            alt="Revolut"
-            width={24}
-            height={24}
-            style={{ display: "block", flexShrink: 0 }}
-          />
           Payer par carte — {bumpAdded ? "144" : "97"}€
-        </a>
+        </button>
         <p style={{ textAlign: "center", fontSize: 12, color: "#555", marginBottom: 24 }}>
-          🔒 Paiement 100% sécurisé · SSL 256 bits
+          🔒 Paiement sécurisé avec Revolut · SSL 256 bits
         </p>
       </div>
     </div>
