@@ -62,7 +62,7 @@ function PayPalSection({ bumpAdded }: { bumpAdded: boolean }) {
       {(["paypal", "card", "installment"] as const).map((funding) => (
         <PayPalButtons
           key={funding}
-          fundingSource={funding}
+          fundingSource={funding as any}
           style={{ layout: "horizontal", height: 50, shape: "rect", label: funding === "paypal" ? "pay" : undefined }}
           createOrder={createOrder}
           onApprove={onApprove}
