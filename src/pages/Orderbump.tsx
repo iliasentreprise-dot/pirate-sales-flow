@@ -335,9 +335,9 @@ const Orderbump = () => {
           Payer par carte — {bumpAdded ? "144" : "97"}€
         </button>
         {(() => {
-          const KLARNA_LINK_97 = "KLARNA_LINK_97";
-          const KLARNA_LINK_144 = "KLARNA_LINK_144";
-          const klarnaLink = bumpAdded ? KLARNA_LINK_144 : KLARNA_LINK_97;
+          const https://buy.stripe.com/dRmfZhafw6RyeQ0dt86wE04 = "https://buy.stripe.com/dRmfZhafw6RyeQ0dt86wE04";
+          const https://buy.stripe.com/7sY4gzbjA1xegY83Sy6wE01 = "https://buy.stripe.com/7sY4gzbjA1xegY83Sy6wE01";
+          const klarnaLink = bumpAdded ? https://buy.stripe.com/7sY4gzbjA1xegY83Sy6wE01 : https://buy.stripe.com/dRmfZhafw6RyeQ0dt86wE04;
           const klarnaInstalment = bumpAdded ? "3x 48€" : "3x 32,33€";
           return (
             <>
