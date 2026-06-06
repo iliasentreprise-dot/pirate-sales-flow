@@ -136,6 +136,10 @@ const Orderbump = () => {
         @media (max-width:480px) { .ob-bonus-thumbs { grid-template-columns:1fr; } }
         .ob-badge-red { background:#e8110a; color:white; font-size:13px; font-weight:700; padding:4px 10px; border-radius:999px; font-family:'DM Sans',sans-serif; letter-spacing:0.5px; }
         .ob-total-old { color:#666; text-decoration:line-through; font-size:14px; padding:6px 0 0; text-align:right; font-family:'DM Sans',sans-serif; }
+        .ob-klarna-btn { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; background:#FFB3C7; color:#17120E; font-family:'DM Sans',sans-serif; font-size:17px; font-weight:700; letter-spacing:0.3px; padding:16px 20px; border:none; border-radius:8px; cursor:pointer; box-sizing:border-box; transition:filter 0.2s; }
+        .ob-klarna-btn:hover { filter:brightness(0.93); }
+        .ob-klarna-logo { font-family:'DM Sans',sans-serif; font-size:22px; font-weight:900; color:#17120E; letter-spacing:-1px; display:inline-block; }
+        .ob-klarna-sub { text-align:center; font-size:12px; color:#888; margin-top:4px; margin-bottom:0; }
       `}</style>
 
       <div className="ob-hero">
@@ -330,7 +334,44 @@ const Orderbump = () => {
         >
           Payer par carte — {bumpAdded ? "144" : "97"}€
         </button>
-        <p style={{ textAlign: "center", fontSize: 12, color: "#555", marginBottom: 24 }}>
+        {(() => {
+          const KLARNA_LINK_97 = "KLARNA_LINK_97";
+          const KLARNA_LINK_144 = "KLARNA_LINK_144";
+          const klarnaLink = bumpAdded ? KLARNA_LINK_144 : KLARNA_LINK_97;
+          const klarnaInstalment = bumpAdded ? "3x 48€" : "3x 32,33€";
+          return (
+            <>
+              <button
+                className="ob-klarna-btn"
+                onClick={() => {
+                  const nameMissing = customerName.trim().length === 0;
+                  const emailMissing = customerEmail.trim().length === 0;
+                  if (nameMissing && emailMissing) {
+                    setFieldError("* Veuillez renseigner votre prénom & nom et votre email avant de continuer.");
+                    return;
+                  }
+                  if (nameMissing) {
+                    setFieldError("* Veuillez renseigner votre prénom et nom.");
+                    return;
+                  }
+                  if (emailMissing) {
+                    setFieldError("* Veuillez renseigner votre adresse email.");
+                    return;
+                  }
+                  setFieldError("");
+                  sessionStorage.setItem("declic_name", customerName.trim());
+                  sessionStorage.setItem("declic_email", customerEmail.trim());
+                  window.open(klarnaLink, "_blank", "noopener,noreferrer");
+                }}
+              >
+                Payer en 3x avec&nbsp;
+                <span className="ob-klarna-logo">klarna</span>
+              </button>
+              <p className="ob-klarna-sub">Sans frais — {klarnaInstalment}</p>
+            </>
+          );
+        })()}
+        <p style={{ textAlign: "center", fontSize: 12, color: "#555", marginBottom: 24, marginTop: 16 }}>
           🔒 Paiement sécurisé avec Revolut · SSL 256 bits
         </p>
       </div>
