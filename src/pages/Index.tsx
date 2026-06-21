@@ -388,7 +388,7 @@ const Index = () => {
         <p>Je suis tellement convaincu que ce système fonctionne que je prends tout le risque à ta place.</p>
         <div className="guarantee-box">
           <strong style={{ color: 'var(--sp-purple-light)', fontFamily: "'Bebas Neue',sans-serif", fontSize: 20, letterSpacing: 1, display: 'block', marginBottom: 12 }}>LA GARANTIE PIRATE</strong>
-          Tu appliques le système pendant 7 jours. Si à la fin de cette première semaine tu n'as pas de résultats — pas une seule vente — <strong>je te rembourse intégralement, sur le champ.</strong> Sans question. Sans délai. Tu repars avec ton argent et tout ce que tu as appris.<br /><br />
+          Tu appliques le système pendant 30 jours. Si à la fin de ces 30 jours tu n'as pas de résultats — pas une seule vente — <strong>je te rembourse intégralement, sur le champ.</strong> Sans question. Sans délai.<br /><br />
           <span style={{ color: 'var(--sp-purple)', fontSize: 14 }}>Cette garantie existe parce que je sais que ça marche. Pas parce que je suis sympa.</span>
         </div>
       </div>
