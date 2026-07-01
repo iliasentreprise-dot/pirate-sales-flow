@@ -8,7 +8,7 @@ import avis6 from "@/assets/avis-6.png";
 import avisNoah from "@/assets/avis-noah.png";
 import avisLamine from "@/assets/avis-lamine.png";
 import avisProofLock from "@/assets/avis-proof-lock.png";
-import mockup from "@/assets/mockup-systeme-pirate.png";
+import mockup from "@/assets/mockup-systeme-pirate-v2.png.asset.json";
 import logo from "@/assets/logo-drop-digital.png";
 import PayPalCheckout from "@/components/PayPalCheckout";
 
@@ -322,7 +322,7 @@ const Index = () => {
 
       <div className="recois-section">
         <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(36px,6vw,64px)', lineHeight: 1, color: 'white', marginBottom: 30 }}>☠️ TOUT CE QUE TU REÇOIS<br />DANS LE SYSTÈME PIRATE</h2>
-        <img className="recois-mockup" src={mockup} alt="Système Pirate - Mockup" />
+        <img className="recois-mockup" src={mockup.url} alt="Système Pirate - Mockup" />
         <ul className="recois-list">
           <li><span>✅ Le Système Pirate complet — 6 modules</span><span className="recois-price">197€</span></li>
           <li><span>✅ Accompagnement personnalisé</span><span className="recois-price">147€</span></li>
