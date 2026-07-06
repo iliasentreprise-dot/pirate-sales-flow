@@ -184,11 +184,20 @@ function CardPaymentSection({ bumpAdded, customerName, customerEmail, setFieldEr
       setPaymentError(error.message ?? "Erreur de paiement. Veuillez réessayer.");
       setLoading(false);
     } else if (paymentIntent) {
+      let upsellToken = token ?? "";
+      try {
+        const { data: tokenData } = await supabase.functions.invoke("create-upsell-token", {
+          body: { email: customerEmail.trim() },
+        });
+        if (tokenData?.token) upsellToken = tokenData.token;
+      } catch {
+        // non-bloquant : le paiement a réussi, on redirige quand même
+      }
       window.location.href =
         `${window.location.origin}/upsell0` +
         `?payment_intent=${paymentIntent.id}` +
         `&payment_intent_client_secret=${encodeURIComponent(paymentIntent.client_secret ?? "")}` +
-        `&token=${token ?? ""}`;
+        `&token=${upsellToken}`;
     }
   };
 
