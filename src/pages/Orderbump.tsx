@@ -143,7 +143,7 @@ const Orderbump = () => {
       `}</style>
 
       <div className="ob-hero">
-        <div className="ob-step-badge">⚓ ÉTAPE 2 SUR 2 — FINALISE TA COMMANDE</div>
+        <div className="ob-step-badge">🤖 ÉTAPE 2 SUR 2 — FINALISE TA COMMANDE</div>
         <h1>Attends —<br /><span>Un bonus secret</span><br />t'attend ici</h1>
         <p>Avant de payer, j'ai quelque chose d'exclusif à te proposer.<br />Quelque chose que je ne montre <strong>jamais publiquement.</strong></p>
       </div>
@@ -218,13 +218,13 @@ const Orderbump = () => {
       <div className="ob-summary-box">
         <div className="ob-order-summary">
           <h3>📋 RÉCAPITULATIF DE COMMANDE</h3>
-          <div className="ob-order-line"><span>☠️ Système Pirate (méthode complète)</span><span className="price">97€</span></div>
+          <div className="ob-order-line"><span>🤖 Système DigiDrop (méthode complète)</span><span className="price">97€</span></div>
           {bumpAdded && (
             <div className="ob-order-line"><span>🤖 Pack Bonus Secret (2 logiciels)</span><span className="price">47€</span></div>
           )}
           <div className="ob-order-line ob-bonus-line">
             <span className="ob-bonus-label">
-              <span className="ob-bonus-title">🎁 Accompagnement 1-1 personnalisé</span>
+              <span className="ob-bonus-title">🎁 Accède à mon Whatsapp PRIVÉ pour me poser des questions en cas de blocage</span>
               <CountdownTimer hours={32} />
             </span>
             <span className="price ob-bonus-price">
