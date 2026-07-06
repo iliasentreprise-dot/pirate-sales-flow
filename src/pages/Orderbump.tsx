@@ -162,6 +162,9 @@ function CheckoutForm({ bumpAdded, customerName, customerEmail, setFieldError, t
 
   return (
     <>
+      <div style={{ color: "#a855f7", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>
+        Numéro de carte
+      </div>
       <div style={{
         background: "#111",
         border: "1px solid rgba(167,139,250,0.3)",
