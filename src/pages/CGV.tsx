@@ -26,18 +26,18 @@ const CGV = () => {
 
         <h2>1. Identification du vendeur</h2>
         <p>
-          Système Pirate est une marque exploitée par un entrepreneur individuel.<br />
-          Email de contact : <a href="mailto:support@systempirate.fr" style={{ color: "#a78bfa" }}>support@systempirate.fr</a>
+          DigiDrop Academy est une marque exploitée par un entrepreneur individuel.<br />
+          Email de contact : <a href="mailto:support@digidropacademy.fr" style={{ color: "#a78bfa" }}>support@digidropacademy.fr</a>
         </p>
 
         <h2>2. Objet</h2>
-        <p>Les présentes Conditions Générales de Vente (CGV) régissent les ventes de produits numériques (formations en ligne, guides, outils digitaux) proposés sur le site Système Pirate.</p>
+        <p>Les présentes Conditions Générales de Vente (CGV) régissent les ventes de produits numériques (formations en ligne, guides, outils digitaux) proposés sur le site DigiDrop Academy.</p>
 
         <h2>3. Produits et prix</h2>
-        <p>Les produits commercialisés sont des formations et ressources digitales à téléchargement immédiat. Les prix sont indiqués en euros TTC. Système Pirate se réserve le droit de modifier ses tarifs à tout moment, sans préavis, les prix applicables étant ceux affichés au moment de la commande.</p>
+        <p>Les produits commercialisés sont des formations et ressources digitales à téléchargement immédiat. Les prix sont indiqués en euros TTC. DigiDrop Academy se réserve le droit de modifier ses tarifs à tout moment, sans préavis, les prix applicables étant ceux affichés au moment de la commande.</p>
 
         <h2>4. Commande et paiement</h2>
-        <p>Le paiement est effectué en ligne via PayPal (plateforme de paiement sécurisée). La commande est confirmée dès réception du paiement. Aucune commande n'est validée sans paiement préalable.</p>
+        <p>Le paiement est effectué en ligne via Stripe ou Revolut (plateformes de paiement sécurisées). La commande est confirmée dès réception du paiement. Aucune commande n'est validée sans paiement préalable.</p>
         <p>Options de paiement disponibles :</p>
         <ul>
           <li>Paiement en 1 fois par carte bancaire</li>
@@ -49,16 +49,21 @@ const CGV = () => {
 
         <h2>6. Droit de rétractation</h2>
         <p>Conformément à l'article L.221-28 du Code de la consommation, le droit de rétractation ne peut être exercé pour les contenus numériques dont l'exécution a commencé avec l'accord préalable du consommateur et pour lesquels il a renoncé expressément à son droit de rétractation.</p>
-        <p>En finalisant l'achat et en accédant immédiatement au contenu, l'acheteur reconnaît renoncer expressément à son droit de rétractation. <strong style={{ color: "#f2ead8" }}>Aucun remboursement ne sera accordé une fois l'accès au contenu fourni.</strong></p>
+        <p>En finalisant l'achat et en accédant immédiatement au contenu, l'acheteur reconnaît renoncer expressément à son droit de rétractation légal. Cette renonciation ne fait pas obstacle à la garantie commerciale "Satisfait ou Remboursé" décrite à l'article 6 bis ci-dessous, que DigiDrop Academy accorde volontairement à ses clients.</p>
+
+        <h2>6 bis. Garantie « Satisfait ou Remboursé » de 30 jours</h2>
+        <p>DigiDrop Academy offre une garantie commerciale de remboursement de 30 jours calendaires à compter de la date d'achat. Pendant cette période, l'acheteur peut demander un remboursement intégral en écrivant à <a href="mailto:support@digidropacademy.fr" style={{ color: "#a78bfa" }}>support@digidropacademy.fr</a>, en indiquant son email d'achat et la date de commande.</p>
+        <p>Le remboursement est traité sous 7 jours ouvrés à compter de la demande, sur le même moyen de paiement que celui utilisé lors de l'achat. Passé le délai de 30 jours, plus aucune demande de remboursement ne pourra être acceptée, conformément à l'article 6 relatif à la renonciation au droit de rétractation.</p>
+        <p>Cette garantie est soumise à la condition suivante : l'acheteur doit avoir suivi 100% des modules de la formation avant la demande de remboursement. Toute demande adressée sans preuve de complétion intégrale des modules (accès et progression vérifiables sur la plateforme) pourra être refusée.</p>
 
         <h2>7. Propriété intellectuelle</h2>
         <p>L'ensemble des contenus proposés (vidéos, textes, documents, outils) est protégé par le droit d'auteur. Toute reproduction, distribution ou revente, même partielle, est strictement interdite sans accord écrit préalable.</p>
 
         <h2>8. Responsabilité</h2>
-        <p>Les résultats présentés sur la page de vente sont des témoignages individuels et ne constituent pas une garantie de résultats. Les performances dépendent de l'implication de chaque client. Système Pirate ne saurait être tenu responsable des résultats obtenus ou non obtenus par l'acheteur.</p>
+        <p>Les résultats présentés sur la page de vente sont des témoignages individuels et ne constituent pas une garantie de résultats. Les performances dépendent de l'implication de chaque client. DigiDrop Academy ne saurait être tenu responsable des résultats obtenus ou non obtenus par l'acheteur.</p>
 
         <h2>9. Service client</h2>
-        <p>Pour toute question ou réclamation, contactez-nous à : <a href="mailto:support@systempirate.fr" style={{ color: "#a78bfa" }}>support@systempirate.fr</a></p>
+        <p>Pour toute question ou réclamation, contactez-nous à : <a href="mailto:support@digidropacademy.fr" style={{ color: "#a78bfa" }}>support@digidropacademy.fr</a></p>
         <p>Nous nous engageons à répondre dans un délai de 48h ouvrées.</p>
 
         <h2>10. Droit applicable</h2>

@@ -273,16 +273,16 @@ const Index = () => {
         <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(36px,6vw,64px)', lineHeight: 1, color: 'white', marginBottom: 30 }}>
           Pourquoi tu <em style={{ color: 'var(--sp-purple)', fontStyle: 'normal' }}>galères</em> encore à vendre en ligne
         </h2>
-        <p style={{ fontSize: 18, lineHeight: 1.7, color: '#ccc', marginBottom: 20 }}>Tu as essayé. Tu as regardé des centaines de vidéos YouTube. Tu as peut-être même acheté une formation. Et pourtant — <strong style={{ color: 'var(--sp-cream)' }}>toujours zéro vente.</strong></p>
-        <p style={{ fontSize: 18, lineHeight: 1.7, color: '#ccc', marginBottom: 20 }}>C'est pas ta faute. Les formateurs t'ont menti par omission. Ils arrondissent les bords, filtrent les vraies stratégies, gardent les meilleures techniques pour eux.</p>
+        <p style={{ fontSize: 18, lineHeight: 1.7, color: '#ccc', marginBottom: 20 }}>Tu as regardé des centaines de vidéos YouTube. Tu as peut-être acheté une formation. Résultat : <strong style={{ color: 'var(--sp-cream)' }}>toujours zéro vente.</strong></p>
+        <p style={{ fontSize: 18, lineHeight: 1.7, color: '#ccc', marginBottom: 20 }}>Ce n'est pas ta faute. C'est que 90% de ce qu'on t'a montré, c'est la version édulcorée — la stratégie qu'on te donne pour te garder accroché, jamais celle qui fait réellement rentrer l'argent.</p>
         <ul className="problem-list">
-          <li><span className="icon">✗</span><span>Tu passes des heures à créer du contenu pour 300 vues et 0 vente</span></li>
-          <li><span className="icon">✗</span><span>Tu ne sais pas quoi vendre ni comment créer un produit qui se vend</span></li>
-          <li><span className="icon">✗</span><span>Tu penses qu'il faut des milliers d'abonnés pour commencer à gagner de l'argent</span></li>
-          <li><span className="icon">✗</span><span>Personne ne t'a montré comment construire une offre qui donne vraiment envie d'acheter</span></li>
-          <li><span className="icon">✗</span><span>Tu bosses pour rien pendant que d'autres encaissent sans montrer leur visage</span></li>
+          <li><span className="icon">✗</span><span>Tu crées du contenu pendant des heures pour 300 vues et 0 vente</span></li>
+          <li><span className="icon">✗</span><span>Tu n'as toujours pas d'offre — juste des idées de contenu</span></li>
+          <li><span className="icon">✗</span><span>On t'a fait croire qu'il fallait 10K abonnés avant de gagner un centime</span></li>
+          <li><span className="icon">✗</span><span>Tu bosses gratuitement pendant que d'autres encaissent sans jamais montrer leur visage</span></li>
         </ul>
-        <p style={{ fontSize: 18, lineHeight: 1.7, color: '#ccc' }}><strong style={{ color: 'var(--sp-cream)' }}>Système Pirate c'est la fin de tout ça.</strong> Pas de langue de bois. Pas de stratégie édulcorée. Le système brut, tel qu'il est utilisé pour générer des ventes chaque jour.</p>
+        <p style={{ fontSize: 18, lineHeight: 1.7, color: '#ccc' }}>Le problème n'est pas ton contenu. C'est que personne ne t'a montré le système complet — l'offre, le tunnel, et la mécanique qui transforme un inconnu en acheteur en moins de 48h.</p>
+        <p style={{ fontSize: 18, lineHeight: 1.7, color: '#ccc', marginTop: 20 }}><strong style={{ color: 'var(--sp-cream)' }}>Système DigiDrop, c'est exactement ça.</strong> Pas de langue de bois, pas de version édulcorée. Le système brut, utilisé aujourd'hui même pour vendre en anonyme, sans visage, sans audience, sans stock.</p>
       </div>
 
       <div className="skull-divider">☠ ☠ ☠</div>
@@ -413,8 +413,8 @@ const Index = () => {
       </div>
 
       <footer className="sp-footer">
-        <p>© 2025 Système Pirate · Tous droits réservés · <a href="#" style={{ color: '#444' }}>Mentions légales</a> · <a href="/cgv" style={{ color: '#444' }}>CGV</a></p>
-        <p style={{ marginTop: 8 }}>Support : <a href="mailto:support@systempirate.fr" style={{ color: '#666' }}>support@systempirate.fr</a></p>
+        <p>© 2025 DigiDrop Academy · Tous droits réservés · <a href="#" style={{ color: '#444' }}>Mentions légales</a> · <a href="/cgv" style={{ color: '#444' }}>CGV</a></p>
+        <p style={{ marginTop: 8 }}>Support : <a href="mailto:support@digidropacademy.fr" style={{ color: '#666' }}>support@digidropacademy.fr</a></p>
       </footer>
 
       <div id="social-proof-container"></div>
