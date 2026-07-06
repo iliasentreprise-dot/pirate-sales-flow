@@ -12,8 +12,10 @@ const PAYPAL_CLIENT_ID =
   "AbwLv3_GiqKnxihz6BZBDHHYRmOjlLtONZtpj5nhAeWDEX9wEgUQ9mrhyt6TUal1lqG1gdZwZLANm8D3";
 const IS_SANDBOX = import.meta.env.VITE_PAYPAL_ENV === "sandbox";
 
-// Initialisé une seule fois en dehors du composant pour éviter les re-créations
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(
+  import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ||
+  "pk_test_51TWvb5GqZFAn54QOWZfWlIHhlgyD7QaDLbcIShBotQwmF1Q4umu78j0wPJ2RsK85vPOGxEbiV5Ldr3wR5Snnn2Fl003SNEaPYf"
+);
 
 const CountdownTimer = ({ hours }: { hours: number }) => {
   const [endTs] = useState(() => {
