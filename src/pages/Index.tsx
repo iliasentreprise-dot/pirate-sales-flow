@@ -358,7 +358,7 @@ const Index = () => {
         <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(36px,6vw,64px)', color: 'white', lineHeight: 1, marginBottom: 20 }}>Tu es prêt à <span style={{ color: 'var(--sp-purple)' }}>passer pirate</span> ?</h2>
         <div className="price-block" style={{ margin: '24px 0' }}>
           <div className="price-old">697€</div>
-          <div className="price-new">144€</div>
+          <div className="price-new">97€</div>
           <div className="price-note">Formation + Pack Bonus Secret · Offre Live uniquement</div>
         </div>
         <div className="urgency-bar">
