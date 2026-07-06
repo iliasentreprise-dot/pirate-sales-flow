@@ -218,12 +218,12 @@ const Index = () => {
         <div style={{ marginBottom: 32, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
           <img src={logo} alt="Drop Digital" className="floating-logo" />
         </div>
-        <div className="badge-top">⚓ MÉTHODE INTERDITE — LES AUTRES NE VEULENT PAS QUE VOUS VOYIEZ ÇA ⚓</div>
+        <div className="badge-top">🤖 UN SYSTÈME QUI AUTOMATISE CHAQUE PROCESS POUR VENDRE DES PDF SUR TIKTOK ANONYMEMENT</div>
         <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(36px,7vw,80px)', letterSpacing: '-1px', color: 'white', textTransform: 'uppercase', lineHeight: 0.9, marginBottom: 10 }}>
           Faire <span style={{ color: '#a855f7' }}>1 027 €</span> par jour avec le <span style={{ color: '#a855f7' }}>DropDigital</span> automatisé
         </h1>
         <p style={{ fontSize: 'clamp(16px,3vw,22px)', color: 'var(--sp-cream)', opacity: 0.85, maxWidth: 700, margin: '20px auto 10px', lineHeight: 1.5 }}>
-          La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels —<strong style={{ color: 'var(--sp-purple-light)' }}> sans montrer ton visage, sans audience, sans budget pub.</strong><br />Des ventes dès la première semaine. Garanti.
+          La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels —<strong style={{ color: 'var(--sp-purple-light)' }}> sans montrer ton visage, sans audience, sans budget pub, sans même avoir besoin de créer ton contenu toi même.</strong><br />Des ventes dès la première semaine. Garanti.
         </p>
         <div className="price-block">
           <div className="price-old">697€</div>
