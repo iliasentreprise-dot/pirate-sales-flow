@@ -220,7 +220,7 @@ const Orderbump = () => {
           <h3>📋 RÉCAPITULATIF DE COMMANDE</h3>
           <div className="ob-order-line"><span>🤖 Système DigiDrop (méthode complète)</span><span className="price">97€</span></div>
           {bumpAdded && (
-            <div className="ob-order-line"><span>🤖 Pack Bonus Secret (2 logiciels)</span><span className="price">47€</span></div>
+            <div className="ob-order-line"><span>👑 Pack Bonus Secret (2 logiciels)</span><span className="price">47€</span></div>
           )}
           <div className="ob-order-line ob-bonus-line">
             <span className="ob-bonus-label">
