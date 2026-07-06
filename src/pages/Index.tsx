@@ -244,15 +244,15 @@ const Index = () => {
 
       <div style={{ background: '#111111', padding: '80px 20px' }}>
         <div style={{ maxWidth: 860, margin: '0 auto' }}>
-          <span className="section-tag" style={{ fontSize: 'clamp(18px,3vw,28px)', letterSpacing: 3, color: 'white', marginBottom: 24 }}>⚓ C'EST QUOI LE DROP DIGITAL AUTOMATISÉ ?</span>
+          <span className="section-tag" style={{ fontSize: 'clamp(18px,3vw,28px)', letterSpacing: 3, color: 'white', marginBottom: 24 }}>🤖 C'EST QUOI LE DROP DIGITAL AUTOMATISÉ ?</span>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 16, marginTop: 32 }}>
             <div className="module-glow">
               <h3 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 20, color: 'white', marginBottom: 10 }}>Étape 1 — Tu crées ton produit digital en 5 minutes</h3>
               <p style={{ fontSize: 16, color: '#bbb', lineHeight: 1.7 }}>Grâce à notre outil IA on te génère un PDF complet et une page de vente prête à encaisser. Zéro compétence. Zéro temps perdu.</p>
             </div>
             <div className="module-glow">
-              <h3 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 20, color: 'white', marginBottom: 10 }}>Étape 2 — Le Système Pirate transforme tes <span style={{ color: '#7c3aed', fontWeight: 700 }}>VUES</span> en <span style={{ color: '#7c3aed', fontWeight: 700 }}>VENTES</span></h3>
-              <p style={{ fontSize: 16, color: '#bbb', lineHeight: 1.7 }}>Un tunnel de vente <span style={{ color: '#7c3aed', fontWeight: 700 }}>AGRESSIF</span> — 300% plus <span style={{ color: '#7c3aed', fontWeight: 700 }}>EFFICACE</span> qu'un tunnel classique — qui pousse chaque visiteur à acheter impulsivement. Sans te montrer. Sans négocier. Sans relancer.</p>
+              <h3 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 20, color: 'white', marginBottom: 10 }}>Étape 2 — Le Système DigiDrop transforme tes <span style={{ color: '#7c3aed', fontWeight: 700 }}>VUES</span> en <span style={{ color: '#7c3aed', fontWeight: 700 }}>VENTES</span></h3>
+              <p style={{ fontSize: 16, color: '#bbb', lineHeight: 1.7 }}>Un tunnel de vente <span style={{ color: '#7c3aed', fontWeight: 700 }}>ÉMOTIONNEL</span> — 300% plus <span style={{ color: '#7c3aed', fontWeight: 700 }}>EFFICACE</span> qu'un tunnel classique — qui pousse chaque visiteur à acheter impulsivement. Sans te montrer. Sans négocier. Sans relancer.</p>
             </div>
             <div className="module-glow">
               <h3 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 20, color: 'white', marginBottom: 10 }}>Étape 3 — Des carrousels TikTok automatisés vendent à ta place</h3>
