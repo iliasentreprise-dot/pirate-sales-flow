@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import bonusTiktokSecret from "@/assets/bonus-tiktok-secret.jpg";
 import bonusBoostUltime from "@/assets/bonus-boost-ultime.jpg";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
-import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import type { Stripe, StripeCardElement } from "@stripe/stripe-js";
 
 const PAYPAL_CLIENT_ID =
   import.meta.env.VITE_PAYPAL_CLIENT_ID ||
@@ -106,38 +106,73 @@ function validateFields(
   return true;
 }
 
-interface CheckoutFormProps {
+interface CardSectionProps {
   bumpAdded: boolean;
   customerName: string;
   customerEmail: string;
   setFieldError: (e: string) => void;
   token: string | null;
-  clientSecret: string;
+  clientSecret: string | null;
 }
 
-function CheckoutForm({ bumpAdded, customerName, customerEmail, setFieldError, token, clientSecret }: CheckoutFormProps) {
-  const stripe = useStripe();
-  const elements = useElements();
+// Vanilla Stripe.js monté directement sur un ref DOM — aucun wrapper React
+function CardPaymentSection({ bumpAdded, customerName, customerEmail, setFieldError, token, clientSecret }: CardSectionProps) {
+  const mountRef = useRef<HTMLDivElement>(null);
+  const stripeRef = useRef<Stripe | null>(null);
+  const cardRef = useRef<StripeCardElement | null>(null);
+  const [cardReady, setCardReady] = useState(false);
   const [loading, setLoading] = useState(false);
   const [paymentError, setPaymentError] = useState("");
   const total = bumpAdded ? "144" : "97";
-  const ready = !!(stripe && elements);
 
-  const handleSubmit = async () => {
+  useEffect(() => {
+    let destroyed = false;
+
+    stripePromise.then((s) => {
+      if (!s || !mountRef.current || destroyed) return;
+
+      stripeRef.current = s;
+      const elements = s.elements();
+      const card = elements.create("card", {
+        style: {
+          base: {
+            color: "#f2ead8",
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "16px",
+            "::placeholder": { color: "#888" },
+            iconColor: "#a78bfa",
+          },
+          invalid: { color: "#e8110a", iconColor: "#e8110a" },
+        },
+        hidePostalCode: true,
+      });
+
+      card.mount(mountRef.current);
+      cardRef.current = card;
+      card.on("ready", () => { if (!destroyed) setCardReady(true); });
+    });
+
+    return () => {
+      destroyed = true;
+      cardRef.current?.destroy();
+      cardRef.current = null;
+      stripeRef.current = null;
+      setCardReady(false);
+    };
+  }, []);
+
+  const handlePay = async () => {
     if (!validateFields(customerName, customerEmail, setFieldError)) return;
-    if (!stripe || !elements) return;
-
-    const cardElement = elements.getElement(CardElement);
-    if (!cardElement) return;
+    if (!stripeRef.current || !cardRef.current || !clientSecret) return;
 
     setLoading(true);
     setPaymentError("");
     sessionStorage.setItem("declic_name", customerName.trim());
     sessionStorage.setItem("declic_email", customerEmail.trim());
 
-    const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+    const { error, paymentIntent } = await stripeRef.current.confirmCardPayment(clientSecret, {
       payment_method: {
-        card: cardElement,
+        card: cardRef.current,
         billing_details: {
           name: customerName.trim(),
           email: customerEmail.trim(),
@@ -145,13 +180,10 @@ function CheckoutForm({ bumpAdded, customerName, customerEmail, setFieldError, t
       },
     });
 
-    // confirmCardPayment gère nativement le 3DS via popup avant de résoudre
     if (error) {
       setPaymentError(error.message ?? "Erreur de paiement. Veuillez réessayer.");
       setLoading(false);
     } else if (paymentIntent) {
-      // Navigation manuelle équivalente au return_url Stripe —
-      // Upsell0 lit payment_intent dans les search params pour déclencher save-customer
       window.location.href =
         `${window.location.origin}/upsell0` +
         `?payment_intent=${paymentIntent.id}` +
@@ -160,39 +192,31 @@ function CheckoutForm({ bumpAdded, customerName, customerEmail, setFieldError, t
     }
   };
 
+  const ready = cardReady && !!clientSecret;
+
   return (
     <>
       <div style={{ color: "#a855f7", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>
         Numéro de carte
       </div>
-      <div style={{
-        background: "#111",
-        border: "1px solid rgba(167,139,250,0.3)",
-        borderRadius: 4,
-        padding: "14px 16px",
-        marginBottom: 4,
-      }}>
-        <CardElement options={{
-          style: {
-            base: {
-              color: "#f2ead8",
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "15px",
-              "::placeholder": { color: "#666" },
-              iconColor: "#a78bfa",
-            },
-            invalid: { color: "#e8110a", iconColor: "#e8110a" },
-          },
-          hidePostalCode: true,
-        }} />
-      </div>
+      <div
+        ref={mountRef}
+        style={{
+          background: "#111",
+          border: "1px solid rgba(167,139,250,0.3)",
+          borderRadius: 4,
+          padding: "14px 16px",
+          minHeight: 24,
+          marginBottom: 4,
+        }}
+      />
       {paymentError && (
         <p style={{ color: "#e8110a", fontSize: 13, margin: "8px 0 4px", lineHeight: 1.5 }}>
           {paymentError}
         </p>
       )}
       <button
-        onClick={handleSubmit}
+        onClick={handlePay}
         disabled={!ready || loading}
         style={{
           display: "flex",
@@ -237,7 +261,6 @@ const Orderbump = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Recrée un PaymentIntent à chaque changement de montant (bump toggle)
   useEffect(() => {
     setClientSecret(null);
     setPiError(false);
@@ -312,7 +335,6 @@ const Orderbump = () => {
         .ob-klarna-btn:hover { filter:brightness(0.93); }
         .ob-klarna-logo { font-family:'DM Sans',sans-serif; font-size:22px; font-weight:900; color:#17120E; letter-spacing:-1px; display:inline-block; }
         .ob-klarna-sub { text-align:center; font-size:12px; color:#888; margin-top:4px; margin-bottom:0; }
-
       `}</style>
 
       <div className="ob-hero">
@@ -467,25 +489,15 @@ const Orderbump = () => {
           <p style={{ color: "#e8110a", fontSize: 14, textAlign: "center", padding: "20px 0", marginBottom: 8, lineHeight: 1.6 }}>
             Impossible de charger le formulaire de paiement.<br />Veuillez rafraîchir la page ou contacter le support.
           </p>
-        ) : clientSecret ? (
-          <Elements
-            stripe={stripePromise}
-            options={{ locale: "fr" }}
-            key={clientSecret}
-          >
-            <CheckoutForm
-              bumpAdded={bumpAdded}
-              customerName={customerName}
-              customerEmail={customerEmail}
-              setFieldError={setFieldError}
-              token={token}
-              clientSecret={clientSecret}
-            />
-          </Elements>
         ) : (
-          <div style={{ textAlign: "center", padding: "24px 0 16px", color: "#888", fontSize: 14 }}>
-            Chargement du formulaire de paiement...
-          </div>
+          <CardPaymentSection
+            bumpAdded={bumpAdded}
+            customerName={customerName}
+            customerEmail={customerEmail}
+            setFieldError={setFieldError}
+            token={token}
+            clientSecret={clientSecret}
+          />
         )}
 
         {/* Bouton Klarna — inchangé */}
