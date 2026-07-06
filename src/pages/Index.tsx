@@ -321,15 +321,15 @@ const Index = () => {
       <div className="divider"></div>
 
       <div className="recois-section">
-        <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(36px,6vw,64px)', lineHeight: 1, color: 'white', marginBottom: 30 }}>☠️ TOUT CE QUE TU REÇOIS<br />DANS LE SYSTÈME PIRATE</h2>
+        <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(36px,6vw,64px)', lineHeight: 1, color: 'white', marginBottom: 30 }}>☠️ TOUT CE QUE TU REÇOIS<br />DANS LA DIGIDROP ACADEMY</h2>
         <img className="recois-mockup" src={mockup.url} alt="Système Pirate - Mockup" />
         <ul className="recois-list">
-          <li><span>✅ Le Système Pirate complet — 6 modules</span><span className="recois-price">197€</span></li>
+          <li><span>✅ LE sYSTÈME DigiDrop complet — 6 modules</span><span className="recois-price">197€</span></li>
           <li><span>✅ Accompagnement personnalisé</span><span className="recois-price">147€</span></li>
           <li><span>✅ Outil IA secret</span><span className="recois-price">97€</span></li>
           <li><span>✅ Tunnel de vente à haute conversion</span><span className="recois-price">97€</span></li>
-          <li><span>✅ Méthode Carrousels comme un vrai Pirate</span><span className="recois-price">67€</span></li>
-          <li><span>✅ Templates produit digital</span><span className="recois-price">47€</span></li>
+          <li><span>✅ Méthode Carrousels Viral et ciblé</span><span className="recois-price">67€</span></li>
+          <li><span>✅ logiciel qui créer ton produit digital et ton site à ta place en 5min</span><span className="recois-price">47€</span></li>
           <li><span>✅ Groupe privé résultats élèves</span><span className="recois-price">45€</span></li>
           <li><span>✅ Garantie 30 jours satisfait ou remboursé</span><span className="recois-price">Inclus</span></li>
           <li><span>✅ Accès à vie</span><span className="recois-price">Inclus</span></li>
