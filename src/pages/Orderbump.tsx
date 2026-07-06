@@ -3,12 +3,17 @@ import bonusTiktokSecret from "@/assets/bonus-tiktok-secret.jpg";
 import bonusBoostUltime from "@/assets/bonus-boost-ultime.jpg";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
 const PAYPAL_CLIENT_ID =
   import.meta.env.VITE_PAYPAL_CLIENT_ID ||
   "AbwLv3_GiqKnxihz6BZBDHHYRmOjlLtONZtpj5nhAeWDEX9wEgUQ9mrhyt6TUal1lqG1gdZwZLANm8D3";
 const IS_SANDBOX = import.meta.env.VITE_PAYPAL_ENV === "sandbox";
+
+// Initialisé une seule fois en dehors du composant pour éviter les re-créations
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const CountdownTimer = ({ hours }: { hours: number }) => {
   const [endTs] = useState(() => {
@@ -33,6 +38,7 @@ const CountdownTimer = ({ hours }: { hours: number }) => {
   );
 };
 
+// Composant mort — conservé intentionnellement, non utilisé dans le JSX actuel
 function PayPalSection({ bumpAdded }: { bumpAdded: boolean }) {
   const navigate = useNavigate();
   const amount = bumpAdded ? "144.00" : "97.00";
@@ -75,16 +81,145 @@ function PayPalSection({ bumpAdded }: { bumpAdded: boolean }) {
   );
 }
 
+function validateFields(
+  customerName: string,
+  customerEmail: string,
+  setFieldError: (e: string) => void
+): boolean {
+  const nameMissing = customerName.trim().length === 0;
+  const emailMissing = customerEmail.trim().length === 0;
+  if (nameMissing && emailMissing) {
+    setFieldError("* Veuillez renseigner votre prénom & nom et votre email avant de continuer.");
+    return false;
+  }
+  if (nameMissing) {
+    setFieldError("* Veuillez renseigner votre prénom et nom.");
+    return false;
+  }
+  if (emailMissing) {
+    setFieldError("* Veuillez renseigner votre adresse email.");
+    return false;
+  }
+  setFieldError("");
+  return true;
+}
+
+interface CheckoutFormProps {
+  bumpAdded: boolean;
+  customerName: string;
+  customerEmail: string;
+  setFieldError: (e: string) => void;
+  token: string | null;
+}
+
+function CheckoutForm({ bumpAdded, customerName, customerEmail, setFieldError, token }: CheckoutFormProps) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [loading, setLoading] = useState(false);
+  const [paymentError, setPaymentError] = useState("");
+  const total = bumpAdded ? "144" : "97";
+  const ready = !!(stripe && elements);
+
+  const handleSubmit = async () => {
+    if (!validateFields(customerName, customerEmail, setFieldError)) return;
+    if (!stripe || !elements) return;
+
+    setLoading(true);
+    setPaymentError("");
+    sessionStorage.setItem("declic_name", customerName.trim());
+    sessionStorage.setItem("declic_email", customerEmail.trim());
+
+    const { error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: `${window.location.origin}/upsell0?token=${token ?? ""}`,
+      },
+    });
+
+    // Stripe redirige automatiquement en cas de succès (y compris 3DS)
+    // On n'arrive ici qu'en cas d'erreur immédiate (ex: carte refusée)
+    if (error) {
+      setPaymentError(error.message ?? "Erreur de paiement. Veuillez réessayer.");
+      setLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <div style={{ marginBottom: 4 }}>
+        <PaymentElement options={{ layout: "tabs" }} />
+      </div>
+      {paymentError && (
+        <p style={{ color: "#e8110a", fontSize: 13, margin: "8px 0 4px", lineHeight: 1.5 }}>
+          {paymentError}
+        </p>
+      )}
+      <button
+        onClick={handleSubmit}
+        disabled={!ready || loading}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          background: "linear-gradient(135deg, #7c3aed, #a855f7)",
+          color: "#fff",
+          fontFamily: "'Bebas Neue', sans-serif",
+          fontSize: 28,
+          letterSpacing: 1,
+          textAlign: "center" as const,
+          padding: "18px 20px",
+          marginTop: 16,
+          marginBottom: 8,
+          border: "none",
+          cursor: !ready || loading ? "not-allowed" : "pointer",
+          fontWeight: 700,
+          boxSizing: "border-box" as const,
+          opacity: !ready || loading ? 0.65 : 1,
+          transition: "opacity 0.2s",
+        }}
+      >
+        {loading ? "Traitement en cours..." : `Payer ${total}€ par carte`}
+      </button>
+    </>
+  );
+}
+
 const Orderbump = () => {
   const [bumpAdded, setBumpAdded] = useState(true);
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [fieldError, setFieldError] = useState("");
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [piError, setPiError] = useState(false);
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token");
   const total = bumpAdded ? "144€" : "97€";
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // Recrée un PaymentIntent à chaque changement de montant (bump toggle)
+  useEffect(() => {
+    setClientSecret(null);
+    setPiError(false);
+    supabase.functions
+      .invoke("create-payment-intent", {
+        body: {
+          amount: bumpAdded ? 14400 : 9700,
+          bump: bumpAdded,
+          payment_method_types: ["card"],
+        },
+      })
+      .then(({ data, error }) => {
+        if (error || !data?.clientSecret) {
+          setPiError(true);
+        } else {
+          setClientSecret(data.clientSecret);
+        }
+      });
+  }, [bumpAdded]);
 
   return (
     <div style={{ background: "#0a0a0a", color: "#f2ead8", fontFamily: "'DM Sans', sans-serif", minHeight: "100vh" }}>
@@ -140,6 +275,8 @@ const Orderbump = () => {
         .ob-klarna-btn:hover { filter:brightness(0.93); }
         .ob-klarna-logo { font-family:'DM Sans',sans-serif; font-size:22px; font-weight:900; color:#17120E; letter-spacing:-1px; display:inline-block; }
         .ob-klarna-sub { text-align:center; font-size:12px; color:#888; margin-top:4px; margin-bottom:0; }
+        /* Assure que le modal 3DS Stripe s'affiche correctement au-dessus de tout */
+        .stripe-payment-element-iframe { position:relative; z-index:1; }
       `}</style>
 
       <div className="ob-hero">
@@ -241,46 +378,46 @@ const Orderbump = () => {
           <div>
             <div style={{ color: "#a855f7", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>Nom & Prénom</div>
             <input
-            type="text"
-            required
-            placeholder="Jean Dupont"
-            value={customerName}
-            onChange={(e) => setCustomerName(e.target.value)}
-            style={{
-              width: "100%",
-              background: "#111",
-              border: "1px solid rgba(255,255,255,0.12)",
-              borderRadius: 4,
-              color: "#f2ead8",
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: 15,
-              padding: "14px 16px",
-              outline: "none",
-              boxSizing: "border-box",
-            }}
-          />
+              type="text"
+              required
+              placeholder="Jean Dupont"
+              value={customerName}
+              onChange={(e) => setCustomerName(e.target.value)}
+              style={{
+                width: "100%",
+                background: "#111",
+                border: "1px solid rgba(255,255,255,0.12)",
+                borderRadius: 4,
+                color: "#f2ead8",
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 15,
+                padding: "14px 16px",
+                outline: "none",
+                boxSizing: "border-box",
+              }}
+            />
           </div>
           <div>
             <div style={{ color: "#a855f7", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>Email</div>
             <input
-            type="email"
-            required
-            placeholder="jean@example.com"
-            value={customerEmail}
-            onChange={(e) => setCustomerEmail(e.target.value)}
-            style={{
-              width: "100%",
-              background: "#111",
-              border: "1px solid rgba(255,255,255,0.12)",
-              borderRadius: 4,
-              color: "#f2ead8",
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: 15,
-              padding: "14px 16px",
-              outline: "none",
-              boxSizing: "border-box",
-            }}
-          />
+              type="email"
+              required
+              placeholder="jean@example.com"
+              value={customerEmail}
+              onChange={(e) => setCustomerEmail(e.target.value)}
+              style={{
+                width: "100%",
+                background: "#111",
+                border: "1px solid rgba(255,255,255,0.12)",
+                borderRadius: 4,
+                color: "#f2ead8",
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 15,
+                padding: "14px 16px",
+                outline: "none",
+                boxSizing: "border-box",
+              }}
+            />
           </div>
         </div>
 
@@ -289,51 +426,32 @@ const Orderbump = () => {
             {fieldError}
           </p>
         )}
-        <button
-          onClick={() => {
-            const nameMissing = customerName.trim().length === 0;
-            const emailMissing = customerEmail.trim().length === 0;
-            if (nameMissing && emailMissing) {
-              setFieldError("* Veuillez renseigner votre prénom & nom et votre email avant de continuer.");
-              return;
-            }
-            if (nameMissing) {
-              setFieldError("* Veuillez renseigner votre prénom et nom.");
-              return;
-            }
-            if (emailMissing) {
-              setFieldError("* Veuillez renseigner votre adresse email.");
-              return;
-            }
-            setFieldError("");
-            sessionStorage.setItem("declic_name", customerName.trim());
-            sessionStorage.setItem("declic_email", customerEmail.trim());
-            const url = bumpAdded
-              ? "https://revolut.me/ilias_business?currency=EUR&amount=14400&note=Formation%20%20%20Logiciel%20d%27automatisation"
-              : "https://revolut.me/ilias_business?currency=EUR&amount=9700&note=Le%20Système%20pirate%20complet";
-            window.open(url, "_blank", "noopener,noreferrer");
-          }}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "100%",
-            background: "linear-gradient(135deg, #7c3aed, #a855f7)",
-            color: "#fff",
-            fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: 28,
-            letterSpacing: 1,
-            textAlign: "center",
-            padding: "18px 20px",
-            marginBottom: 8,
-            border: "none",
-            cursor: "pointer",
-            fontWeight: 700,
-            boxSizing: "border-box",
-          }}
-        >
-          Payer par carte — {bumpAdded ? "144" : "97"}€
-        </button>
+
+        {piError ? (
+          <p style={{ color: "#e8110a", fontSize: 14, textAlign: "center", padding: "20px 0", marginBottom: 8, lineHeight: 1.6 }}>
+            Impossible de charger le formulaire de paiement.<br />Veuillez rafraîchir la page ou contacter le support.
+          </p>
+        ) : clientSecret ? (
+          <Elements
+            stripe={stripePromise}
+            options={{ clientSecret, locale: "fr" }}
+            key={clientSecret}
+          >
+            <CheckoutForm
+              bumpAdded={bumpAdded}
+              customerName={customerName}
+              customerEmail={customerEmail}
+              setFieldError={setFieldError}
+              token={token}
+            />
+          </Elements>
+        ) : (
+          <div style={{ textAlign: "center", padding: "24px 0 16px", color: "#888", fontSize: 14 }}>
+            Chargement du formulaire de paiement...
+          </div>
+        )}
+
+        {/* Bouton Klarna — inchangé */}
         {(() => {
           const klarnaLinkBase = "https://buy.stripe.com/dRmfZhafw6RyeQ0dt86wE04";
           const klarnaLinkBump = "https://buy.stripe.com/7sY4gzbjA1xegY83Sy6wE01";
@@ -344,21 +462,7 @@ const Orderbump = () => {
               <button
                 className="ob-klarna-btn"
                 onClick={() => {
-                  const nameMissing = customerName.trim().length === 0;
-                  const emailMissing = customerEmail.trim().length === 0;
-                  if (nameMissing && emailMissing) {
-                    setFieldError("* Veuillez renseigner votre prénom & nom et votre email avant de continuer.");
-                    return;
-                  }
-                  if (nameMissing) {
-                    setFieldError("* Veuillez renseigner votre prénom et nom.");
-                    return;
-                  }
-                  if (emailMissing) {
-                    setFieldError("* Veuillez renseigner votre adresse email.");
-                    return;
-                  }
-                  setFieldError("");
+                  if (!validateFields(customerName, customerEmail, setFieldError)) return;
                   sessionStorage.setItem("declic_name", customerName.trim());
                   sessionStorage.setItem("declic_email", customerEmail.trim());
                   window.open(klarnaLink, "_blank", "noopener,noreferrer");
@@ -371,8 +475,9 @@ const Orderbump = () => {
             </>
           );
         })()}
+
         <p style={{ textAlign: "center", fontSize: 12, color: "#555", marginBottom: 24, marginTop: 16 }}>
-          🔒 Paiement sécurisé avec Revolut · SSL 256 bits
+          🔒 Paiement sécurisé par Stripe · SSL 256 bits
         </p>
       </div>
     </div>
