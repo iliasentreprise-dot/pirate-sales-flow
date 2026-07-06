@@ -368,7 +368,7 @@ const Index = () => {
           <div className="urgency-labels"><span style={{ color: '#a78bfa' }}>17 places prises</span><span style={{ color: '#e8110a' }}>3 places restantes</span></div>
         </div>
         <div style={{ maxWidth: 560, margin: '32px auto 0' }}>
-          <PayPalCheckout amount={144} onSuccess={handlePayPalSuccess} />
+          <PayPalCheckout amount={97} onSuccess={handlePayPalSuccess} />
         </div>
         <span className="warning-text" style={{ display: 'block', marginTop: 16 }}>⚠️ Cette offre disparaît dès la fin du live</span>
         <span className="btn-sub">Accès immédiat après paiement · 100% sécurisé</span>
