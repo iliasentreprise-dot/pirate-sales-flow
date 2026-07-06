@@ -14,7 +14,7 @@ const IS_SANDBOX = import.meta.env.VITE_PAYPAL_ENV === "sandbox";
 
 const stripePromise = loadStripe(
   import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ||
-  "pk_test_51TWvb5GqZFAn54QOWZfWlIHhlgyD7QaDLbcIShBotQwmF1Q4umu78j0wPJ2RsK85vPOGxEbiV5Ldr3wR5Snnn2Fl003SNEaPYf"
+  "pk_live_51TWvb5GqZFAn54QOa4159JaQPRoYCK0pbDR0pzDwSRphY9ENoQA49m8rRPJlZzU8krbBopRKCaA0BnjBIO3gFJxD00WDQpc8Cp"
 );
 
 const CountdownTimer = ({ hours }: { hours: number }) => {
