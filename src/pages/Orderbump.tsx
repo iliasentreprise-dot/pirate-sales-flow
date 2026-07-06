@@ -470,7 +470,7 @@ const Orderbump = () => {
         ) : clientSecret ? (
           <Elements
             stripe={stripePromise}
-            options={{ clientSecret, locale: "fr" }}
+            options={{ locale: "fr" }}
             key={clientSecret}
           >
             <CheckoutForm
