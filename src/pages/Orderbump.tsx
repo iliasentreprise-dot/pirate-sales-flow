@@ -5,7 +5,7 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
-import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
 const PAYPAL_CLIENT_ID =
   import.meta.env.VITE_PAYPAL_CLIENT_ID ||
@@ -112,9 +112,10 @@ interface CheckoutFormProps {
   customerEmail: string;
   setFieldError: (e: string) => void;
   token: string | null;
+  clientSecret: string;
 }
 
-function CheckoutForm({ bumpAdded, customerName, customerEmail, setFieldError, token }: CheckoutFormProps) {
+function CheckoutForm({ bumpAdded, customerName, customerEmail, setFieldError, token, clientSecret }: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -126,30 +127,61 @@ function CheckoutForm({ bumpAdded, customerName, customerEmail, setFieldError, t
     if (!validateFields(customerName, customerEmail, setFieldError)) return;
     if (!stripe || !elements) return;
 
+    const cardElement = elements.getElement(CardElement);
+    if (!cardElement) return;
+
     setLoading(true);
     setPaymentError("");
     sessionStorage.setItem("declic_name", customerName.trim());
     sessionStorage.setItem("declic_email", customerEmail.trim());
 
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: `${window.location.origin}/upsell0?token=${token ?? ""}`,
+    const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: cardElement,
+        billing_details: {
+          name: customerName.trim(),
+          email: customerEmail.trim(),
+        },
       },
     });
 
-    // Stripe redirige automatiquement en cas de succès (y compris 3DS)
-    // On n'arrive ici qu'en cas d'erreur immédiate (ex: carte refusée)
+    // confirmCardPayment gère nativement le 3DS via popup avant de résoudre
     if (error) {
       setPaymentError(error.message ?? "Erreur de paiement. Veuillez réessayer.");
       setLoading(false);
+    } else if (paymentIntent) {
+      // Navigation manuelle équivalente au return_url Stripe —
+      // Upsell0 lit payment_intent dans les search params pour déclencher save-customer
+      window.location.href =
+        `${window.location.origin}/upsell0` +
+        `?payment_intent=${paymentIntent.id}` +
+        `&payment_intent_client_secret=${encodeURIComponent(paymentIntent.client_secret ?? "")}` +
+        `&token=${token ?? ""}`;
     }
   };
 
   return (
     <>
-      <div style={{ marginBottom: 4 }}>
-        <PaymentElement options={{ layout: "tabs" }} />
+      <div style={{
+        background: "#111",
+        border: "1px solid rgba(167,139,250,0.3)",
+        borderRadius: 4,
+        padding: "14px 16px",
+        marginBottom: 4,
+      }}>
+        <CardElement options={{
+          style: {
+            base: {
+              color: "#f2ead8",
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "15px",
+              "::placeholder": { color: "#666" },
+              iconColor: "#a78bfa",
+            },
+            invalid: { color: "#e8110a", iconColor: "#e8110a" },
+          },
+          hidePostalCode: true,
+        }} />
       </div>
       {paymentError && (
         <p style={{ color: "#e8110a", fontSize: 13, margin: "8px 0 4px", lineHeight: 1.5 }}>
@@ -277,8 +309,7 @@ const Orderbump = () => {
         .ob-klarna-btn:hover { filter:brightness(0.93); }
         .ob-klarna-logo { font-family:'DM Sans',sans-serif; font-size:22px; font-weight:900; color:#17120E; letter-spacing:-1px; display:inline-block; }
         .ob-klarna-sub { text-align:center; font-size:12px; color:#888; margin-top:4px; margin-bottom:0; }
-        /* Assure que le modal 3DS Stripe s'affiche correctement au-dessus de tout */
-        .stripe-payment-element-iframe { position:relative; z-index:1; }
+
       `}</style>
 
       <div className="ob-hero">
@@ -445,6 +476,7 @@ const Orderbump = () => {
               customerEmail={customerEmail}
               setFieldError={setFieldError}
               token={token}
+              clientSecret={clientSecret}
             />
           </Elements>
         ) : (
