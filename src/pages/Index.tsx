@@ -8,7 +8,7 @@ import avis6 from "@/assets/avis-6.png";
 import avisNoah from "@/assets/avis-noah.png";
 import avisLamine from "@/assets/avis-lamine.png";
 import avisProofLock from "@/assets/avis-proof-lock.png";
-import mockup from "@/assets/mockup-systeme-pirate-v2.png.asset.json";
+import mockup from "@/assets/mockup-systeme-pirate-v3.png.asset.json";
 import logo from "@/assets/logo-drop-digital.png";
 import PayPalCheckout from "@/components/PayPalCheckout";
 
