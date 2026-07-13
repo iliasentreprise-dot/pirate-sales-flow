@@ -494,20 +494,49 @@ const Orderbump = () => {
           </p>
         )}
 
-        {piError ? (
-          <p style={{ color: "#e8110a", fontSize: 14, textAlign: "center", padding: "20px 0", marginBottom: 8, lineHeight: 1.6 }}>
-            Impossible de charger le formulaire de paiement.<br />Veuillez rafraîchir la page ou contacter le support.
-          </p>
-        ) : (
-          <CardPaymentSection
-            bumpAdded={bumpAdded}
-            customerName={customerName}
-            customerEmail={customerEmail}
-            setFieldError={setFieldError}
-            token={token}
-            clientSecret={clientSecret}
-          />
-        )}
+        {(() => {
+          const revolutLink = bumpAdded
+            ? "https://revolut.me/ilias_business?currency=EUR&amount=14400&note=Formation%20%20%20Logiciel%20d%27automatisation"
+            : "https://revolut.me/ilias_business?currency=EUR&amount=9700&note=Le%20Syst%C3%A8me%20pirate%20complet";
+          const amountLabel = bumpAdded ? "144€" : "97€";
+          return (
+            <button
+              onClick={() => {
+                if (!validateFields(customerName, customerEmail, setFieldError)) return;
+                sessionStorage.setItem("declic_name", customerName.trim());
+                sessionStorage.setItem("declic_email", customerEmail.trim());
+                window.open(revolutLink, "_blank", "noopener,noreferrer");
+              }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 12,
+                width: "100%",
+                background: "#ffffff",
+                color: "#191c1f",
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 17,
+                fontWeight: 700,
+                letterSpacing: 0.3,
+                padding: "16px 20px",
+                border: "1px solid rgba(0,0,0,0.08)",
+                borderRadius: 8,
+                cursor: "pointer",
+                boxSizing: "border-box",
+                transition: "filter 0.2s",
+                marginBottom: 8,
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.filter = "brightness(0.95)")}
+              onMouseLeave={(e) => (e.currentTarget.style.filter = "brightness(1)")}
+            >
+              <svg width="22" height="22" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path fill="#191c1f" d="M40.5 22.1c0-6.7-5.4-12.1-12-12.1H13v40h7.6V34.3h5.6L36.3 50h8.9L34.7 33.6c3.4-1.9 5.8-5.5 5.8-9.7v-1.8Zm-7.6.5c0 2.7-2.2 4.9-4.9 4.9h-7.4v-9.8h7.4c2.7 0 4.9 2.2 4.9 4.9Z" />
+              </svg>
+              Payer {amountLabel} avec Revolut
+            </button>
+          );
+        })()}
 
         {/* Bouton Klarna — inchangé */}
         {(() => {
