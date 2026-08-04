@@ -123,7 +123,7 @@ function CardPaymentSection({ bumpAdded, customerName, customerEmail, setFieldEr
   const [cardReady, setCardReady] = useState(false);
   const [loading, setLoading] = useState(false);
   const [paymentError, setPaymentError] = useState("");
-  const total = bumpAdded ? "144" : "97";
+  const total = bumpAdded ? "191" : "144";
 
   useEffect(() => {
     let destroyed = false;
@@ -264,7 +264,7 @@ const Orderbump = () => {
   const [piError, setPiError] = useState(false);
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
-  const total = bumpAdded ? "144€" : "97€";
+  const total = bumpAdded ? "191€" : "144€";
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -276,7 +276,7 @@ const Orderbump = () => {
     supabase.functions
       .invoke("create-payment-intent", {
         body: {
-          amount: bumpAdded ? 14400 : 9700,
+          amount: bumpAdded ? 19100 : 14400,
           bump: bumpAdded,
           payment_method_types: ["card"],
         },
@@ -317,7 +317,12 @@ const Orderbump = () => {
         .ob-bump-price-row { display:flex; align-items:center; gap:16px; margin:24px 0 20px; flex-wrap:wrap; }
         .ob-bump-price-old { font-size:18px; color:#555; text-decoration:line-through; }
         .ob-bump-price-new { font-family:'Bebas Neue',sans-serif; font-size:52px; color:#a78bfa; line-height:1; }
-        .ob-bump-price-tag { background:#7c3aed; color:white; font-size:12px; padding:4px 12px; font-weight:700; letter-spacing:1px; }
+        .neon-live { display:inline-block; background:#050505; color:#fff; font-family:'Bebas Neue',sans-serif; font-size:14px; letter-spacing:3px; padding:8px 22px; border-radius:4px; border:1px solid #ff4444; text-shadow:0 0 8px #ff5555, 0 0 16px #ff5555; box-shadow:0 0 10px #e8110a, 0 0 25px #e8110a, 0 0 45px rgba(232,17,10,0.55); animation:neonPulse 1.6s ease-in-out infinite; margin:0 0 14px; }
+        @keyframes neonPulse {
+          0%, 100% { box-shadow:0 0 10px #e8110a, 0 0 25px #e8110a, 0 0 45px rgba(232,17,10,0.55); text-shadow:0 0 8px #ff5555, 0 0 16px #ff5555; }
+          50% { box-shadow:0 0 18px #ff4444, 0 0 42px #ff4444, 0 0 75px rgba(255,68,68,0.85); text-shadow:0 0 14px #ff8888, 0 0 30px #ff8888; }
+        }
+        .neon-red-tag { display:inline-block; background:#1a0505; color:#fff; font-size:12px; font-weight:800; letter-spacing:1px; padding:4px 12px; border-radius:6px; border:1px solid #ff4444; text-shadow:0 0 6px #ff5555; box-shadow:0 0 8px #e8110a, 0 0 18px rgba(232,17,10,0.6); animation:neonPulse 1.6s ease-in-out infinite; }
         .ob-summary-box { max-width:780px; margin:0 auto; padding:0 20px 60px; }
         .ob-order-summary { background:#1a1a1a; border:1px solid rgba(255,255,255,0.08); padding:30px; margin-bottom:24px; }
         .ob-order-summary h3 { font-family:'Bebas Neue',sans-serif; font-size:24px; color:white; margin-bottom:20px; letter-spacing:1px; }
@@ -338,7 +343,6 @@ const Orderbump = () => {
         .ob-bonus-thumb img { width:100%; height:auto; display:block; }
         .ob-bonus-thumb-label { padding:10px 12px; text-align:center; font-family:'Bebas Neue',sans-serif; font-size:14px; letter-spacing:1.5px; color:#d4af37; background:rgba(0,0,0,0.5); border-top:1px solid rgba(212,175,55,0.4); }
         @media (max-width:480px) { .ob-bonus-thumbs { grid-template-columns:1fr; } }
-        .ob-badge-red { background:#e8110a; color:white; font-size:13px; font-weight:700; padding:4px 10px; border-radius:999px; font-family:'DM Sans',sans-serif; letter-spacing:0.5px; }
         .ob-total-old { color:#666; text-decoration:line-through; font-size:14px; padding:6px 0 0; text-align:right; font-family:'DM Sans',sans-serif; }
         .ob-klarna-btn { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; background:#FFB3C7; color:#17120E; font-family:'DM Sans',sans-serif; font-size:17px; font-weight:700; letter-spacing:0.3px; padding:16px 20px; border:none; border-radius:8px; cursor:pointer; box-sizing:border-box; transition:filter 0.2s; }
         .ob-klarna-btn:hover { filter:brightness(0.93); }
@@ -347,14 +351,14 @@ const Orderbump = () => {
       `}</style>
 
       <div className="ob-hero">
-        <div className="ob-step-badge">🤖 ÉTAPE 2 SUR 2 — FINALISE TA COMMANDE</div>
-        <h1>Attends —<br /><span>Un bonus secret</span><br />t'attend ici</h1>
-        <p>Avant de payer, j'ai quelque chose d'exclusif à te proposer.<br />Quelque chose que je ne montre <strong>jamais publiquement.</strong></p>
+        <div className="ob-step-badge">ÉTAPE 2 SUR 2 — FINALISE TA COMMANDE</div>
+        <h1>Attends —<br /><span>un bonus caché</span><br />t'attend ici</h1>
+        <p>Avant de payer, il y a quelque chose d'exclusif à te proposer.<br />Quelque chose qui n'est <strong>jamais montré publiquement.</strong></p>
       </div>
 
       <div className="ob-bump-container">
         <div className="ob-bump-box">
-          <div className="ob-bump-label">⚡ OFFRE EXCLUSIVE — UNE SEULE FOIS</div>
+          <div className="ob-bump-label">OFFRE EXCLUSIVE — UNE SEULE FOIS</div>
           <div className="ob-bump-header">
             <div
               className={`ob-custom-check ${bumpAdded ? "checked" : ""}`}
@@ -364,20 +368,20 @@ const Orderbump = () => {
               tabIndex={0}
             >✓</div>
             <div className="ob-bump-title-block">
-              <div className="subtitle">✓ Ajouter à ma commande</div>
-              <h2>👑 Pack Bonus Secret<br />— Les 2 Logiciels qui font tourner le système en automatique</h2>
+              <div className="subtitle">✓ Ajouté à ma commande</div>
+              <h2>Pack Bonus Secret — les 2 logiciels qui font tourner le système en automatique</h2>
             </div>
           </div>
           <div className="ob-bump-body">
-            <div className="ob-secret-badge">🔒 JAMAIS VENDU PUBLIQUEMENT</div>
-            <p>Ces 2 logiciels, c'est ce que j'utilise en coulisses pour que mon système tourne sans moi. <strong>Je ne les montre jamais.</strong> Pourquoi ? Parce que le jour où tout le monde les utilise, ils perdent leur avantage.</p>
-            <p>Mais aujourd'hui, <em>uniquement sur cette page</em>, je te donne accès aux 2 outils qui alimentent ma machine à vendre. Tu récupères exactement :</p>
+            <div className="ob-secret-badge">JAMAIS VENDU PUBLIQUEMENT</div>
+            <p>Ces 2 logiciels, c'est ce qui tourne en coulisses pour que le système fonctionne sans intervention constante. <strong>Ils ne sont jamais montrés ailleurs.</strong> Le jour où tout le monde les utilise, ils perdent leur avantage.</p>
+            <p>Mais aujourd'hui, <em>uniquement sur cette page</em>, tu as accès aux 2 outils qui alimentent la machine à vendre. Tu récupères exactement :</p>
             <ul className="ob-bump-features">
-              <li><span className="icon">🤖</span><span><strong>L'Outil d'Automatisation TikTok SECRET</strong> — il publie, optimise et fait tourner tes comptes pendant que tu dors</span></li>
-              <li><span className="icon">🚀</span><span><strong>Le Logiciel de BOOST d'abonnés ULTIME</strong> — +100k abonnés en 24h, boost de vente et de confiance client intégré</span></li>
+              <li><span className="icon">▸</span><span><strong>L'Outil d'Automatisation TikTok</strong> — il publie, optimise et fait tourner tes comptes pendant que tu dors</span></li>
+              <li><span className="icon">▸</span><span><strong>Le Logiciel de Boost d'Abonnés</strong> — accélère ta croissance et renforce la confiance des visiteurs</span></li>
             </ul>
-            <p>Ces outils <strong>n'existent nulle part ailleurs à ce prix.</strong> Ils ne sont pas dans la formation. Ils ne sont pas sur mon TikTok. Ils ne seront plus disponibles après cette page. C'est la seule et unique fois que je les ouvre.</p>
-            <div className="ob-urgency-bar">⚠️ Cette offre disparaît dès que tu quittes cette page. Impossible d'y revenir après.</div>
+            <p>Ces outils <strong>n'existent nulle part ailleurs à ce prix.</strong> Ils ne sont pas dans la formation de base. Ils ne seront plus disponibles après cette page — c'est un bonus propre à ce tunnel de commande.</p>
+            <div className="ob-urgency-bar">Cette offre est propre à cette page de commande. Une fois que tu passes à l'étape suivante, elle ne se représente pas.</div>
 
             <div className="ob-bonus-thumbs">
               <div className="ob-bonus-thumb">
@@ -390,10 +394,11 @@ const Orderbump = () => {
               </div>
             </div>
 
+            <div className="neon-live">⚡ OFFRE LIVE</div>
             <div className="ob-bump-price-row">
-              <span className="ob-bump-price-old">Valeur réelle : 127€</span>
+              <span className="ob-bump-price-old">Valeur réelle : 247€</span>
               <span className="ob-bump-price-new">47€</span>
-              <span className="ob-bump-price-tag">-63%</span>
+              <span className="neon-red-tag">-81%</span>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12, margin: "24px 0" }}>
               <div
@@ -403,7 +408,7 @@ const Orderbump = () => {
                 <div style={{ width: 28, height: 28, borderRadius: 6, background: bumpAdded ? "#22c55e" : "#2a2a2a", boxShadow: "inset 0 2px 4px rgba(0,0,0,0.4)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "all 0.2s" }}>
                   {bumpAdded && <span style={{ color: "white", fontSize: 16, fontWeight: 700 }}>✓</span>}
                 </div>
-                <span style={{ color: "#22c55e", fontWeight: 700, fontSize: 15, lineHeight: 1.4 }}>✓ OUI, je veux les 2 logiciels secrets qui automatisent mon système TikTok</span>
+                <span style={{ color: "#22c55e", fontWeight: 700, fontSize: 15, lineHeight: 1.4 }}>OUI, je veux les 2 logiciels qui automatisent mon système TikTok</span>
               </div>
               <div
                 onClick={() => setBumpAdded(false)}
@@ -412,7 +417,7 @@ const Orderbump = () => {
                 <div style={{ width: 28, height: 28, borderRadius: 6, background: !bumpAdded ? "#e8110a" : "#2a2a2a", boxShadow: "inset 0 2px 4px rgba(0,0,0,0.4)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "all 0.2s" }}>
                   {!bumpAdded && <span style={{ color: "white", fontSize: 16, fontWeight: 700 }}>✗</span>}
                 </div>
-                <span style={{ color: "#e8110a", fontWeight: 600, fontSize: 14, lineHeight: 1.4 }}>NON, je préfère construire mon système sans les outils qui le font tourner en automatique</span>
+                <span style={{ color: "#e8110a", fontWeight: 600, fontSize: 14, lineHeight: 1.4 }}>NON, je préfère construire mon système sans les outils qui le font tourner en automatique, et travailler en continu manuellement</span>
               </div>
             </div>
           </div>
@@ -421,10 +426,10 @@ const Orderbump = () => {
 
       <div className="ob-summary-box">
         <div className="ob-order-summary">
-          <h3>📋 RÉCAPITULATIF DE COMMANDE</h3>
-          <div className="ob-order-line"><span>🤖 Système DigiDrop (méthode complète)</span><span className="price">97€</span></div>
+          <h3>RÉCAPITULATIF DE COMMANDE</h3>
+          <div className="ob-order-line"><span>Système DigiDrop (méthode complète)</span><span className="price">144€</span></div>
           {bumpAdded && (
-            <div className="ob-order-line"><span>👑 Pack Bonus Secret (2 logiciels)</span><span className="price">47€</span></div>
+            <div className="ob-order-line"><span>Pack Bonus Secret (2 logiciels)</span><span className="price">47€</span></div>
           )}
           <div className="ob-order-line ob-bonus-line">
             <span className="ob-bonus-label">
@@ -436,8 +441,10 @@ const Orderbump = () => {
               <span className="ob-free">GRATUIT</span>
             </span>
           </div>
-          <div className="ob-order-line"><span>🔴 Réduction Offre Live</span><span className="ob-badge-red">-100€</span></div>
-          <div className="ob-total-old">Prix total : <span style={{ textDecoration: "line-through" }}>{bumpAdded ? "244€" : "197€"}</span></div>
+          {bumpAdded && (
+            <div className="ob-order-line"><span>Réduction Prix de Lancement</span><span className="neon-red-tag">-100€</span></div>
+          )}
+          <div className="ob-total-old">Prix total : <span style={{ textDecoration: "line-through" }}>{bumpAdded ? "291€" : "297€"}</span></div>
           <div className="ob-order-line total"><span>TOTAL</span><span className="price">{total}</span></div>
         </div>
 
@@ -496,9 +503,9 @@ const Orderbump = () => {
 
         {(() => {
           const revolutLink = bumpAdded
-            ? "https://revolut.me/ilias_business?currency=EUR&amount=14400&note=Formation%20%20%20Logiciel%20d%27automatisation"
-            : "https://revolut.me/ilias_business?currency=EUR&amount=9700&note=Le%20Syst%C3%A8me%20pirate%20complet";
-          const amountLabel = bumpAdded ? "144€" : "97€";
+            ? "https://revolut.me/ilias_business?currency=EUR&amount=19100&note=Formation%20%20%20Logiciel%20d%27automatisation"
+            : "https://revolut.me/ilias_business?currency=EUR&amount=14400&note=Le%20Syst%C3%A8me%20pirate%20complet";
+          const amountLabel = bumpAdded ? "191€" : "144€";
           return (
             <button
               onClick={() => {

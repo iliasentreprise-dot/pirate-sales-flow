@@ -12,9 +12,12 @@ import mockup from "@/assets/mockup-systeme-pirate-v3.png.asset.json";
 import logo from "@/assets/logo-drop-digital.png";
 import PayPalCheckout from "@/components/PayPalCheckout";
 
+const LV_MIN = 3;
+const LV_MAX = 24;
+
 const Index = () => {
   const navigate = useNavigate();
-  const [visitors, setVisitors] = useState(() => Math.floor(Math.random() * 12) + 11); // 11-22 initial
+  const [visitors, setVisitors] = useState(11);
   const [zoomedImg, setZoomedImg] = useState<string | null>(null);
 
   useEffect(() => {
@@ -22,25 +25,35 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    const tick = () => {
-      setVisitors((prev) => {
-        const delta = Math.random() < 0.5 ? -1 : 1;
-        const magnitude = Math.random() < 0.75 ? 1 : 2;
-        let next = prev + delta * magnitude;
-        if (next < 5) next = 5 + Math.floor(Math.random() * 3);
-        if (next > 27) next = 27 - Math.floor(Math.random() * 3);
+    let timeoutId: number;
+    const nextTick = () => {
+      setVisitors((count) => {
+        let up: number, down: number, stay: number;
+        if (count < 8) {
+          up = 0.55; down = 0.2; stay = 0.25;
+        } else if (count > 15) {
+          up = 0.2; down = 0.55; stay = 0.25;
+        } else {
+          up = 0.33; down = 0.32; stay = 0.35;
+        }
+        const r = Math.random();
+        let next = count;
+        if (r < stay) {
+          next = count;
+        } else if (r < stay + up) {
+          next = Math.min(LV_MAX, count + 1);
+        } else {
+          next = Math.max(LV_MIN, count - 1);
+        }
+        if (Math.random() < 0.05) {
+          next = Math.min(LV_MAX, Math.max(LV_MIN, next + (Math.random() < 0.5 ? 2 : -2)));
+        }
         return next;
       });
+      timeoutId = window.setTimeout(nextTick, 2500 + Math.random() * 3500);
     };
-    const schedule = () => {
-      const delay = 3000 + Math.random() * 3000; // 3-6s
-      return window.setTimeout(function run() {
-        tick();
-        (schedule as any)._id = window.setTimeout(run, 3000 + Math.random() * 3000);
-      }, delay);
-    };
-    const id = schedule();
-    return () => { window.clearTimeout(id); window.clearTimeout((schedule as any)._id); };
+    timeoutId = window.setTimeout(nextTick, 2500 + Math.random() * 3500);
+    return () => window.clearTimeout(timeoutId);
   }, []);
 
   useEffect(() => {
@@ -57,7 +70,7 @@ const Index = () => {
           --sp-purple-dark: #6d28d9;
           --sp-cream: #f2ead8;
           --sp-white: #ffffff;
-          --sp-grey: #1a1a1a;
+          --sp-grey: #141118;
         }
         .sp-page * { margin: 0; padding: 0; box-sizing: border-box; }
         .sp-page { background: var(--sp-black); color: var(--sp-cream); font-family: 'DM Sans', sans-serif; overflow-x: hidden; min-height: 100vh; }
@@ -69,91 +82,123 @@ const Index = () => {
         @keyframes slideInRight { to { transform: translateX(0); } }
         .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #a78bfa; animation: blink-dot 0.8s infinite alternate; }
         @keyframes blink-dot { from { opacity: 1; } to { opacity: 0.2; } }
-        .badge-red { background: #e8110a; color: white; font-size: 11px; padding: 2px 6px; border-radius: 3px; }
         @media (max-width: 768px) {
           .sp-page { padding-top: 80px; }
           .fixed-nav-wrapper { top: 0; left: 0; right: 0; flex-direction: column; align-items: stretch; }
           .fixed-btn-right { order: -1; width: 100%; height: 36px; font-size: 12px; border-radius: 0; padding: 0; justify-content: center; text-align: center; border: none; border-bottom: 1px solid rgba(255,255,255,0.15); transform: none; animation: none; }
           .fixed-btn-left { width: 100%; height: 44px; font-size: 15px; font-weight: 700; border-radius: 0; padding: 0; display: flex; align-items: center; justify-content: center; letter-spacing: 1px; }
         }
-        .hero { min-height: 100vh; background: var(--sp-black); background-image: radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.15) 0%, transparent 70%), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 20px; position: relative; border-bottom: 2px solid var(--sp-purple); }
-        .badge-top { background: var(--sp-purple); color: white; font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 3px; padding: 8px 20px; margin-bottom: 30px; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); }
+        .hero { min-height: 100vh; background: var(--sp-black); background-image: radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.16) 0%, transparent 70%), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 20px; position: relative; border-bottom: 2px solid var(--sp-purple); }
+        .badge-top { background: var(--sp-purple); color: white; font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 3px; padding: 8px 20px; margin-bottom: 30px; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); max-width: 680px; }
         .price-block { margin: 30px 0; }
-        .price-old { font-size: 20px; color: #888; text-decoration: line-through; margin-bottom: 4px; }
-        .price-new { font-family: 'Bebas Neue', sans-serif; font-size: 72px; color: var(--sp-purple-light); line-height: 1; letter-spacing: -2px; }
+        .price-old { font-size: 18px; color: #888; text-decoration: line-through; margin-bottom: 4px; }
+        .price-new { font-family: 'Bebas Neue', sans-serif; font-size: 68px; color: var(--sp-purple-light); line-height: 1; letter-spacing: -1px; }
         .price-note { font-size: 13px; color: #888; margin-top: 4px; }
-        .btn-cta { display: inline-block; background: var(--sp-purple); color: white; font-family: 'Bebas Neue', sans-serif; font-size: clamp(26px, 5vw, 40px); letter-spacing: 2px; padding: 22px 60px; border: none; cursor: pointer; position: relative; clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%); transition: all 0.2s; box-shadow: 0 8px 40px rgba(124,58,237,0.5); animation: pulse-btn 2s ease-in-out infinite; margin: 10px 0; }
-        @keyframes pulse-btn { 0%, 100% { box-shadow: 0 8px 40px rgba(124,58,237,0.5); transform: scale(1); } 50% { box-shadow: 0 8px 60px rgba(124,58,237,0.8); transform: scale(1.02); } }
+        .btn-cta { display: inline-block; background: var(--sp-purple); color: white; font-family: 'Bebas Neue', sans-serif; font-size: clamp(22px, 4vw, 34px); letter-spacing: 1.5px; padding: 20px 46px; border: none; cursor: pointer; clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%); box-shadow: 0 8px 40px rgba(124,58,237,0.45); animation: pulse-btn 2.2s ease-in-out infinite; margin: 10px 0; transition: all 0.2s; }
+        @keyframes pulse-btn { 0%, 100% { box-shadow: 0 8px 40px rgba(124,58,237,0.45); transform: scale(1); } 50% { box-shadow: 0 8px 55px rgba(124,58,237,0.7); transform: scale(1.015); } }
         .btn-cta:hover { background: var(--sp-purple-dark); transform: scale(1.04) !important; }
-        .cta-arrow { display: inline-block; margin-left: 12px; animation: cta-bounce 0.7s ease-in-out infinite alternate; }
+        .cta-arrow { display: inline-block; margin-left: 10px; animation: cta-bounce 0.7s ease-in-out infinite alternate; }
         @keyframes cta-bounce { from { transform: translateY(0); } to { transform: translateY(6px); } }
         .btn-sub { display: block; font-size: 12px; color: #666; margin-top: 10px; }
         .divider { width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--sp-purple), transparent); margin: 0; }
+
+        .neon-live { display:inline-block; background:#050505; color:#fff; font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:3px; padding:9px 24px; border-radius:4px; border:1px solid #ff4444; text-shadow:0 0 8px #ff5555, 0 0 16px #ff5555; box-shadow:0 0 10px #e8110a, 0 0 25px #e8110a, 0 0 45px rgba(232,17,10,0.55); animation:neonPulse 1.6s ease-in-out infinite; margin:0 auto 16px; }
+        @keyframes neonPulse {
+          0%, 100% { box-shadow:0 0 10px #e8110a, 0 0 25px #e8110a, 0 0 45px rgba(232,17,10,0.55); text-shadow:0 0 8px #ff5555, 0 0 16px #ff5555; }
+          50% { box-shadow:0 0 18px #ff4444, 0 0 42px #ff4444, 0 0 75px rgba(255,68,68,0.85); text-shadow:0 0 14px #ff8888, 0 0 30px #ff8888; }
+        }
+
+        .eyebrow-small { font-family: 'DM Sans', sans-serif; font-size: 13.5px; font-weight: 700; letter-spacing: 2px; color: var(--sp-purple-light); margin-bottom: 16px; display: block; text-transform: uppercase; }
         .section-tag { font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 5px; color: var(--sp-purple); margin-bottom: 16px; display: block; }
-        .problem-list { list-style: none; margin: 30px 0; }
-        .problem-list li { display: flex; align-items: flex-start; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 17px; color: #bbb; }
-        .problem-list li .icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
-        .dark-section { background: var(--sp-grey); padding: 80px 20px; border-top: 2px solid rgba(255,255,255,0.05); border-bottom: 2px solid rgba(255,255,255,0.05); }
-        .dark-section .inner { max-width: 900px; margin: 0 auto; }
-        .modules { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 40px; }
-        .module-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-left: 3px solid var(--sp-purple); padding: 24px; transition: border-color 0.2s; }
-        .module-card:hover { border-left-color: var(--sp-purple-light); }
-        .module-card .num { font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: rgba(124,58,237,0.2); line-height: 1; margin-bottom: 8px; }
-        .module-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--sp-white); letter-spacing: 1px; margin-bottom: 10px; }
-        .module-card p { font-size: 14px; color: #888; line-height: 1.6; }
-        .proof-section { padding: 80px 20px; max-width: 900px; margin: 0 auto; }
-        .results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin: 40px 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); }
-        .result-stat { background: var(--sp-black); padding: 30px 20px; text-align: center; }
-        .result-stat .number { font-family: 'Bebas Neue', sans-serif; font-size: 56px; color: var(--sp-purple-light); line-height: 1; }
-        .result-stat .label { font-size: 13px; color: #666; margin-top: 6px; text-transform: uppercase; letter-spacing: 1px; }
-        .avis-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 40px; }
-        @media (max-width: 600px) { .avis-grid { grid-template-columns: 1fr; } .results-grid { grid-template-columns: 1fr; } .btn-cta { padding: 18px 30px; } }
+
+        .urgency-box { background:#0f0d13; border:1px solid var(--sp-purple); border-radius:8px; padding:18px 20px; margin: 0 auto 24px; max-width:480px; width:90%; }
+        .urgency-title { font-family:'Bebas Neue',sans-serif; font-size:16px; color:var(--sp-purple-light); text-align:center; letter-spacing: 0.5px; }
+        .urgency-sub { font-size: 12.5px; color: #888; text-align: center; margin-top: 6px; }
+
+        .content { padding: 76px 20px; max-width: 860px; margin: 0 auto; }
+        .content h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px,5.5vw,58px); line-height: 1.05; color: white; margin-bottom: 26px; }
+        .content h2 em { color: var(--sp-purple-light); font-style: normal; }
+        .content p { font-size: 17px; line-height: 1.75; color: #ccc; margin-bottom: 18px; }
+        .content p strong { color: var(--sp-cream); }
+        .content p.big { font-size: 19px; color: var(--sp-purple-light); font-weight: 600; }
+
+        .grey-section { background: var(--sp-grey); padding: 76px 20px; border-top: 2px solid rgba(255,255,255,0.05); border-bottom: 2px solid rgba(255,255,255,0.05); }
+
+        .problem-list { list-style: none; margin: 26px 0; }
+        .problem-list li { display: flex; align-items: flex-start; gap: 14px; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 16.5px; color: #bbb; }
+        .problem-list li .icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; color: var(--sp-purple-light); }
+
+        .module-card { background: rgba(124,58,237,0.05); border: 1px solid var(--sp-purple); box-shadow: 0 0 20px rgba(124,58,237,0.35); padding: 24px; margin-bottom: 16px; }
+        .module-card .step-num { font-family: 'Bebas Neue', sans-serif; font-size: 13px; color: var(--sp-purple-light); letter-spacing: 3px; margin-bottom: 8px; display: block; }
+        .module-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: white; margin-bottom: 10px; letter-spacing: 0.3px; }
+        .module-card p { font-size: 15.5px; color: #bbb; line-height: 1.7; }
+
+        .highlight-box { background: rgba(124,58,237,0.08); border: 1px solid var(--sp-purple); box-shadow: 0 0 25px rgba(124,58,237,0.4); padding: 28px; margin-top: 30px; text-align: center; }
+        .highlight-box p { font-size: 17px; color: #bbb; line-height: 1.75; }
+
+        .proof-section { padding: 76px 20px; max-width: 900px; margin: 0 auto; }
+        .proof-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: clamp(28px,5vw,48px) clamp(20px,4vw,38px); text-align: center; }
+        .proof-box h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px,5.5vw,56px); line-height: 1.05; color: white; margin-bottom: 8px; }
+        .proof-box h2 em { color: var(--sp-purple-light); font-style: normal; }
+        .proof-box .sub { font-size: 16px; color: #888; }
+        .results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin: 36px 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); }
+        .result-stat { background: var(--sp-black); padding: 28px 18px; text-align: center; }
+        .result-stat .number { font-family: 'Bebas Neue', sans-serif; font-size: 50px; color: var(--sp-purple-light); line-height: 1; }
+        .result-stat .label { font-size: 12.5px; color: #666; margin-top: 6px; text-transform: uppercase; letter-spacing: 1px; }
+        .avis-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 36px; }
+        @media (max-width: 700px) { .avis-grid { grid-template-columns: repeat(2, 1fr); } .results-grid { grid-template-columns: 1fr; } .btn-cta { padding: 18px 30px; } }
         .avis-card { background: #0f0f0f; border: 2px solid #7c3aed; border-radius: 12px; padding: 8px; box-shadow: 0 0 16px rgba(124,58,237,0.4), 0 0 32px rgba(124,58,237,0.15); overflow: hidden; }
         .avis-card img { width: 100%; height: auto; display: block; border-radius: 8px; object-fit: cover; }
-        .recois-section { padding: 80px 20px; max-width: 900px; margin: 0 auto; text-align: center; }
-        .recois-mockup { width: 100%; max-width: 700px; display: block; margin: 0 auto 32px; border-radius: 12px; border: 2px solid #7c3aed; box-shadow: 0 0 30px rgba(124,58,237,0.5); }
-        .recois-list { list-style: none; max-width: 600px; margin: 0 auto; text-align: left; }
-        .recois-list li { background: #111; border-left: 3px solid #7c3aed; padding: 12px 16px; margin-bottom: 2px; color: #ccc; font-size: 15px; display: flex; justify-content: space-between; }
-        .recois-list li .recois-price { color: var(--sp-purple-light); font-weight: 700; white-space: nowrap; margin-left: 8px; }
-        .recois-offer-box { background: #1a1a1a; border: 2px solid #7c3aed; border-radius: 8px; max-width: 500px; margin: 40px auto 0; padding: 30px; text-align: center; }
-        .bounce-arrow { font-size: 32px; color: var(--sp-purple); animation: bounce-arrow 1.5s ease-in-out infinite; display: block; margin: 16px auto; }
-        @keyframes bounce-arrow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
-        .blink-live { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--sp-purple-light); animation: blink-text 1.2s ease-in-out infinite; }
-        @keyframes blink-text { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        .guarantee-section { background: linear-gradient(135deg, #0f0f0f, #1a0a2e); border-top: 2px solid var(--sp-purple-light); border-bottom: 2px solid var(--sp-purple-light); padding: 80px 20px; text-align: center; }
-        .guarantee-medal { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #a78bfa, #7c3aed, #5b21b6); box-shadow: 0 0 0 8px rgba(124,58,237,0.2), 0 0 0 16px rgba(124,58,237,0.1), 0 20px 60px rgba(124,58,237,0.3), inset 0 -4px 8px rgba(0,0,0,0.3); margin: 0 auto 40px; animation: medal-glow 2s ease-in-out infinite; }
-        @keyframes medal-glow { 0%, 100% { box-shadow: 0 0 0 8px rgba(124,58,237,0.2), 0 0 0 16px rgba(124,58,237,0.1), 0 20px 60px rgba(124,58,237,0.3), inset 0 -4px 8px rgba(0,0,0,0.3); } 50% { box-shadow: 0 0 0 12px rgba(124,58,237,0.3), 0 0 0 24px rgba(124,58,237,0.15), 0 20px 80px rgba(124,58,237,0.5), inset 0 -4px 8px rgba(0,0,0,0.3); } }
-        .guarantee-medal .medal-text { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 3px; color: rgba(255,255,255,0.85); line-height: 1.2; text-align: center; }
-        .guarantee-medal .medal-big { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: rgba(255,255,255,0.95); line-height: 1; margin: 4px 0; }
-        .medal-ribbon { width: 120px; height: 20px; background: linear-gradient(90deg, #6d28d9, #7c3aed, #6d28d9); margin: 6px auto 0; clip-path: polygon(0% 0%, 100% 0%, 90% 100%, 10% 100%); }
-        .guarantee-section h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 6vw, 64px); color: var(--sp-purple-light); margin-bottom: 20px; }
-        .guarantee-section p { font-size: 18px; color: #bbb; max-width: 600px; margin: 0 auto 20px; line-height: 1.7; }
+
+        .value-section { padding: 76px 20px; max-width: 860px; margin: 0 auto; text-align: center; }
+        .value-section h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px,5.5vw,56px); line-height: 1.05; color: white; margin-bottom: 28px; }
+        .value-mockup { width: 100%; max-width: 640px; display: block; margin: 0 auto 30px; border-radius: 12px; border: 2px solid #7c3aed; box-shadow: 0 0 30px rgba(124,58,237,0.4); }
+        .value-list { list-style: none; max-width: 580px; margin: 0 auto; text-align: left; }
+        .value-list li { background: #111; border-left: 3px solid var(--sp-purple); padding: 12px 16px; margin-bottom: 2px; color: #ccc; font-size: 15px; display: flex; justify-content: space-between; gap: 10px; }
+        .value-price { color: var(--sp-purple-light); font-weight: 700; white-space: nowrap; }
+        .value-offer-box { background: #151018; border: 2px solid var(--sp-purple); border-radius: 8px; max-width: 480px; margin: 36px auto 0; padding: 28px; text-align: center; }
+        .strike-price { font-size: 20px; color: #666; text-decoration: line-through; margin-bottom: 6px; }
+        .drop-arrow { font-size: 28px; color: var(--sp-purple); display: block; margin: 14px auto; }
+        .live-label { font-family: 'Bebas Neue', sans-serif; font-size: 17px; color: var(--sp-purple-light); }
+
+        .access-section { background: var(--sp-grey); padding: 68px 20px; text-align: center; }
+        .access-section h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px,5.5vw,56px); color: white; line-height: 1.05; margin-bottom: 20px; }
+        .access-section h2 span { color: var(--sp-purple-light); }
+
+        .guarantee-section { background: linear-gradient(135deg, #0f0d13, #170a26); border-top: 2px solid var(--sp-purple-light); border-bottom: 2px solid var(--sp-purple-light); padding: 76px 20px; text-align: center; }
+        .guarantee-badge { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, var(--sp-purple-light), var(--sp-purple), var(--sp-purple-dark)); box-shadow: 0 0 0 8px rgba(124,58,237,0.18), 0 0 0 16px rgba(124,58,237,0.09), 0 20px 60px rgba(124,58,237,0.3); margin: 0 auto 36px; animation: medal-glow 2s ease-in-out infinite; }
+        @keyframes medal-glow { 0%, 100% { box-shadow: 0 0 0 8px rgba(124,58,237,0.18), 0 0 0 16px rgba(124,58,237,0.09), 0 20px 60px rgba(124,58,237,0.3); } 50% { box-shadow: 0 0 0 12px rgba(124,58,237,0.28), 0 0 0 24px rgba(124,58,237,0.14), 0 20px 80px rgba(124,58,237,0.5); } }
+        .guarantee-badge .t1 { font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 3px; color: rgba(255,255,255,0.85); }
+        .guarantee-badge .t2 { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: rgba(255,255,255,0.95); margin: 6px 0; }
+        .guarantee-section h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px, 5.5vw, 56px); color: var(--sp-purple-light); margin-bottom: 18px; }
+        .guarantee-section p { font-size: 17px; color: #bbb; max-width: 560px; margin: 0 auto 18px; line-height: 1.7; }
         .guarantee-section p strong { color: var(--sp-white); }
-        .guarantee-box { background: rgba(124,58,237,0.05); border: 1px solid rgba(124,58,237,0.2); max-width: 600px; margin: 30px auto 0; padding: 24px 30px; font-size: 16px; color: #bbb; line-height: 1.7; }
-        .final-cta { padding: 100px 20px; text-align: center; background: radial-gradient(ellipse at 50% 100%, rgba(124,58,237,0.1) 0%, transparent 70%); }
-        .final-cta h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px, 7vw, 80px); color: var(--sp-white); margin-bottom: 16px; line-height: 1; }
-        .final-cta h2 span { color: var(--sp-purple); }
-        .final-cta p { font-size: 18px; color: #888; margin-bottom: 40px; }
+        .guarantee-box { background: rgba(124,58,237,0.05); border: 1px solid rgba(124,58,237,0.2); max-width: 560px; margin: 26px auto 0; padding: 24px 28px; font-size: 15.5px; color: #bbb; line-height: 1.7; text-align: left; }
+
+        .faq-section { padding: 76px 20px; max-width: 780px; margin: 0 auto; }
+        .faq-item { border-bottom: 1px solid rgba(255,255,255,0.08); padding: 20px 0; }
+        .faq-item .q { font-weight: 700; color: white; font-size: 16px; margin-bottom: 8px; display: flex; gap: 10px; }
+        .faq-item .q .qmark { color: var(--sp-purple-light); flex-shrink: 0; }
+        .faq-item .a { font-size: 15px; color: #bbb; line-height: 1.65; padding-left: 24px; }
+
+        .final-cta { padding: 96px 20px; text-align: center; background: radial-gradient(ellipse at 50% 100%, rgba(124,58,237,0.12) 0%, transparent 70%); }
+        .final-cta h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 6vw, 68px); color: var(--sp-white); margin-bottom: 14px; line-height: 1.05; }
+        .final-cta h2 span { color: var(--sp-purple-light); }
+        .final-cta p { font-size: 17px; color: #999; margin-bottom: 30px; max-width: 520px; margin-left: auto; margin-right: auto; }
+
         .sp-footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 30px 20px; text-align: center; font-size: 13px; color: #444; }
-        .skull-divider { text-align: center; padding: 20px 0; font-size: 28px; opacity: 0.3; letter-spacing: 20px; }
-        .warning-text { color: #e8110a; font-size: 13px; margin-top: 10px; display: block; }
-        .urgency-bar { background:#0f0f0f; border:1px solid #7c3aed; border-radius:8px; padding:20px; margin: 0 auto 24px; max-width:500px; width:90%; }
-        .urgency-text-blink { font-family:'Bebas Neue',sans-serif; font-size:16px; color:#e8110a; text-align:center; animation: urgBlink 1s infinite alternate; }
-        @keyframes urgBlink { from{opacity:1} to{opacity:0.4} }
-        .urgency-progress { background:#1a1a1a; height:14px; border-radius:7px; margin:12px 0; overflow:hidden; }
-        .urgency-fill { height:100%; background:linear-gradient(90deg,#7c3aed,#a78bfa); border-radius:7px; }
-        .urgency-labels { display:flex; justify-content:space-between; font-size:12px; }
+
         .social-proof-notif { position: fixed; top: 70px; right: 20px; z-index: 9998; background: rgba(10,10,10,0.95); border: 2px solid #BF00FF; border-radius: 12px; padding: 20px 28px; display: flex; align-items: center; gap: 12px; min-width: 320px; box-shadow: 0 0 10px #BF00FF, 0 0 20px #BF00FF; transform: translateX(120%); transition: transform 0.5s ease-in-out; }
         .social-proof-notif.show { transform: translateX(0); }
         .social-proof-notif.hide { transform: translateX(120%); }
         .social-proof-notif .fire-emoji { font-size: 24px; flex-shrink: 0; }
         .social-proof-notif .notif-text { color: white; font-size: 16px; font-weight: 500; line-height: 1.4; }
         @media (max-width: 768px) { .social-proof-notif { top: 90px; right: 10px; width: 220px; min-width: auto; padding: 12px 16px; } .social-proof-notif .notif-text { font-size: 13px; } }
-        .module-glow { background:rgba(124,58,237,0.05); border:1px solid #7c3aed; box-shadow:0 0 20px rgba(124,58,237,0.4),0 0 40px rgba(124,58,237,0.15),inset 0 0 20px rgba(124,58,237,0.03); padding:24px; transition:box-shadow 0.3s ease; }
-        .module-glow:hover { box-shadow:0 0 30px rgba(124,58,237,0.7),0 0 60px rgba(124,58,237,0.3),inset 0 0 30px rgba(124,58,237,0.05); }
+
         .floating-logo { width: 180px; height: 180px; border-radius: 24px; box-shadow: 0 0 40px rgba(124,58,237,0.7), 0 0 80px rgba(124,58,237,0.3); animation: logo-float 3.5s ease-in-out infinite; object-fit: contain; background: rgba(124,58,237,0.05); padding: 8px; }
         @keyframes logo-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
         @media (max-width: 600px) { .floating-logo { width: 140px; height: 140px; } }
+
         .live-visitors { position: fixed; bottom: 20px; left: 20px; z-index: 9998; background: rgba(10,10,10,0.92); backdrop-filter: blur(8px); border: 1px solid rgba(124,58,237,0.45); color: #f2ead8; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 10px 14px; border-radius: 10px; display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 20px rgba(124,58,237,0.25); animation: lv-slide-in 0.6s ease-out 0.8s both; max-width: calc(100vw - 40px); }
         .live-visitors-dot { width: 9px; height: 9px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 0 rgba(34,197,94,0.7); animation: lv-pulse 1.6s infinite; flex-shrink: 0; }
         .live-visitors-count { color: #a78bfa; font-weight: 700; }
@@ -166,15 +211,15 @@ const Index = () => {
 
     // Social proof notifs
     const names = ["Sophie","Lucas","Camille","Nathan","Léa","Maxime","Chloé","Hugo","Inès","Thomas","Manon","Enzo","Julie","Romain","Sarah","Alexis","Emma","Théo","Laura","Kevin"];
-    const pirateEmojis = ['🏴‍☠️','⚓','☠️','🗡️','💰'];
+    const emojis = ['⚡','🔥','✅','💰'];
     const container = document.getElementById('social-proof-container');
     const showNotif = () => {
       if (!container) return;
       const name = names[Math.floor(Math.random() * names.length)];
-      const emoji = pirateEmojis[Math.floor(Math.random() * pirateEmojis.length)];
+      const emoji = emojis[Math.floor(Math.random() * emojis.length)];
       const notif = document.createElement('div');
       notif.className = 'social-proof-notif';
-      notif.innerHTML = `<span class="fire-emoji">${emoji}</span><div class="notif-text">${name} vient d'acheter la méthode</div>`;
+      notif.innerHTML = `<span class="fire-emoji">${emoji}</span><div class="notif-text">${name} vient de rejoindre DigiDrop Academy</div>`;
       container.appendChild(notif);
       requestAnimationFrame(() => notif.classList.add('show'));
       setTimeout(() => { notif.classList.remove('show'); notif.classList.add('hide'); setTimeout(() => notif.remove(), 500); }, 2500);
@@ -183,11 +228,6 @@ const Index = () => {
     const t2 = setInterval(showNotif, 30000);
     return () => { clearTimeout(t1); clearInterval(t2); };
   }, []);
-
-  const scrollToAcces = (e: React.MouseEvent) => {
-    e.preventDefault();
-    document.getElementById('acces')?.scrollIntoView({ behavior: 'smooth' });
-  };
 
   const goOrderbump = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -209,94 +249,101 @@ const Index = () => {
         <a href="/orderbump" className="fixed-btn-left" onClick={goOrderbump}>Réserver mon accès</a>
         <a href="/orderbump" className="fixed-btn-right" onClick={goOrderbump}>
           <span className="live-dot"></span>
-          <span>Offre exclusif Live</span>
-          <span className="badge-red">-600€</span>
+          <span>Offre LIVE</span>
         </a>
       </div>
 
+      {/* ============ HERO ============ */}
       <section className="hero">
         <div style={{ marginBottom: 32, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
           <img src={logo} alt="Drop Digital" className="floating-logo" />
         </div>
-        <div className="badge-top">🤖 UN SYSTÈME QUI AUTOMATISE CHAQUE PROCESS POUR VENDRE DES PDF SUR TIKTOK ANONYMEMENT</div>
-        <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(36px,7vw,80px)', letterSpacing: '-1px', color: 'white', textTransform: 'uppercase', lineHeight: 0.9, marginBottom: 10 }}>
-          Faire <span style={{ color: '#a855f7' }}>1 027 €</span> par jour avec le <span style={{ color: '#a855f7' }}>DropDigital</span> automatisé
+        <div className="badge-top">SYSTÈME AUTOMATISÉ · VENTE DE PRODUITS DIGITAUX SUR TIKTOK</div>
+        <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(34px,6.5vw,74px)', letterSpacing: '-0.5px', color: 'white', lineHeight: 1, marginBottom: 20, maxWidth: 900 }}>
+          Ton téléphone peut vendre.<br />Même quand tu n'y <span style={{ color: '#a78bfa' }}>touches pas</span>.
         </h1>
-        <p style={{ fontSize: 'clamp(16px,3vw,22px)', color: 'var(--sp-cream)', opacity: 0.85, maxWidth: 700, margin: '20px auto 10px', lineHeight: 1.5 }}>
-          La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels —<strong style={{ color: 'var(--sp-purple-light)' }}> sans montrer ton visage, sans audience, sans budget pub, sans même avoir besoin de créer ton contenu toi même.</strong><br />Des ventes dès la première semaine. Garanti.
+        <p style={{ fontSize: 'clamp(16px,2.6vw,20px)', color: 'var(--sp-cream)', opacity: 0.88, maxWidth: 680, margin: '0 auto 8px', lineHeight: 1.55 }}>
+          DigiDrop transforme de simples carrousels TikTok en machine à vendre des ebooks — <strong style={{ color: 'var(--sp-purple-light)' }}>sans montrer ton visage, sans audience de départ, sans budget pub.</strong><br />Premières ventes dès la première semaine. Garanti, ou remboursé.
         </p>
+        <div className="neon-live">⚡ OFFRE LIVE</div>
         <div className="price-block">
-          <div className="price-old">697€</div>
-          <div className="price-new">97€</div>
-          <div className="price-note">Offre Live uniquement · Disparaît à la fin du live</div>
+          <div className="price-old">297€</div>
+          <div className="price-new">144€</div>
+          <div className="price-note">Prix du batch en cours · Remonte au prochain palier de 20 élèves</div>
         </div>
-        <div className="urgency-bar">
-          <div className="urgency-text-blink">⚠️ SEULEMENT 3 PLACES RESTANTES SUR 20</div>
-          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '75%' }}></div></div>
-          <div className="urgency-labels"><span style={{ color: '#a78bfa' }}>17 places prises</span><span style={{ color: '#e8110a' }}>3 places restantes</span></div>
-        </div>
-        <a href="/orderbump" onClick={goOrderbump} className="btn-cta">ACCÉDER À LA FORMATION + L'ACCOMPAGNEMENT<span className="cta-arrow">↓</span></a>
-        <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
+        <a href="/orderbump" onClick={goOrderbump} className="btn-cta">REJOINDRE DIGIDROP ACADEMY<span className="cta-arrow">↓</span></a>
         <span className="btn-sub">Accès immédiat · Paiement sécurisé · Garanti ou remboursé</span>
       </section>
 
       <div className="divider"></div>
 
-      <div style={{ background: '#111111', padding: '80px 20px' }}>
-        <div style={{ maxWidth: 860, margin: '0 auto' }}>
-          <span className="section-tag" style={{ fontSize: 'clamp(18px,3vw,28px)', letterSpacing: 3, color: 'white', marginBottom: 24 }}>🤖 C'EST QUOI LE DROP DIGITAL AUTOMATISÉ ?</span>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 16, marginTop: 32 }}>
-            <div className="module-glow">
-              <h3 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 20, color: 'white', marginBottom: 10 }}>Étape 1 — Tu crées ton produit digital en 5 minutes</h3>
-              <p style={{ fontSize: 16, color: '#bbb', lineHeight: 1.7 }}>Grâce à notre outil IA on te génère un PDF complet et une page de vente prête à encaisser. Zéro compétence. Zéro temps perdu.</p>
-            </div>
-            <div className="module-glow">
-              <h3 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 20, color: 'white', marginBottom: 10 }}>Étape 2 — Le Système DigiDrop transforme tes <span style={{ color: '#7c3aed', fontWeight: 700 }}>VUES</span> en <span style={{ color: '#7c3aed', fontWeight: 700 }}>VENTES</span></h3>
-              <p style={{ fontSize: 16, color: '#bbb', lineHeight: 1.7 }}>Un tunnel de vente <span style={{ color: '#7c3aed', fontWeight: 700 }}>ÉMOTIONNEL</span> — 300% plus <span style={{ color: '#7c3aed', fontWeight: 700 }}>EFFICACE</span> qu'un tunnel classique — qui pousse chaque visiteur à acheter impulsivement. Sans te montrer. Sans négocier. Sans relancer.</p>
-            </div>
-            <div className="module-glow">
-              <h3 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 20, color: 'white', marginBottom: 10 }}>Étape 3 — Des carrousels TikTok automatisés vendent à ta place</h3>
-              <p style={{ fontSize: 16, color: '#bbb', lineHeight: 1.7 }}>Pas de vidéo à filmer. Pas de montage. Pas de visage. De simples images qui défilent — postées <span style={{ color: '#7c3aed', fontWeight: 700 }}>AUTOMATIQUEMENT</span> sur TikTok — qui attirent les bonnes personnes et les envoient directement vers ton tunnel.</p>
-            </div>
-          </div>
-          <div style={{ background: 'rgba(124,58,237,0.08)', border: '1px solid #7c3aed', boxShadow: '0 0 25px rgba(124,58,237,0.5),0 0 50px rgba(124,58,237,0.2),inset 0 0 25px rgba(124,58,237,0.04)', padding: 28, marginTop: 32, textAlign: 'center' }}>
-            <p style={{ fontSize: 18, color: '#bbb', lineHeight: 1.75 }}>Un système qui génère des ventes 24h/24 — même quand tu dors, même quand tu voyages, même quand tu fais autre chose.</p>
-            <p style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(24px,4vw,40px)', color: '#7c3aed', marginTop: 16 }}>Et qui m'a rapporté plus de 8 000€ le premier mois où je me suis lancé.</p>
-          </div>
+      {/* ============ RÊVE ============ */}
+      <div className="content">
+        <span className="eyebrow-small">VISUALISE ÇA</span>
+        <h2>Ton téléphone vibre. Encore une <em>notification</em>.</h2>
+        <p>Une vente. Puis une autre. Tu n'as rien fait aujourd'hui — pas de vidéo tournée, pas de client à rassurer en message, pas de visage à montrer. Juste un carrousel posté hier soir, qui continue de tourner tout seul pendant que tu es ailleurs : au travail, en train de dormir, en train de vivre ta vie normalement.</p>
+        <p className="big">C'est exactement ce que vivent aujourd'hui les élèves dont le système tourne déjà.</p>
+      </div>
+
+      <div className="divider"></div>
+
+      {/* ============ ÉCHEC ============ */}
+      <div className="grey-section">
+        <div className="content" style={{ padding: 0, maxWidth: 780 }}>
+          <span className="eyebrow-small">SI TU AS DÉJÀ ESSAYÉ SANS RÉSULTAT</span>
+          <h2>Ce n'est pas un problème de <em>talent</em>.</h2>
+          <p>Tu as regardé des dizaines de vidéos YouTube. Tu as peut-être déjà acheté une formation. Résultat : toujours zéro vente.</p>
+          <p>Ce n'est pas ta faute. 90% de ce qu'on te montre en ligne, c'est la version édulcorée — la stratégie qu'on te donne pour te garder accroché au contenu, jamais celle qui fait vraiment rentrer l'argent.</p>
+          <ul className="problem-list">
+            <li><span className="icon">✕</span><span>Tu crées du contenu pendant des heures pour 300 vues et 0 vente</span></li>
+            <li><span className="icon">✕</span><span>Tu n'as toujours pas d'offre — juste des idées de contenu qui s'accumulent</span></li>
+            <li><span className="icon">✕</span><span>On t'a fait croire qu'il fallait 10K abonnés avant de gagner un centime</span></li>
+            <li><span className="icon">✕</span><span>Tu bosses gratuitement pendant que d'autres encaissent sans jamais montrer leur visage</span></li>
+          </ul>
+          <p>Le problème n'a jamais été ton contenu. C'est que personne ne t'a montré le système complet — l'offre, le tunnel, et la mécanique qui transforme un inconnu en acheteur en moins de 48h.</p>
         </div>
       </div>
 
       <div className="divider"></div>
 
-      <div style={{ padding: '80px 20px', maxWidth: 900, margin: '0 auto' }}>
-        <span className="section-tag">☠ LA VÉRITÉ QUE PERSONNE NE DIT</span>
-        <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(36px,6vw,64px)', lineHeight: 1, color: 'white', marginBottom: 30 }}>
-          Pourquoi tu <em style={{ color: 'var(--sp-purple)', fontStyle: 'normal' }}>galères</em> encore à vendre en ligne
-        </h2>
-        <p style={{ fontSize: 18, lineHeight: 1.7, color: '#ccc', marginBottom: 20 }}>Tu as regardé des centaines de vidéos YouTube. Tu as peut-être acheté une formation. Résultat : <strong style={{ color: 'var(--sp-cream)' }}>toujours zéro vente.</strong></p>
-        <p style={{ fontSize: 18, lineHeight: 1.7, color: '#ccc', marginBottom: 20 }}>Ce n'est pas ta faute. C'est que 90% de ce qu'on t'a montré, c'est la version édulcorée — la stratégie qu'on te donne pour te garder accroché, jamais celle qui fait réellement rentrer l'argent.</p>
-        <ul className="problem-list">
-          <li><span className="icon">✗</span><span>Tu crées du contenu pendant des heures pour 300 vues et 0 vente</span></li>
-          <li><span className="icon">✗</span><span>Tu n'as toujours pas d'offre — juste des idées de contenu</span></li>
-          <li><span className="icon">✗</span><span>On t'a fait croire qu'il fallait 10K abonnés avant de gagner un centime</span></li>
-          <li><span className="icon">✗</span><span>Tu bosses gratuitement pendant que d'autres encaissent sans jamais montrer leur visage</span></li>
-        </ul>
-        <p style={{ fontSize: 18, lineHeight: 1.7, color: '#ccc' }}>Le problème n'est pas ton contenu. C'est que personne ne t'a montré le système complet — l'offre, le tunnel, et la mécanique qui transforme un inconnu en acheteur en moins de 48h.</p>
-        <p style={{ fontSize: 18, lineHeight: 1.7, color: '#ccc', marginTop: 20 }}><strong style={{ color: 'var(--sp-cream)' }}>Système DigiDrop, c'est exactement ça.</strong> Pas de langue de bois, pas de version édulcorée. Le système brut, utilisé aujourd'hui même pour vendre en anonyme, sans visage, sans audience, sans stock.</p>
+      {/* ============ PEUR ============ */}
+      <div className="content">
+        <span className="eyebrow-small">CE QUI NE CHANGERA PAS SI TU ATTENDS</span>
+        <h2>Dans 6 mois, <em>rien n'aura bougé</em> — sauf le calendrier.</h2>
+        <p>Si tu continues exactement comme aujourd'hui, voici ce qui t'attend dans 6 mois : encore une centaine de vidéos "comment gagner de l'argent en ligne" regardées, peut-être encore une formation achetée, et le même chiffre affiché sur ton compte en banque.</p>
+        <p>Pendant ce temps, d'autres — sans plus de talent que toi, sans montrer leur visage — auront posté leur 200e, 300e carrousel. Ce n'est pas une question de mérite. C'est une question de qui a commencé, et qui a encore attendu.</p>
+        <p>Dans la vente de produits digitaux, ceux qui galèrent sur le long terme, ce sont ceux qui misent tout sur du contenu créé à la main, jour après jour, pour encaisser manuellement. Toi, tu peux sauter direct cette étape : démarrer avec un système automatisé qui tourne 24h/24, sans jamais avoir à filmer, poster ou relancer qui que ce soit. Plus tu attends pour commencer avec l'automatisation en place, plus l'écart se creuse avec ceux qui l'auront déjà — et il ne se referme jamais.</p>
       </div>
 
-      <div className="skull-divider">☠ ☠ ☠</div>
       <div className="divider"></div>
+
+      {/* ============ ENNEMI ============ */}
+      <div className="grey-section">
+        <div className="content" style={{ padding: 0, maxWidth: 780 }}>
+          <span className="eyebrow-small">CE QU'ON NE TE DIT PAS</span>
+          <h2>Ceux qui vendent le rêve ne te diront <em>jamais la vérité</em>.</h2>
+          <p>La plupart des formations business en ligne ne montrent jamais le système qui tourne derrière — <strong>ni le compte, ni le tunnel, ni la stratégie.</strong> Certaines vendent même une méthode <strong>qu'ils n'appliquent plus eux-mêmes</strong>, ou qui ne représente <strong>qu'une fraction de leurs vraies ventes</strong>. Juste des captures de revenus, jamais le mécanisme.</p>
+          <p>DigiDrop, c'est <strong>le système complet</strong>, pas la version édulcorée. Celui que j'utilise moi-même <strong>depuis plus d'un an</strong>, sur <strong>une vingtaine de comptes TikTok anonymes et automatisés</strong> — sans visage, sans audience, sans stock.</p>
+        </div>
+      </div>
 
       <div className="divider"></div>
 
+      {/* ============ DOUTE (transition) ============ */}
+      <div className="content">
+        <span className="eyebrow-small">TU TE DIS PEUT-ÊTRE</span>
+        <h2>"Ça a l'air trop <em>simple</em> pour être vrai."</h2>
+        <p>C'est la réaction normale — et c'est exactement pour ça que la section suivante n'a que des chiffres et des preuves concrètes, pas des promesses.</p>
+      </div>
+
+      <div className="divider"></div>
+
+      {/* ============ PREUVE ============ */}
       <div className="proof-section">
-        <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: 'clamp(30px,5vw,50px) clamp(20px,4vw,40px)', textAlign: 'center' }}>
-          <span className="section-tag">📊 PREUVES RÉELLES</span>
-          <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(36px,6vw,64px)', lineHeight: 1, color: 'white', marginBottom: 10 }}>
-            Des résultats. <em style={{ color: 'var(--sp-purple)', fontStyle: 'normal' }}>Pas des promesses.</em>
-          </h2>
-          <p style={{ fontSize: 17, color: '#888' }}>Le système tourne. Les chiffres parlent.</p>
+        <div className="proof-box">
+          <span className="eyebrow-small">PREUVES RÉELLES</span>
+          <h2>Des résultats. <em>Pas des promesses.</em></h2>
+          <p className="sub">Le système tourne. Les chiffres parlent.</p>
           <div className="results-grid">
             <div className="result-stat"><div className="number">20</div><div className="label">Comptes TikTok actifs</div></div>
             <div className="result-stat"><div className="number">1 an</div><div className="label">Business model éprouvé</div></div>
@@ -304,11 +351,9 @@ const Index = () => {
           </div>
         </div>
 
-        <div style={{ height: 2, margin: '60px auto', maxWidth: 600, background: 'linear-gradient(90deg, transparent, var(--sp-purple), transparent)', boxShadow: '0 0 20px var(--sp-purple), 0 0 40px var(--sp-purple)', borderRadius: 2 }}></div>
+        <div style={{ height: 2, margin: '56px auto', maxWidth: 560, background: 'linear-gradient(90deg, transparent, var(--sp-purple), transparent)' }}></div>
 
-        <div style={{ marginTop: 30 }}>
-          <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(30px,5vw,52px)', lineHeight: 1, color: 'white', marginBottom: 30 }}>💬 CE QUE DISENT <em style={{ color: 'var(--sp-purple)', fontStyle: 'normal' }}>MES ÉLÈVES</em></h2>
-        </div>
+        <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(28px,4.5vw,46px)', lineHeight: 1.05, color: 'white', marginBottom: 28 }}>Ce que disent <em style={{ color: 'var(--sp-purple-light)', fontStyle: 'normal' }}>les élèves</em></h2>
         <div className="avis-grid">
           {[avisLamine, avisProofLock, avisNoah, avis1, avis3, avis4, avis5, avis6].map((src, i) => (
             <div key={i} className="avis-card" onClick={() => setZoomedImg(src)} style={{ cursor: 'zoom-in' }}>
@@ -320,96 +365,164 @@ const Index = () => {
 
       <div className="divider"></div>
 
-      <div className="recois-section">
-        <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(36px,6vw,64px)', lineHeight: 1, color: 'white', marginBottom: 30 }}>☠️ TOUT CE QUE TU REÇOIS<br />DANS LA DIGIDROP ACADEMY</h2>
-        <img className="recois-mockup" src={mockup.url} alt="Système Pirate - Mockup" />
-        <ul className="recois-list">
-          <li><span>✅ LE sYSTÈME DigiDrop complet — 6 modules</span><span className="recois-price">197€</span></li>
-          <li><span>✅ Accompagnement personnalisé</span><span className="recois-price">147€</span></li>
-          <li><span>✅ Outil IA secret</span><span className="recois-price">97€</span></li>
-          <li><span>✅ Tunnel de vente à haute conversion</span><span className="recois-price">97€</span></li>
-          <li><span>✅ Méthode Carrousels Viral et ciblé</span><span className="recois-price">67€</span></li>
-          <li><span>✅ logiciel qui créer ton produit digital et ton site à ta place en 5min</span><span className="recois-price">47€</span></li>
-          <li><span>✅ Groupe privé résultats élèves</span><span className="recois-price">45€</span></li>
-          <li><span>✅ Garantie 30 jours satisfait ou remboursé</span><span className="recois-price">Inclus</span></li>
-          <li><span>✅ Accès à vie</span><span className="recois-price">Inclus</span></li>
-        </ul>
-        <div style={{ width: '100%', maxWidth: 600, height: 2, background: 'var(--sp-purple)', margin: '30px auto', opacity: 0.5 }}></div>
-        <div className="recois-offer-box">
-          <div style={{ fontSize: 22, color: '#666', textDecoration: 'line-through', marginBottom: 8 }}>Prix habituel : 697€</div>
-          <span className="bounce-arrow">↓</span>
-          <div className="blink-live">Mais pendant ce LIVE UNIQUEMENT :</div>
-          <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 80, color: 'white', lineHeight: 1, margin: '10px 0' }}>97€</div>
-          <div className="urgency-bar">
-            <div style={{ fontSize: 13, color: '#888', textAlign: 'center', marginBottom: 10, letterSpacing: 0.5 }}>La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels automatisés</div>
-            <div className="urgency-text-blink">⚠️ SEULEMENT 3 PLACES RESTANTES SUR 20</div>
-            <div className="urgency-progress"><div className="urgency-fill" style={{ width: '75%' }}></div></div>
-            <div className="urgency-labels"><span style={{ color: '#a78bfa' }}>17 places prises</span><span style={{ color: '#e8110a' }}>3 places restantes</span></div>
+      {/* ============ MÉCANISME ============ */}
+      <div className="grey-section">
+        <div className="content" style={{ padding: 0, maxWidth: 860 }}>
+          <span className="eyebrow-small">COMMENT ÇA MARCHE — SIMPLE, RAPIDE, FACILE</span>
+          <h2>Trois étapes. <em>C'est tout.</em></h2>
+          <div className="module-card">
+            <span className="step-num">ÉTAPE 1</span>
+            <h3>Tu crées ton produit digital en 5 minutes</h3>
+            <p>L'outil IA inclus te génère un ebook complet et une page de vente prête à encaisser. Zéro compétence requise, zéro temps perdu.</p>
           </div>
-          <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(18px,3.5vw,30px)', marginTop: 10 }}>ACCÉDER À LA FORMATION + L'ACCOMPAGNEMENT<span className="cta-arrow">↓</span></a>
-          <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
+          <div className="module-card">
+            <span className="step-num">ÉTAPE 2</span>
+            <h3>Le tunnel DigiDrop transforme les vues en ventes</h3>
+            <p>Un tunnel de vente pensé pour convertir, qui pousse chaque visiteur à l'achat sans que tu aies à négocier ou relancer qui que ce soit.</p>
+          </div>
+          <div className="module-card">
+            <span className="step-num">ÉTAPE 3</span>
+            <h3>Des carrousels automatisés vendent à ta place</h3>
+            <p>Pas de vidéo à filmer, pas de montage, pas de visage. De simples images racontant une histoire émotionnelle, postées automatiquement sur TikTok, qui amènent les bonnes personnes directement vers ton tunnel.</p>
+          </div>
+          <div className="highlight-box">
+            <p>Un système qui génère des ventes 24h/24 — même quand tu dors, même quand tu voyages, même quand tu fais autre chose.</p>
+          </div>
         </div>
       </div>
 
       <div className="divider"></div>
 
-      <div id="acces" style={{ background: 'var(--sp-grey)', padding: '70px 20px', textAlign: 'center' }}>
-        <span className="section-tag" style={{ display: 'block', marginBottom: 16 }}>⚓ ACCÈS IMMÉDIAT</span>
-        <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(36px,6vw,64px)', color: 'white', lineHeight: 1, marginBottom: 20 }}>Tu es prêt à <span style={{ color: 'var(--sp-purple)' }}>passer pirate</span> ?</h2>
-        <div className="price-block" style={{ margin: '24px 0' }}>
-          <div className="price-old">697€</div>
-          <div className="price-new">97€</div>
-          <div className="price-note">Formation + Pack Bonus Secret · Offre Live uniquement</div>
+      {/* ============ BÉNÉFICE / ESCALADE ============ */}
+      <div className="content">
+        <span className="eyebrow-small">CE QUI T'ATTEND</span>
+        <h2>Ce que ça change, <em>semaine après semaine</em>.</h2>
+        <p><strong>Dans 48h :</strong> ton premier produit est en ligne, ton premier carrousel tourne.</p>
+        <p><strong>Dans une semaine :</strong> les premières ventes tombent en automatique, pendant que tu fais autre chose.</p>
+        <p><strong>Dans un mois :</strong> le système tourne assez pour devenir un vrai complément de revenu.</p>
+        <p><strong>Dans 2 mois :</strong> tu as déjà 2 comptes TikTok qui génèrent des ventes grâce à ton programme, automatiquement.</p>
+        <p className="big">Et tout ça commence par les 5 prochaines minutes.</p>
+      </div>
+
+      <div className="divider"></div>
+
+      {/* ============ CLOSING 1 — ANCRAGE + VALUE STACK ============ */}
+      <div className="value-section">
+        <h2>TOUT CE QUE TU REÇOIS<br />DANS LA DIGIDROP ACADEMY</h2>
+        <img className="value-mockup" src={mockup.url} alt="DigiDrop Academy - Mockup formation" />
+        <ul className="value-list">
+          <li><span>✅ Le Système DigiDrop complet — 6 modules</span><span className="value-price">197€</span></li>
+          <li><span>✅ Accompagnement personnalisé</span><span className="value-price">147€</span></li>
+          <li><span>✅ Outil IA de génération de produit</span><span className="value-price">97€</span></li>
+          <li><span>✅ Tunnel de vente à haute conversion</span><span className="value-price">97€</span></li>
+          <li><span>✅ Méthode carrousels viraux et ciblés</span><span className="value-price">67€</span></li>
+          <li><span>✅ Logiciel qui crée ton produit et ton site en 5 min</span><span className="value-price">47€</span></li>
+          <li><span>✅ Groupe privé résultats élèves</span><span className="value-price">45€</span></li>
+          <li><span>✅ Garantie 30 jours satisfait ou remboursé</span><span className="value-price">Inclus</span></li>
+          <li><span>✅ Accès à vie</span><span className="value-price">Inclus</span></li>
+        </ul>
+        <div style={{ width: '100%', maxWidth: 580, height: 2, background: 'var(--sp-purple)', margin: '28px auto', opacity: 0.5 }}></div>
+        <div className="value-offer-box">
+          <div className="neon-live">⚡ OFFRE LIVE</div>
+          <div className="strike-price">Prix habituel : 697€</div>
+          <span className="drop-arrow">↓</span>
+          <div className="live-label">Prix de lancement, tant que le palier actuel n'est pas atteint :</div>
+          <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 72, color: 'white', lineHeight: 1, margin: '10px 0' }}>144€</div>
+          <div className="urgency-box">
+            <div className="urgency-title">Le prix remonte à chaque palier de 20 nouveaux élèves</div>
+            <div className="urgency-sub">Prix actuel : 144€ — tarif du batch en cours</div>
+          </div>
         </div>
-        <div className="urgency-bar">
-          <div style={{ fontSize: 13, color: '#888', textAlign: 'center', marginBottom: 10, letterSpacing: 0.5 }}>La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels automatisés</div>
-          <div className="urgency-text-blink">⚠️ SEULEMENT 3 PLACES RESTANTES SUR 20</div>
-          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '75%' }}></div></div>
-          <div className="urgency-labels"><span style={{ color: '#a78bfa' }}>17 places prises</span><span style={{ color: '#e8110a' }}>3 places restantes</span></div>
+        <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(17px,3.2vw,26px)', marginTop: 10 }}>REJOINDRE DIGIDROP ACADEMY<span className="cta-arrow">↓</span></a>
+      </div>
+
+      <div className="divider"></div>
+
+      {/* ============ CLOSING 2 — ROI ============ */}
+      <div id="acces" className="access-section">
+        <span className="eyebrow-small">ACCÈS IMMÉDIAT</span>
+        <h2>Quelques ventes, et l'investissement est <span>déjà remboursé</span>.</h2>
+        <p style={{ fontSize: 17, color: '#bbb', maxWidth: 520, margin: '0 auto 24px', lineHeight: 1.7 }}>Le système coûte 144€. Tes propres produits se vendent entre 17,80€ et 47€. Il te suffit de quelques ventes pour rembourser l'investissement — tout ce qui suit, c'est du profit.</p>
+        <div className="neon-live">⚡ OFFRE LIVE</div>
+        <div className="price-block" style={{ margin: '20px 0' }}>
+          <div className="price-old">297€</div>
+          <div className="price-new">144€</div>
+          <div className="price-note">Prix du batch en cours</div>
         </div>
         <div style={{ maxWidth: 560, margin: '32px auto 0' }}>
-          <PayPalCheckout amount={97} onSuccess={handlePayPalSuccess} />
+          <PayPalCheckout amount={144} onSuccess={handlePayPalSuccess} />
         </div>
-        <span className="warning-text" style={{ display: 'block', marginTop: 16 }}>⚠️ Cette offre disparaît dès la fin du live</span>
         <span className="btn-sub">Accès immédiat après paiement · 100% sécurisé</span>
       </div>
 
       <div className="divider"></div>
 
+      {/* ============ GARANTIE ============ */}
       <div className="guarantee-section">
-        <div className="guarantee-medal">
-          <div className="medal-text">GARANTI</div>
-          <div className="medal-big">☠️</div>
-          <div className="medal-text">RÉSULTATS</div>
-          <div className="medal-text" style={{ fontSize: 11, marginTop: 2 }}>PREMIÈRE SEMAINE</div>
+        <div className="guarantee-badge">
+          <div className="t1">GARANTI</div>
+          <div className="t2">✓</div>
+          <div className="t1">RÉSULTATS</div>
+          <div className="t1" style={{ fontSize: 10, marginTop: 2 }}>PREMIÈRE SEMAINE</div>
         </div>
-        <div className="medal-ribbon" style={{ marginBottom: 40 }}></div>
         <h2>Garanti ou remboursé</h2>
         <p>Je suis tellement convaincu que ce système fonctionne que je prends tout le risque à ta place.</p>
         <div className="guarantee-box">
-          <strong style={{ color: 'var(--sp-purple-light)', fontFamily: "'Bebas Neue',sans-serif", fontSize: 20, letterSpacing: 1, display: 'block', marginBottom: 12 }}>LA GARANTIE PIRATE</strong>
+          <strong style={{ color: 'var(--sp-purple-light)', fontFamily: "'Bebas Neue',sans-serif", fontSize: 19, letterSpacing: 0.5, display: 'block', marginBottom: 12 }}>LA GARANTIE DIGIDROP</strong>
           Tu appliques le système pendant 30 jours. Si à la fin de ces 30 jours tu n'as pas de résultats — pas une seule vente — <strong>je te rembourse intégralement, sur le champ.</strong> Sans question. Sans délai.<br /><br />
-          <span style={{ color: 'var(--sp-purple)', fontSize: 14 }}>Cette garantie existe parce que je sais que ça marche. Pas parce que je suis sympa.</span>
+          <span style={{ color: 'var(--sp-purple-light)', fontSize: 14 }}>Cette garantie existe parce que je sais que ça marche. Pas parce que je suis sympa.</span>
         </div>
       </div>
 
       <div className="divider"></div>
 
+      {/* ============ FAQ ============ */}
+      <div className="faq-section">
+        <span className="eyebrow-small">CE QUE TU TE DEMANDES SÛREMENT</span>
+        <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(28px,4.5vw,44px)', color: 'white', marginBottom: 20 }}>Questions fréquentes</h2>
+        <div className="faq-item">
+          <div className="q"><span className="qmark">?</span>Je n'ai aucune compétence technique, ça va marcher pour moi ?</div>
+          <div className="a">Le système génère ton produit et ta page de vente en 5 minutes avec l'outil IA inclus. Zéro compétence requise pour démarrer.</div>
+        </div>
+        <div className="faq-item">
+          <div className="q"><span className="qmark">?</span>Je n'ai pas d'audience ni de budget pub, c'est un problème ?</div>
+          <div className="a">C'est exactement le point du système : les carrousels automatisés tournent sans audience de départ et sans budget publicitaire.</div>
+        </div>
+        <div className="faq-item">
+          <div className="q"><span className="qmark">?</span>TikTok c'est saturé, ça marche encore pour vendre ?</div>
+          <div className="a">Le format carrousel anonyme reste largement sous-exploité comparé aux vidéos face caméra — c'est justement pour ça que ça marche encore aussi bien.</div>
+        </div>
+        <div className="faq-item">
+          <div className="q"><span className="qmark">?</span>Je n'ai pas beaucoup de temps à y consacrer.</div>
+          <div className="a">Le système est fait pour tourner en automatique une fois lancé. Le temps investi est concentré au démarrage, pas en continu.</div>
+        </div>
+        <div className="faq-item">
+          <div className="q"><span className="qmark">?</span>Et si ça ne marche pas pour moi ?</div>
+          <div className="a">Garantie 30 jours : zéro vente à la fin du mois, tu es remboursé intégralement, sans justification à donner.</div>
+        </div>
+        <div className="faq-item">
+          <div className="q"><span className="qmark">?</span>Est-ce que je peux commencer même si je pars de zéro ?</div>
+          <div className="a">Oui — le système est pensé pour un démarrage à zéro : zéro audience, zéro produit existant, zéro compétence technique préalable.</div>
+        </div>
+        <div className="faq-item">
+          <div className="q"><span className="qmark">?</span>Si ça marche, pourquoi tu formes des gens à faire pareil au lieu de le garder pour toi ?</div>
+          <div className="a">Parce que vendre des ebooks sur TikTok et transmettre le système, ce sont deux activités différentes. TikTok touche des centaines de millions de personnes chaque jour — qu'il y ait un compte de plus ou pas ne change rien à mes propres ventes. Et avec le temps, enseigner ce système est devenu une activité à part entière, aussi rentable que le système lui-même. Je n'ai aucun intérêt à te vendre quelque chose qui ne marche pas : mes résultats et mes comptes sont vérifiables, contrairement à beaucoup de ceux qui vendent ce genre de formation.</div>
+        </div>
+      </div>
+
+      <div className="divider"></div>
+
+      {/* ============ CLOSING 3 — COÛT DE L'INACTION ============ */}
       <div className="final-cta">
         <h2>Arrête de <span>regarder</span> les autres vendre.</h2>
-        <p>Offre Live uniquement. 97€. Accompagnement inclus. Résultats garantis la première semaine.</p>
+        <p>En ne cliquant pas maintenant, tu ne restes pas simplement "là où tu es" — tu recules, pendant que d'autres avancent avec ce même système, aujourd'hui même.</p>
+        <div className="neon-live">⚡ OFFRE LIVE</div>
         <div className="price-block" style={{ marginBottom: 20 }}>
-          <div className="price-old">697€</div>
-          <div className="price-new">97€</div>
-          <div className="price-note">Offre Live uniquement · Disparaît à la fin du live</div>
+          <div className="price-old">297€</div>
+          <div className="price-new">144€</div>
+          <div className="price-note">Prix du batch en cours · Remonte au prochain palier</div>
         </div>
-        <div className="urgency-bar">
-          <div className="urgency-text-blink">⚠️ SEULEMENT 3 PLACES RESTANTES SUR 20</div>
-          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '75%' }}></div></div>
-          <div className="urgency-labels"><span style={{ color: '#a78bfa' }}>17 places prises</span><span style={{ color: '#e8110a' }}>3 places restantes</span></div>
-        </div>
-        <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(22px,4vw,36px)' }}>ACCÉDER À LA FORMATION + L'ACCOMPAGNEMENT<span className="cta-arrow">↓</span></a>
-        <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
+        <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(20px,3.6vw,30px)' }}>COMMENCER MAINTENANT<span className="cta-arrow">↓</span></a>
       </div>
 
       <footer className="sp-footer">
