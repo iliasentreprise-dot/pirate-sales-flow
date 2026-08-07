@@ -3,6 +3,7 @@ import bonusTiktokSecret from "@/assets/bonus-tiktok-secret.jpg";
 import bonusBoostUltime from "@/assets/bonus-boost-ultime.jpg";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { supabase } from "@/integrations/supabase/client";
+import { getDatafastAttribution } from "@/lib/datafast";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import type { Stripe, StripeCardElement } from "@stripe/stripe-js";
@@ -279,6 +280,7 @@ const Orderbump = () => {
           amount: bumpAdded ? 19100 : 14400,
           bump: bumpAdded,
           payment_method_types: ["card"],
+          ...getDatafastAttribution(),
         },
       })
       .then(({ data, error }) => {
