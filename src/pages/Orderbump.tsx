@@ -279,6 +279,7 @@ const Orderbump = () => {
           amount: bumpAdded ? 19100 : 14400,
           bump: bumpAdded,
           payment_method_types: ["card"],
+          ...getDatafastAttribution(),
         },
       })
       .then(({ data, error }) => {
