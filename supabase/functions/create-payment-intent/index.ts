@@ -19,16 +19,6 @@ Deno.serve(async (req) => {
     const body = await req.json();
     const amount = Number(body?.amount);
     const bump = Boolean(body?.bump);
-    const cookieHeader = req.headers.get("cookie") ?? "";
-    const cookieValue = (name: string) => {
-      const m = cookieHeader.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
-      return m ? decodeURIComponent(m[1]) : undefined;
-    };
-    // DataFast revenue attribution: prefer values sent by the client,
-    // fall back to cookies on the incoming request.
-    const datafastVisitorId = body?.datafast_visitor_id ?? cookieValue("datafast_visitor_id");
-    const datafastSessionId = body?.datafast_session_id ?? cookieValue("datafast_session_id");
-
     const paymentMethodTypes: string[] = Array.isArray(body?.payment_method_types)
       ? body.payment_method_types
       : ["card"];
@@ -55,8 +45,6 @@ Deno.serve(async (req) => {
       metadata: {
         bump: bump ? "1" : "0",
         product: bump ? "systeme_pirate_bump" : "systeme_pirate",
-        ...(datafastVisitorId ? { datafast_visitor_id: String(datafastVisitorId) } : {}),
-        ...(datafastSessionId ? { datafast_session_id: String(datafastSessionId) } : {}),
       },
     });
 
