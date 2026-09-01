@@ -34,7 +34,8 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-26JFDRLX3T');
+      // send_page_view disabled: page views are sent by the SPA router (src/hooks/use-analytics-pageviews.ts)
+      gtag('config', 'G-26JFDRLX3T', { send_page_view: false });
     </script>
 
     
