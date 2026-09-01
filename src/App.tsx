@@ -11,8 +11,26 @@ import Upsell2 from "./pages/Upsell2.tsx";
 import Merci from "./pages/Merci.tsx";
 import CGV from "./pages/CGV.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import { useAnalyticsPageviews } from "@/hooks/use-analytics-pageviews";
 
 const queryClient = new QueryClient();
+
+const AppRoutes = () => {
+  useAnalyticsPageviews();
+  return (
+    <Routes>
+      <Route path="/" element={<Index />} />
+      <Route path="/orderbump" element={<Orderbump />} />
+      <Route path="/upsell0" element={<Upsell0 />} />
+      <Route path="/upsell1" element={<Upsell1 />} />
+      <Route path="/upsell2" element={<Upsell2 />} />
+      <Route path="/merci" element={<Merci />} />
+      <Route path="/cgv" element={<CGV />} />
+      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -20,17 +38,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/orderbump" element={<Orderbump />} />
-          <Route path="/upsell0" element={<Upsell0 />} />
-          <Route path="/upsell1" element={<Upsell1 />} />
-          <Route path="/upsell2" element={<Upsell2 />} />
-          <Route path="/merci" element={<Merci />} />
-          <Route path="/cgv" element={<CGV />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AppRoutes />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
