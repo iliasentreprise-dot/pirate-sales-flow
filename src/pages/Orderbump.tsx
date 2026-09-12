@@ -43,7 +43,7 @@ const CountdownTimer = ({ hours }: { hours: number }) => {
 // Composant mort — conservé intentionnellement, non utilisé dans le JSX actuel
 function PayPalSection({ bumpAdded }: { bumpAdded: boolean }) {
   const navigate = useNavigate();
-  const amount = bumpAdded ? "144.00" : "97.00";
+  const amount = bumpAdded ? "344.00" : "297.00";
   const description = bumpAdded ? "Système Pirate + Pack Bonus Secret" : "Système Pirate";
 
   const createOrder = (_data: unknown, actions: { order: { create: (o: object) => Promise<string> } }) =>
@@ -123,7 +123,7 @@ function CardPaymentSection({ bumpAdded, customerName, customerEmail, setFieldEr
   const [cardReady, setCardReady] = useState(false);
   const [loading, setLoading] = useState(false);
   const [paymentError, setPaymentError] = useState("");
-  const total = bumpAdded ? "144" : "97";
+  const total = bumpAdded ? "344" : "297";
 
   useEffect(() => {
     let destroyed = false;
@@ -264,7 +264,7 @@ const Orderbump = () => {
   const [piError, setPiError] = useState(false);
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
-  const total = bumpAdded ? "144€" : "97€";
+  const total = bumpAdded ? "344€" : "297€";
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -276,7 +276,7 @@ const Orderbump = () => {
     supabase.functions
       .invoke("create-payment-intent", {
         body: {
-          amount: bumpAdded ? 14400 : 9700,
+          amount: bumpAdded ? 34400 : 29700,
           bump: bumpAdded,
           payment_method_types: ["card"],
         },
@@ -422,8 +422,7 @@ const Orderbump = () => {
       <div className="ob-summary-box">
         <div className="ob-order-summary">
           <h3>📋 RÉCAPITULATIF DE COMMANDE</h3>
-          <div className="ob-order-line"><span>🤖 Système DigiDrop (méthode complète)</span><span className="price">97€</span></div>
-          <div className="ob-order-line"><span>Réduction Offre Live</span><span className="ob-badge-red">-600€</span></div>
+          <div className="ob-order-line"><span>🤖 Système DigiDrop (méthode complète)</span><span className="price">297€</span></div>
           {bumpAdded && (
             <div className="ob-order-line"><span>👑 Pack Bonus Secret (2 logiciels)</span><span className="price">47€</span></div>
           )}
@@ -495,9 +494,9 @@ const Orderbump = () => {
 
         {(() => {
           const revolutLink = bumpAdded
-            ? "https://revolut.me/ilias_business?currency=EUR&amount=14400&note=Formation%20%20%20Logiciel%20d%27automatisation"
-            : "https://revolut.me/ilias_business?currency=EUR&amount=9700&note=Le%20Syst%C3%A8me%20pirate%20complet";
-          const amountLabel = bumpAdded ? "144€" : "97€";
+            ? "https://revolut.me/ilias_business?currency=EUR&amount=34400&note=Formation%20%20%20Logiciel%20d%27automatisation"
+            : "https://revolut.me/ilias_business?currency=EUR&amount=29700&note=Le%20Syst%C3%A8me%20pirate%20complet";
+          const amountLabel = bumpAdded ? "344€" : "297€";
           return (
             <button
               onClick={() => {
