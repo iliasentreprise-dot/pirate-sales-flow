@@ -226,14 +226,13 @@ const Index = () => {
           La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels —<strong style={{ color: 'var(--sp-purple-light)' }}> sans montrer ton visage, sans audience, sans budget pub, sans même avoir besoin de créer ton contenu toi même.</strong><br />Des ventes dès la première semaine. Garanti.
         </p>
         <div className="price-block">
-          <div className="price-old">697€</div>
-          <div className="price-new">97€</div>
-          <div className="price-note">Offre Live uniquement · Disparaît à la fin du live</div>
+          <div className="price-new">197€</div>
+          <div className="price-note">Formation seule</div>
         </div>
         <div className="urgency-bar">
-          <div className="urgency-text-blink">⚠️ SEULEMENT 3 PLACES RESTANTES SUR 20</div>
-          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '75%' }}></div></div>
-          <div className="urgency-labels"><span style={{ color: '#a78bfa' }}>17 places prises</span><span style={{ color: '#e8110a' }}>3 places restantes</span></div>
+          <div className="urgency-text-blink" style={{ fontSize: 24 }}>ACCOMPAGNEMENT COMPLET — 20/20</div>
+          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '100%' }}></div></div>
+          <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>20 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>COMPLET</span></div>
         </div>
         <a href="/orderbump" onClick={goOrderbump} className="btn-cta">ACCÉDER À LA FORMATION + L'ACCOMPAGNEMENT<span className="cta-arrow">↓</span></a>
         <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
@@ -336,15 +335,12 @@ const Index = () => {
         </ul>
         <div style={{ width: '100%', maxWidth: 600, height: 2, background: 'var(--sp-purple)', margin: '30px auto', opacity: 0.5 }}></div>
         <div className="recois-offer-box">
-          <div style={{ fontSize: 22, color: '#666', textDecoration: 'line-through', marginBottom: 8 }}>Prix habituel : 697€</div>
-          <span className="bounce-arrow">↓</span>
-          <div className="blink-live">Mais pendant ce LIVE UNIQUEMENT :</div>
-          <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 80, color: 'white', lineHeight: 1, margin: '10px 0' }}>97€</div>
+          <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 80, color: 'white', lineHeight: 1, margin: '10px 0' }}>197€</div>
           <div className="urgency-bar">
             <div style={{ fontSize: 13, color: '#888', textAlign: 'center', marginBottom: 10, letterSpacing: 0.5 }}>La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels automatisés</div>
-            <div className="urgency-text-blink">⚠️ SEULEMENT 3 PLACES RESTANTES SUR 20</div>
-            <div className="urgency-progress"><div className="urgency-fill" style={{ width: '75%' }}></div></div>
-            <div className="urgency-labels"><span style={{ color: '#a78bfa' }}>17 places prises</span><span style={{ color: '#e8110a' }}>3 places restantes</span></div>
+            <div className="urgency-text-blink" style={{ fontSize: 24 }}>ACCOMPAGNEMENT COMPLET — 20/20</div>
+            <div className="urgency-progress"><div className="urgency-fill" style={{ width: '100%' }}></div></div>
+            <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>20 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>COMPLET</span></div>
           </div>
           <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(18px,3.5vw,30px)', marginTop: 10 }}>ACCÉDER À LA FORMATION + L'ACCOMPAGNEMENT<span className="cta-arrow">↓</span></a>
           <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
@@ -357,18 +353,17 @@ const Index = () => {
         <span className="section-tag" style={{ display: 'block', marginBottom: 16 }}>⚓ ACCÈS IMMÉDIAT</span>
         <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(36px,6vw,64px)', color: 'white', lineHeight: 1, marginBottom: 20 }}>Tu es prêt à <span style={{ color: 'var(--sp-purple)' }}>passer pirate</span> ?</h2>
         <div className="price-block" style={{ margin: '24px 0' }}>
-          <div className="price-old">697€</div>
-          <div className="price-new">97€</div>
-          <div className="price-note">Formation + Pack Bonus Secret · Offre Live uniquement</div>
+          <div className="price-new">197€</div>
+          <div className="price-note">Formation seule</div>
         </div>
         <div className="urgency-bar">
           <div style={{ fontSize: 13, color: '#888', textAlign: 'center', marginBottom: 10, letterSpacing: 0.5 }}>La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels automatisés</div>
-          <div className="urgency-text-blink">⚠️ SEULEMENT 3 PLACES RESTANTES SUR 20</div>
-          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '75%' }}></div></div>
-          <div className="urgency-labels"><span style={{ color: '#a78bfa' }}>17 places prises</span><span style={{ color: '#e8110a' }}>3 places restantes</span></div>
+          <div className="urgency-text-blink" style={{ fontSize: 24 }}>ACCOMPAGNEMENT COMPLET — 20/20</div>
+          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '100%' }}></div></div>
+          <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>20 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>COMPLET</span></div>
         </div>
         <div style={{ maxWidth: 560, margin: '32px auto 0' }}>
-          <PayPalCheckout amount={97} onSuccess={handlePayPalSuccess} />
+          <PayPalCheckout amount={197} onSuccess={handlePayPalSuccess} />
         </div>
         <span className="warning-text" style={{ display: 'block', marginTop: 16 }}>⚠️ Cette offre disparaît dès la fin du live</span>
         <span className="btn-sub">Accès immédiat après paiement · 100% sécurisé</span>
@@ -397,16 +392,15 @@ const Index = () => {
 
       <div className="final-cta">
         <h2>Arrête de <span>regarder</span> les autres vendre.</h2>
-        <p>Offre Live uniquement. 97€. Accompagnement inclus. Résultats garantis la première semaine.</p>
+        <p>Formation seule à 197€. Résultats garantis la première semaine.</p>
         <div className="price-block" style={{ marginBottom: 20 }}>
-          <div className="price-old">697€</div>
-          <div className="price-new">97€</div>
-          <div className="price-note">Offre Live uniquement · Disparaît à la fin du live</div>
+          <div className="price-new">197€</div>
+          <div className="price-note">Formation seule</div>
         </div>
         <div className="urgency-bar">
-          <div className="urgency-text-blink">⚠️ SEULEMENT 3 PLACES RESTANTES SUR 20</div>
-          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '75%' }}></div></div>
-          <div className="urgency-labels"><span style={{ color: '#a78bfa' }}>17 places prises</span><span style={{ color: '#e8110a' }}>3 places restantes</span></div>
+          <div className="urgency-text-blink" style={{ fontSize: 24 }}>ACCOMPAGNEMENT COMPLET — 20/20</div>
+          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '100%' }}></div></div>
+          <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>20 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>COMPLET</span></div>
         </div>
         <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(22px,4vw,36px)' }}>ACCÉDER À LA FORMATION + L'ACCOMPAGNEMENT<span className="cta-arrow">↓</span></a>
         <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
