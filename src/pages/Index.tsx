@@ -230,9 +230,9 @@ const Index = () => {
           <div className="price-note">Formation seule</div>
         </div>
         <div className="urgency-bar">
-          <div className="urgency-text-blink" style={{ fontSize: 24 }}>ACCOMPAGNEMENT COMPLET — 20/20</div>
-          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '100%' }}></div></div>
-          <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>20 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>COMPLET</span></div>
+          <div className="urgency-text-blink" style={{ fontSize: 24 }}>IL RESTE 2 PLACES — 18/20</div>
+          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '90%' }}></div></div>
+          <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>18 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>2 restantes</span></div>
         </div>
         <a href="/orderbump" onClick={goOrderbump} className="btn-cta">ACCÉDER À LA FORMATION + L'ACCOMPAGNEMENT<span className="cta-arrow">↓</span></a>
         <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
@@ -338,9 +338,9 @@ const Index = () => {
           <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 80, color: 'white', lineHeight: 1, margin: '10px 0' }}>397€</div>
           <div className="urgency-bar">
             <div style={{ fontSize: 13, color: '#888', textAlign: 'center', marginBottom: 10, letterSpacing: 0.5 }}>La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels automatisés</div>
-            <div className="urgency-text-blink" style={{ fontSize: 24 }}>ACCOMPAGNEMENT COMPLET — 20/20</div>
-            <div className="urgency-progress"><div className="urgency-fill" style={{ width: '100%' }}></div></div>
-            <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>20 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>COMPLET</span></div>
+            <div className="urgency-text-blink" style={{ fontSize: 24 }}>IL RESTE 2 PLACES — 18/20</div>
+            <div className="urgency-progress"><div className="urgency-fill" style={{ width: '90%' }}></div></div>
+            <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>18 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>2 restantes</span></div>
           </div>
           <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(18px,3.5vw,30px)', marginTop: 10 }}>ACCÉDER À LA FORMATION + L'ACCOMPAGNEMENT<span className="cta-arrow">↓</span></a>
           <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
@@ -358,9 +358,9 @@ const Index = () => {
         </div>
         <div className="urgency-bar">
           <div style={{ fontSize: 13, color: '#888', textAlign: 'center', marginBottom: 10, letterSpacing: 0.5 }}>La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels automatisés</div>
-          <div className="urgency-text-blink" style={{ fontSize: 24 }}>ACCOMPAGNEMENT COMPLET — 20/20</div>
-          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '100%' }}></div></div>
-          <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>20 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>COMPLET</span></div>
+          <div className="urgency-text-blink" style={{ fontSize: 24 }}>IL RESTE 2 PLACES — 18/20</div>
+          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '90%' }}></div></div>
+          <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>18 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>2 restantes</span></div>
         </div>
         <div style={{ maxWidth: 560, margin: '32px auto 0' }}>
           <PayPalCheckout amount={397} onSuccess={handlePayPalSuccess} />
@@ -398,9 +398,9 @@ const Index = () => {
           <div className="price-note">Formation seule</div>
         </div>
         <div className="urgency-bar">
-          <div className="urgency-text-blink" style={{ fontSize: 24 }}>ACCOMPAGNEMENT COMPLET — 20/20</div>
-          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '100%' }}></div></div>
-          <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>20 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>COMPLET</span></div>
+          <div className="urgency-text-blink" style={{ fontSize: 24 }}>IL RESTE 2 PLACES — 18/20</div>
+          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '90%' }}></div></div>
+          <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>18 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>2 restantes</span></div>
         </div>
         <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(22px,4vw,36px)' }}>ACCÉDER À LA FORMATION + L'ACCOMPAGNEMENT<span className="cta-arrow">↓</span></a>
         <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
