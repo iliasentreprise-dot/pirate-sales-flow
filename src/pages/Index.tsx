@@ -143,6 +143,7 @@ const Index = () => {
         .urgency-progress { background:#1a1a1a; height:14px; border-radius:7px; margin:12px 0; overflow:hidden; }
         .urgency-fill { height:100%; background:linear-gradient(90deg,#7c3aed,#a78bfa); border-radius:7px; }
         .urgency-labels { display:flex; justify-content:space-between; font-size:12px; }
+        .live-flame { flex-shrink:0; filter: drop-shadow(0 0 6px rgba(34,197,94,0.8)); }
         .urgency-live { display:flex; align-items:center; justify-content:center; gap:8px; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:1px; color:#22c55e; text-align:center; margin-bottom:6px; }
         .live-dot { width:9px; height:9px; border-radius:50%; background:#22c55e; box-shadow:0 0 8px #22c55e; animation: livePulse 1.2s infinite; flex-shrink:0; }
         @keyframes livePulse { 0%{opacity:1;transform:scale(1)} 50%{opacity:0.25;transform:scale(0.7)} 100%{opacity:1;transform:scale(1)} }
@@ -233,7 +234,7 @@ const Index = () => {
           <div className="price-note">Formation seule</div>
         </div>
         <div className="urgency-bar">
-          <div className="urgency-live"><span className="live-dot"></span>🔥 5 NOUVEAUX ACCÈS AUJOURD'HUI</div>
+          <div className="urgency-live"><span className="live-dot"></span><svg className="live-flame" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>5 NOUVEAUX ACCÈS AUJOURD'HUI</div>
           <div className="urgency-text-blink" style={{ fontSize: 24 }}>IL RESTE 2 PLACES — 18/20</div>
           <div className="urgency-progress"><div className="urgency-fill" style={{ width: '90%' }}></div></div>
           <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>18 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>2 restantes</span></div>
@@ -342,7 +343,7 @@ const Index = () => {
           <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 80, color: 'white', lineHeight: 1, margin: '10px 0' }}>397€</div>
           <div className="urgency-bar">
             <div style={{ fontSize: 13, color: '#888', textAlign: 'center', marginBottom: 10, letterSpacing: 0.5 }}>La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels automatisés</div>
-            <div className="urgency-live"><span className="live-dot"></span>🔥 5 NOUVEAUX ACCÈS AUJOURD'HUI</div>
+            <div className="urgency-live"><span className="live-dot"></span><svg className="live-flame" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>5 NOUVEAUX ACCÈS AUJOURD'HUI</div>
             <div className="urgency-text-blink" style={{ fontSize: 24 }}>IL RESTE 2 PLACES — 18/20</div>
             <div className="urgency-progress"><div className="urgency-fill" style={{ width: '90%' }}></div></div>
             <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>18 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>2 restantes</span></div>
@@ -363,7 +364,7 @@ const Index = () => {
         </div>
         <div className="urgency-bar">
           <div style={{ fontSize: 13, color: '#888', textAlign: 'center', marginBottom: 10, letterSpacing: 0.5 }}>La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels automatisés</div>
-          <div className="urgency-live"><span className="live-dot"></span>🔥 5 NOUVEAUX ACCÈS AUJOURD'HUI</div>
+          <div className="urgency-live"><span className="live-dot"></span><svg className="live-flame" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>5 NOUVEAUX ACCÈS AUJOURD'HUI</div>
           <div className="urgency-text-blink" style={{ fontSize: 24 }}>IL RESTE 2 PLACES — 18/20</div>
           <div className="urgency-progress"><div className="urgency-fill" style={{ width: '90%' }}></div></div>
           <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>18 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>2 restantes</span></div>
@@ -404,7 +405,7 @@ const Index = () => {
           <div className="price-note">Formation seule</div>
         </div>
         <div className="urgency-bar">
-          <div className="urgency-live"><span className="live-dot"></span>🔥 5 NOUVEAUX ACCÈS AUJOURD'HUI</div>
+          <div className="urgency-live"><span className="live-dot"></span><svg className="live-flame" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>5 NOUVEAUX ACCÈS AUJOURD'HUI</div>
           <div className="urgency-text-blink" style={{ fontSize: 24 }}>IL RESTE 2 PLACES — 18/20</div>
           <div className="urgency-progress"><div className="urgency-fill" style={{ width: '90%' }}></div></div>
           <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>18 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>2 restantes</span></div>
