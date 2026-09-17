@@ -43,7 +43,7 @@ const CountdownTimer = ({ hours }: { hours: number }) => {
 // Composant mort — conservé intentionnellement, non utilisé dans le JSX actuel
 function PayPalSection({ bumpAdded }: { bumpAdded: boolean }) {
   const navigate = useNavigate();
-  const amount = bumpAdded ? "344.00" : "297.00";
+  const amount = bumpAdded ? "444.00" : "397.00";
   const description = bumpAdded ? "Système Pirate + Pack Bonus Secret" : "Système Pirate";
 
   const createOrder = (_data: unknown, actions: { order: { create: (o: object) => Promise<string> } }) =>
@@ -123,7 +123,7 @@ function CardPaymentSection({ bumpAdded, customerName, customerEmail, setFieldEr
   const [cardReady, setCardReady] = useState(false);
   const [loading, setLoading] = useState(false);
   const [paymentError, setPaymentError] = useState("");
-  const total = bumpAdded ? "344" : "297";
+  const total = bumpAdded ? "444" : "397";
 
   useEffect(() => {
     let destroyed = false;
@@ -264,7 +264,7 @@ const Orderbump = () => {
   const [piError, setPiError] = useState(false);
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
-  const total = bumpAdded ? "344€" : "297€";
+  const total = bumpAdded ? "444€" : "397€";
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -276,7 +276,7 @@ const Orderbump = () => {
     supabase.functions
       .invoke("create-payment-intent", {
         body: {
-          amount: bumpAdded ? 34400 : 29700,
+          amount: bumpAdded ? 44400 : 39700,
           bump: bumpAdded,
           payment_method_types: ["card"],
         },
@@ -422,7 +422,7 @@ const Orderbump = () => {
       <div className="ob-summary-box">
         <div className="ob-order-summary">
           <h3>📋 RÉCAPITULATIF DE COMMANDE</h3>
-          <div className="ob-order-line"><span>🤖 Système DigiDrop (méthode complète)</span><span className="price">297€</span></div>
+          <div className="ob-order-line"><span>🤖 Système DigiDrop (méthode complète)</span><span className="price">397€</span></div>
           {bumpAdded && (
             <div className="ob-order-line"><span>👑 Pack Bonus Secret (2 logiciels)</span><span className="price">47€</span></div>
           )}
@@ -494,9 +494,9 @@ const Orderbump = () => {
 
         {(() => {
           const revolutLink = bumpAdded
-            ? "https://revolut.me/ilias_business?currency=EUR&amount=34400&note=Formation%20%20%20Logiciel%20d%27automatisation"
-            : "https://revolut.me/ilias_business?currency=EUR&amount=29700&note=Le%20Syst%C3%A8me%20pirate%20complet";
-          const amountLabel = bumpAdded ? "344€" : "297€";
+            ? "https://revolut.me/ilias_business?currency=EUR&amount=44400&note=Formation%20%20%20Logiciel%20d%27automatisation"
+            : "https://revolut.me/ilias_business?currency=EUR&amount=39700&note=Le%20Syst%C3%A8me%20pirate%20complet";
+          const amountLabel = bumpAdded ? "444€" : "397€";
           return (
             <button
               onClick={() => {
@@ -541,7 +541,7 @@ const Orderbump = () => {
           const klarnaLinkBase = "https://buy.stripe.com/dRmfZhafw6RyeQ0dt86wE04";
           const klarnaLinkBump = "https://buy.stripe.com/7sY4gzbjA1xegY83Sy6wE01";
           const klarnaLink = bumpAdded ? klarnaLinkBump : klarnaLinkBase;
-          const klarnaInstalment = bumpAdded ? "3x 114,67€" : "3x 99€";
+          const klarnaInstalment = bumpAdded ? "3x 148€" : "3x 132,33€";
           return (
             <>
               <button
