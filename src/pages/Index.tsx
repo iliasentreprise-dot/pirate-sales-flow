@@ -226,7 +226,7 @@ const Index = () => {
           La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels —<strong style={{ color: 'var(--sp-purple-light)' }}> sans montrer ton visage, sans audience, sans budget pub, sans même avoir besoin de créer ton contenu toi même.</strong><br />Des ventes dès la première semaine. Garanti.
         </p>
         <div className="price-block">
-          <div className="price-new">297€</div>
+          <div className="price-new">397€</div>
           <div className="price-note">Formation seule</div>
         </div>
         <div className="urgency-bar">
@@ -323,7 +323,7 @@ const Index = () => {
         <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(36px,6vw,64px)', lineHeight: 1, color: 'white', marginBottom: 30 }}>☠️ TOUT CE QUE TU REÇOIS<br />DANS LA DIGIDROP ACADEMY</h2>
         <img className="recois-mockup" src={mockup.url} alt="Système Pirate - Mockup" />
         <ul className="recois-list">
-          <li><span>✅ LE sYSTÈME DigiDrop complet — 6 modules</span><span className="recois-price">297€</span></li>
+          <li><span>✅ LE sYSTÈME DigiDrop complet — 6 modules</span><span className="recois-price">397€</span></li>
           <li><span>✅ Accompagnement personnalisé</span><span className="recois-price">147€</span></li>
           <li><span>✅ Outil IA secret</span><span className="recois-price">97€</span></li>
           <li><span>✅ Tunnel de vente à haute conversion</span><span className="recois-price">97€</span></li>
@@ -335,7 +335,7 @@ const Index = () => {
         </ul>
         <div style={{ width: '100%', maxWidth: 600, height: 2, background: 'var(--sp-purple)', margin: '30px auto', opacity: 0.5 }}></div>
         <div className="recois-offer-box">
-          <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 80, color: 'white', lineHeight: 1, margin: '10px 0' }}>297€</div>
+          <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 80, color: 'white', lineHeight: 1, margin: '10px 0' }}>397€</div>
           <div className="urgency-bar">
             <div style={{ fontSize: 13, color: '#888', textAlign: 'center', marginBottom: 10, letterSpacing: 0.5 }}>La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels automatisés</div>
             <div className="urgency-text-blink" style={{ fontSize: 24 }}>ACCOMPAGNEMENT COMPLET — 20/20</div>
@@ -353,7 +353,7 @@ const Index = () => {
         <span className="section-tag" style={{ display: 'block', marginBottom: 16 }}>⚓ ACCÈS IMMÉDIAT</span>
         <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(36px,6vw,64px)', color: 'white', lineHeight: 1, marginBottom: 20 }}>Tu es prêt à <span style={{ color: 'var(--sp-purple)' }}>passer pirate</span> ?</h2>
         <div className="price-block" style={{ margin: '24px 0' }}>
-          <div className="price-new">297€</div>
+          <div className="price-new">397€</div>
           <div className="price-note">Formation seule</div>
         </div>
         <div className="urgency-bar">
@@ -363,7 +363,7 @@ const Index = () => {
           <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>20 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>COMPLET</span></div>
         </div>
         <div style={{ maxWidth: 560, margin: '32px auto 0' }}>
-          <PayPalCheckout amount={297} onSuccess={handlePayPalSuccess} />
+          <PayPalCheckout amount={397} onSuccess={handlePayPalSuccess} />
         </div>
         <span className="warning-text" style={{ display: 'block', marginTop: 16 }}>⚠️ Cette offre disparaît dès la fin du live</span>
         <span className="btn-sub">Accès immédiat après paiement · 100% sécurisé</span>
@@ -392,9 +392,9 @@ const Index = () => {
 
       <div className="final-cta">
         <h2>Arrête de <span>regarder</span> les autres vendre.</h2>
-        <p>Formation seule à 297€. Résultats garantis la première semaine.</p>
+        <p>Formation seule à 397€. Résultats garantis la première semaine.</p>
         <div className="price-block" style={{ marginBottom: 20 }}>
-          <div className="price-new">297€</div>
+          <div className="price-new">397€</div>
           <div className="price-note">Formation seule</div>
         </div>
         <div className="urgency-bar">
