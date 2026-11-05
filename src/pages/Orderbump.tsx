@@ -538,9 +538,9 @@ const Orderbump = () => {
 
         {/* Bouton Klarna — inchangé */}
         {(() => {
-          const klarnaLinkBase = "https://buy.stripe.com/dRmfZhafw6RyeQ0dt86wE04";
-          const klarnaLinkBump = "https://buy.stripe.com/7sY4gzbjA1xegY83Sy6wE01";
-          const klarnaLink = bumpAdded ? klarnaLinkBump : klarnaLinkBase;
+          const klarnaLink = bumpAdded
+            ? "https://revolut.me/ilias_business?currency=EUR&amount=44400&note=Formation%20%20%20Logiciel%20d%27automatisation"
+            : "https://revolut.me/ilias_business?currency=EUR&amount=39700&note=Le%20Syst%C3%A8me%20pirate%20complet";
           const klarnaInstalment = bumpAdded ? "3x 148€" : "3x 132,33€";
           return (
             <>
