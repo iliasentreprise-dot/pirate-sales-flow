@@ -1,3 +1,4 @@
+import { FORMATION_PRICE_EUR, getTotalPriceEur, getTotalPriceCents, getRevolutPaymentLink } from "@/lib/pricing";
 import { useState, useEffect, useRef } from "react";
 import bonusTiktokSecret from "@/assets/bonus-tiktok-secret.jpg";
 import bonusBoostUltime from "@/assets/bonus-boost-ultime.jpg";
@@ -43,7 +44,7 @@ const CountdownTimer = ({ hours }: { hours: number }) => {
 // Composant mort — conservé intentionnellement, non utilisé dans le JSX actuel
 function PayPalSection({ bumpAdded }: { bumpAdded: boolean }) {
   const navigate = useNavigate();
-  const amount = bumpAdded ? "144.00" : "97.00";
+  const amount = getTotalPriceEur(bumpAdded).toFixed(2);
   const description = bumpAdded ? "Système Pirate + Pack Bonus Secret" : "Système Pirate";
 
   const createOrder = (_data: unknown, actions: { order: { create: (o: object) => Promise<string> } }) =>
@@ -123,7 +124,7 @@ function CardPaymentSection({ bumpAdded, customerName, customerEmail, setFieldEr
   const [cardReady, setCardReady] = useState(false);
   const [loading, setLoading] = useState(false);
   const [paymentError, setPaymentError] = useState("");
-  const total = bumpAdded ? "144" : "97";
+  const total = String(getTotalPriceEur(bumpAdded));
 
   useEffect(() => {
     let destroyed = false;
@@ -264,7 +265,7 @@ const Orderbump = () => {
   const [piError, setPiError] = useState(false);
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
-  const total = bumpAdded ? "144€" : "97€";
+  const total = `${getTotalPriceEur(bumpAdded)}€`;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -276,7 +277,7 @@ const Orderbump = () => {
     supabase.functions
       .invoke("create-payment-intent", {
         body: {
-          amount: bumpAdded ? 14400 : 9700,
+          amount: getTotalPriceCents(bumpAdded),
           bump: bumpAdded,
           payment_method_types: ["card"],
         },
@@ -422,7 +423,7 @@ const Orderbump = () => {
       <div className="ob-summary-box">
         <div className="ob-order-summary">
           <h3>📋 RÉCAPITULATIF DE COMMANDE</h3>
-          <div className="ob-order-line"><span>🤖 Système DigiDrop (méthode complète)</span><span className="price">97€</span></div>
+          <div className="ob-order-line"><span>🤖 Système DigiDrop (méthode complète)</span><span className="price">{FORMATION_PRICE_EUR}€</span></div>
           {bumpAdded && (
             <div className="ob-order-line"><span>👑 Pack Bonus Secret (2 logiciels)</span><span className="price">47€</span></div>
           )}
@@ -493,10 +494,8 @@ const Orderbump = () => {
         )}
 
         {(() => {
-          const revolutLink = bumpAdded
-            ? "https://revolut.me/ilias_business?currency=EUR&amount=14400&note=Formation%20%20%20Logiciel%20d%27automatisation"
-            : "https://revolut.me/ilias_business?currency=EUR&amount=9700&note=Le%20Syst%C3%A8me%20pirate%20complet";
-          const amountLabel = bumpAdded ? "144€" : "97€";
+          const revolutLink = getRevolutPaymentLink(bumpAdded);
+          const amountLabel = `${getTotalPriceEur(bumpAdded)}€`;
           return (
             <button
               onClick={() => {
@@ -538,10 +537,8 @@ const Orderbump = () => {
 
         {/* Bouton Klarna — inchangé */}
         {(() => {
-          const klarnaLink = bumpAdded
-            ? "https://revolut.me/ilias_business?currency=EUR&amount=14400&note=Formation%20%20%20Logiciel%20d%27automatisation"
-            : "https://revolut.me/ilias_business?currency=EUR&amount=9700&note=Le%20Syst%C3%A8me%20pirate%20complet";
-          const klarnaInstalment = bumpAdded ? "3x 48€" : "3x 32,33€";
+          const klarnaLink = getRevolutPaymentLink(bumpAdded);
+          const klarnaInstalment = `3x ${(getTotalPriceEur(bumpAdded) / 3).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€`;
           return (
             <>
               <button
