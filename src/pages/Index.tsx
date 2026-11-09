@@ -241,7 +241,7 @@ const Index = () => {
           <div className="urgency-progress"><div className="urgency-fill" style={{ width: '90%' }}></div></div>
           <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>18 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>2 restantes</span></div>
         </div>
-        <a href="/orderbump" onClick={goOrderbump} className="btn-cta">ACCÉDER À LA FORMATION + L'ACCOMPAGNEMENT<span className="cta-arrow">↓</span></a>
+        <a href="/orderbump" onClick={goOrderbump} className="btn-cta">ACCÈDE À LA FORMATION + OUTILS SECRET<span className="cta-arrow">↓</span></a>
         <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
         <span className="btn-sub">Accès immédiat · Paiement sécurisé · Garanti ou remboursé</span>
       </section>
@@ -353,7 +353,7 @@ const Index = () => {
             <div className="urgency-progress"><div className="urgency-fill" style={{ width: '90%' }}></div></div>
             <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>18 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>2 restantes</span></div>
           </div>
-          <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(18px,3.5vw,30px)', marginTop: 10 }}>ACCÉDER À LA FORMATION + L'ACCOMPAGNEMENT<span className="cta-arrow">↓</span></a>
+          <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(18px,3.5vw,30px)', marginTop: 10 }}>ACCÈDE À LA FORMATION + OUTILS SECRET<span className="cta-arrow">↓</span></a>
           <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
         </div>
       </div>
@@ -421,7 +421,7 @@ const Index = () => {
           <div className="urgency-progress"><div className="urgency-fill" style={{ width: '90%' }}></div></div>
           <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>18 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>2 restantes</span></div>
         </div>
-        <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(22px,4vw,36px)' }}>ACCÉDER À LA FORMATION + L'ACCOMPAGNEMENT<span className="cta-arrow">↓</span></a>
+        <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(22px,4vw,36px)' }}>ACCÈDE À LA FORMATION + OUTILS SECRET<span className="cta-arrow">↓</span></a>
         <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
       </div>
 
