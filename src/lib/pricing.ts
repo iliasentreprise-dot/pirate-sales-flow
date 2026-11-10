@@ -1,4 +1,4 @@
-export const FORMATION_PRICE_EUR = 497;
+export const FORMATION_PRICE_EUR = 97;
 export const ORDER_BUMP_PRICE_EUR = 47;
 
 export function getTotalPriceEur(bumpAdded: boolean): number {
