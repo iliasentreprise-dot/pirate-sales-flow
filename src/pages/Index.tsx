@@ -15,7 +15,7 @@ import PayPalCheckout from "@/components/PayPalCheckout";
 
 const Index = () => {
   const navigate = useNavigate();
-  const [visitors, setVisitors] = useState(() => Math.floor(Math.random() * 12) + 11); // 11-22 initial
+  const [visitors, setVisitors] = useState(() => Math.floor(Math.random() * 4)); // 0-3 initial
   const [zoomedImg, setZoomedImg] = useState<string | null>(null);
 
   useEffect(() => {
@@ -27,10 +27,7 @@ const Index = () => {
       setVisitors((prev) => {
         const delta = Math.random() < 0.5 ? -1 : 1;
         const magnitude = Math.random() < 0.75 ? 1 : 2;
-        let next = prev + delta * magnitude;
-        if (next < 5) next = 5 + Math.floor(Math.random() * 3);
-        if (next > 27) next = 27 - Math.floor(Math.random() * 3);
-        return next;
+        return Math.max(0, Math.min(3, prev + delta * magnitude));
       });
     };
     const schedule = () => {
