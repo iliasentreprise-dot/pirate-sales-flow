@@ -1,6 +1,5 @@
 import { FORMATION_PRICE_EUR } from "@/lib/pricing";
-import { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import avis1 from "@/assets/avis-1.jpeg";
 import avis3 from "@/assets/avis-3.png";
 import avis4 from "@/assets/avis-4.png";
@@ -11,10 +10,9 @@ import avisLamine from "@/assets/avis-lamine.png";
 import avisProofLock from "@/assets/avis-proof-lock.png";
 import mockup from "@/assets/mockup-systeme-pirate-v3.png.asset.json";
 import logo from "@/assets/logo-drop-digital.png";
-import PayPalCheckout from "@/components/PayPalCheckout";
+import SoldOutButton from "@/components/SoldOutButton";
 
 const Index = () => {
-  const navigate = useNavigate();
   const [visitors, setVisitors] = useState(() => Math.floor(Math.random() * 4)); // 0-3 initial
   const [zoomedImg, setZoomedImg] = useState<string | null>(null);
 
@@ -83,6 +81,7 @@ const Index = () => {
         .btn-cta { display: inline-block; background: var(--sp-purple); color: white; font-family: 'Bebas Neue', sans-serif; font-size: clamp(26px, 5vw, 40px); letter-spacing: 2px; padding: 22px 60px; border: none; cursor: pointer; position: relative; clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%); transition: all 0.2s; box-shadow: 0 8px 40px rgba(124,58,237,0.5); animation: pulse-btn 2s ease-in-out infinite; margin: 10px 0; }
         @keyframes pulse-btn { 0%, 100% { box-shadow: 0 8px 40px rgba(124,58,237,0.5); transform: scale(1); } 50% { box-shadow: 0 8px 60px rgba(124,58,237,0.8); transform: scale(1.02); } }
         .btn-cta:hover { background: var(--sp-purple-dark); transform: scale(1.04) !important; }
+        .btn-cta:disabled:hover { background: #312345; transform: none !important; }
         .cta-arrow { display: inline-block; margin-left: 12px; animation: cta-bounce 0.7s ease-in-out infinite alternate; }
         @keyframes cta-bounce { from { transform: translateY(0); } to { transform: translateY(6px); } }
         .btn-sub { display: block; font-size: 12px; color: #666; margin-top: 10px; }
@@ -185,21 +184,6 @@ const Index = () => {
     return () => { clearTimeout(t1); clearInterval(t2); };
   }, []);
 
-  const scrollToAcces = (e: React.MouseEvent) => {
-    e.preventDefault();
-    document.getElementById('acces')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const goOrderbump = (e: React.MouseEvent) => {
-    e.preventDefault();
-    navigate('/orderbump');
-  };
-
-  const handlePayPalSuccess = useCallback((email: string) => {
-    if (email) sessionStorage.setItem("declic_email", email);
-    navigate("/merci");
-  }, [navigate]);
-
   return (
     <div className="sp-page">
       <div className="live-visitors" aria-live="polite">
@@ -207,7 +191,7 @@ const Index = () => {
         <span><span className="live-visitors-count">{visitors}</span> {visitors > 1 ? 'personnes consultent' : 'personne consulte'} cette page en ce moment</span>
       </div>
       <div className="fixed-nav-wrapper">
-        <a href="/orderbump" className="fixed-btn-left" onClick={goOrderbump}>Réserver mon accès</a>
+        <SoldOutButton className="fixed-btn-left" />
       </div>
 
       <section className="hero">
@@ -233,8 +217,8 @@ const Index = () => {
           <div className="urgency-progress"><div className="urgency-fill" style={{ width: '100%' }}></div></div>
           <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>5 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>0 restante</span></div>
         </div>
-        <a href="/orderbump" onClick={goOrderbump} className="btn-cta">ACCÈDE À LA FORMATION + OUTIL D'AUTOMATISATION<span className="cta-arrow">↓</span></a>
-        <span className="btn-sub">Accès immédiat · Paiement sécurisé · Garanti ou remboursé</span>
+        <SoldOutButton className="btn-cta" />
+        <span className="btn-sub">Les 5 places ont été attribuées.</span>
       </section>
 
       <div className="divider"></div>
@@ -343,14 +327,14 @@ const Index = () => {
             <div className="urgency-progress"><div className="urgency-fill" style={{ width: '100%' }}></div></div>
             <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>5 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>0 restante</span></div>
           </div>
-          <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(18px,3.5vw,30px)', marginTop: 10 }}>ACCÈDE À LA FORMATION + OUTIL D'AUTOMATISATION<span className="cta-arrow">↓</span></a>
+          <SoldOutButton className="btn-cta" style={{ fontSize: 'clamp(18px,3.5vw,30px)', marginTop: 10 }} />
         </div>
       </div>
 
       <div className="divider"></div>
 
       <div id="acces" style={{ background: 'var(--sp-grey)', padding: '70px 20px', textAlign: 'center' }}>
-        <span className="section-tag" style={{ display: 'block', marginBottom: 16 }}>⚓ ACCÈS IMMÉDIAT</span>
+        <span className="section-tag" style={{ display: 'block', marginBottom: 16 }}>⚓ INSCRIPTIONS COMPLÈTES</span>
         <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(36px,6vw,64px)', color: 'white', lineHeight: 1, marginBottom: 20 }}>Tu es prêt à <span style={{ color: 'var(--sp-purple)' }}>passer pirate</span> ?</h2>
         <div className="price-block" style={{ margin: '24px 0' }}>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 14 }}>
@@ -366,9 +350,9 @@ const Index = () => {
           <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>5 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>0 restante</span></div>
         </div>
         <div style={{ maxWidth: 560, margin: '32px auto 0' }}>
-          <PayPalCheckout amount={FORMATION_PRICE_EUR} onSuccess={handlePayPalSuccess} />
+          <SoldOutButton />
         </div>
-        <span className="btn-sub">Accès immédiat après paiement · 100% sécurisé</span>
+        <span className="btn-sub">Les inscriptions sont actuellement fermées.</span>
       </div>
 
       <div className="divider"></div>
@@ -407,7 +391,7 @@ const Index = () => {
           <div className="urgency-progress"><div className="urgency-fill" style={{ width: '100%' }}></div></div>
           <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>5 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>0 restante</span></div>
         </div>
-        <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(22px,4vw,36px)' }}>ACCÈDE À LA FORMATION + OUTIL D'AUTOMATISATION<span className="cta-arrow">↓</span></a>
+        <SoldOutButton className="btn-cta" style={{ fontSize: 'clamp(22px,4vw,36px)' }} />
       </div>
 
       <footer className="sp-footer">
