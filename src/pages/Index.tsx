@@ -1,4 +1,3 @@
-import { getTotalPriceEur } from "@/lib/pricing";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import avis1 from "@/assets/avis-1.jpeg";
@@ -13,11 +12,9 @@ import mockup from "@/assets/mockup-systeme-pirate-v3.png.asset.json";
 import logo from "@/assets/logo-drop-digital.png";
 import PayPalCheckout from "@/components/PayPalCheckout";
 
-const PACKAGE_PRICE_EUR = getTotalPriceEur(true);
-
 const Index = () => {
   const navigate = useNavigate();
-  const [visitors, setVisitors] = useState(() => Math.floor(Math.random() * 4)); // 0-3 initial
+  const [visitors, setVisitors] = useState(() => Math.floor(Math.random() * 12) + 11); // 11-22 initial
   const [zoomedImg, setZoomedImg] = useState<string | null>(null);
 
   useEffect(() => {
@@ -29,7 +26,10 @@ const Index = () => {
       setVisitors((prev) => {
         const delta = Math.random() < 0.5 ? -1 : 1;
         const magnitude = Math.random() < 0.75 ? 1 : 2;
-        return Math.max(0, Math.min(3, prev + delta * magnitude));
+        let next = prev + delta * magnitude;
+        if (next < 5) next = 5 + Math.floor(Math.random() * 3);
+        if (next > 27) next = 27 - Math.floor(Math.random() * 3);
+        return next;
       });
     };
     const schedule = () => {
@@ -210,6 +210,11 @@ const Index = () => {
       </div>
       <div className="fixed-nav-wrapper">
         <a href="/orderbump" className="fixed-btn-left" onClick={goOrderbump}>Réserver mon accès</a>
+        <a href="/orderbump" className="fixed-btn-right" onClick={goOrderbump}>
+          <span className="live-dot"></span>
+          <span>Offre exclusif Live</span>
+          <span className="badge-red">-400€</span>
+        </a>
       </div>
 
       <section className="hero">
@@ -225,9 +230,10 @@ const Index = () => {
         </p>
         <div className="price-block">
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 14 }}>
-            <div className="price-new">{PACKAGE_PRICE_EUR}€</div>
+            <div className="price-new">97€</div>
+            <div className="price-old">497€</div>
           </div>
-          <div className="price-note">Formation + outils</div>
+          <div className="price-note">Formation seule</div>
         </div>
         <div className="urgency-bar">
           <div className="urgency-live"><span className="live-dot"></span><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M13.6 1.5 4.4 13.2c-.3.4 0 1 .5 1h4.6l-1.4 7.6c-.1.6.6.9 1 .4l9.2-11.7c.3-.4 0-1-.5-1h-4.6l1.4-7.6c.1-.6-.6-.9-1-.4z"/></svg>5 NOUVELLES PLACES AUJOURD'HUI</div>
@@ -236,6 +242,7 @@ const Index = () => {
           <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>1 place prise</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>4 restantes</span></div>
         </div>
         <a href="/orderbump" onClick={goOrderbump} className="btn-cta">ACCÈDE À LA FORMATION + OUTIL D'AUTOMATISATION<span className="cta-arrow">↓</span></a>
+        <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
         <span className="btn-sub">Accès immédiat · Paiement sécurisé · Garanti ou remboursé</span>
       </section>
 
@@ -336,7 +343,8 @@ const Index = () => {
         <div style={{ width: '100%', maxWidth: 600, height: 2, background: 'var(--sp-purple)', margin: '30px auto', opacity: 0.5 }}></div>
         <div className="recois-offer-box">
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 14, margin: '10px 0' }}>
-            <span style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 80, color: 'white', lineHeight: 1 }}>{PACKAGE_PRICE_EUR}€</span>
+            <span style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 80, color: 'white', lineHeight: 1 }}>97€</span>
+            <span style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 30, color: '#888', textDecoration: 'line-through' }}>497€</span>
           </div>
           <div className="urgency-bar">
             <div style={{ fontSize: 13, color: '#888', textAlign: 'center', marginBottom: 10, letterSpacing: 0.5 }}>La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels automatisés</div>
@@ -346,6 +354,7 @@ const Index = () => {
             <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>1 place prise</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>4 restantes</span></div>
           </div>
           <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(18px,3.5vw,30px)', marginTop: 10 }}>ACCÈDE À LA FORMATION + OUTIL D'AUTOMATISATION<span className="cta-arrow">↓</span></a>
+          <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
         </div>
       </div>
 
@@ -356,9 +365,10 @@ const Index = () => {
         <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(36px,6vw,64px)', color: 'white', lineHeight: 1, marginBottom: 20 }}>Tu es prêt à <span style={{ color: 'var(--sp-purple)' }}>passer pirate</span> ?</h2>
         <div className="price-block" style={{ margin: '24px 0' }}>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 14 }}>
-            <div className="price-new">{PACKAGE_PRICE_EUR}€</div>
+            <div className="price-new">97€</div>
+            <div className="price-old">497€</div>
           </div>
-          <div className="price-note">Formation + outils</div>
+          <div className="price-note">Formation seule</div>
         </div>
         <div className="urgency-bar">
           <div style={{ fontSize: 13, color: '#888', textAlign: 'center', marginBottom: 10, letterSpacing: 0.5 }}>La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels automatisés</div>
@@ -368,8 +378,9 @@ const Index = () => {
           <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>1 place prise</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>4 restantes</span></div>
         </div>
         <div style={{ maxWidth: 560, margin: '32px auto 0' }}>
-          <PayPalCheckout amount={PACKAGE_PRICE_EUR} onSuccess={handlePayPalSuccess} />
+          <PayPalCheckout amount={97} onSuccess={handlePayPalSuccess} />
         </div>
+        <span className="warning-text" style={{ display: 'block', marginTop: 16 }}>⚠️ Cette offre disparaît dès la fin du live</span>
         <span className="btn-sub">Accès immédiat après paiement · 100% sécurisé</span>
       </div>
 
@@ -396,12 +407,13 @@ const Index = () => {
 
       <div className="final-cta">
         <h2>Arrête de <span>regarder</span> les autres vendre.</h2>
-        <p>Formation + outils à {PACKAGE_PRICE_EUR}€. Résultats garantis la première semaine.</p>
+        <p>Formation seule à 97€. Résultats garantis la première semaine.</p>
         <div className="price-block" style={{ marginBottom: 20 }}>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 14 }}>
-            <div className="price-new">{PACKAGE_PRICE_EUR}€</div>
+            <div className="price-new">97€</div>
+            <div className="price-old">497€</div>
           </div>
-          <div className="price-note">Formation + outils</div>
+          <div className="price-note">Formation seule</div>
         </div>
         <div className="urgency-bar">
           <div className="urgency-live"><span className="live-dot"></span><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M13.6 1.5 4.4 13.2c-.3.4 0 1 .5 1h4.6l-1.4 7.6c-.1.6.6.9 1 .4l9.2-11.7c.3-.4 0-1-.5-1h-4.6l1.4-7.6c.1-.6-.6-.9-1-.4z"/></svg>5 NOUVELLES PLACES AUJOURD'HUI</div>
@@ -410,6 +422,7 @@ const Index = () => {
           <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>1 place prise</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>4 restantes</span></div>
         </div>
         <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(22px,4vw,36px)' }}>ACCÈDE À LA FORMATION + OUTIL D'AUTOMATISATION<span className="cta-arrow">↓</span></a>
+        <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
       </div>
 
       <footer className="sp-footer">
