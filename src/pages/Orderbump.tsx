@@ -1,3 +1,4 @@
+import SoldOutButton from "@/components/SoldOutButton";
 import { FORMATION_PRICE_EUR, getTotalPriceEur, getTotalPriceCents, getRevolutPaymentLink } from "@/lib/pricing";
 import { useState, useEffect, useRef } from "react";
 import bonusTiktokSecret from "@/assets/bonus-tiktok-secret.jpg";
@@ -271,25 +272,7 @@ const Orderbump = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  useEffect(() => {
-    setClientSecret(null);
-    setPiError(false);
-    supabase.functions
-      .invoke("create-payment-intent", {
-        body: {
-          amount: getTotalPriceCents(bumpAdded),
-          bump: bumpAdded,
-          payment_method_types: ["card"],
-        },
-      })
-      .then(({ data, error }) => {
-        if (error || !data?.clientSecret) {
-          setPiError(true);
-        } else {
-          setClientSecret(data.clientSecret);
-        }
-      });
-  }, [bumpAdded]);
+
 
   return (
     <div style={{ background: "#0a0a0a", color: "#f2ead8", fontFamily: "'DM Sans', sans-serif", minHeight: "100vh" }}>
@@ -437,130 +420,11 @@ const Orderbump = () => {
               <span className="ob-free">GRATUIT</span>
             </span>
           </div>
-          <div className="ob-order-line total"><span>TOTAL</span><span className="price">{total}</span></div>
+          <div className="ob-order-line total"><span>TOTAL</span><s className="price">544 €</s></div>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 16 }}>
-          <div>
-            <div style={{ color: "#a855f7", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>Nom & Prénom</div>
-            <input
-              type="text"
-              required
-              placeholder="Jean Dupont"
-              value={customerName}
-              onChange={(e) => setCustomerName(e.target.value)}
-              style={{
-                width: "100%",
-                background: "#111",
-                border: "1px solid rgba(255,255,255,0.12)",
-                borderRadius: 4,
-                color: "#f2ead8",
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: 15,
-                padding: "14px 16px",
-                outline: "none",
-                boxSizing: "border-box",
-              }}
-            />
-          </div>
-          <div>
-            <div style={{ color: "#a855f7", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>Email</div>
-            <input
-              type="email"
-              required
-              placeholder="jean@example.com"
-              value={customerEmail}
-              onChange={(e) => setCustomerEmail(e.target.value)}
-              style={{
-                width: "100%",
-                background: "#111",
-                border: "1px solid rgba(255,255,255,0.12)",
-                borderRadius: 4,
-                color: "#f2ead8",
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: 15,
-                padding: "14px 16px",
-                outline: "none",
-                boxSizing: "border-box",
-              }}
-            />
-          </div>
-        </div>
+        <SoldOutButton />
 
-        {fieldError && (
-          <p style={{ color: "#e8110a", fontSize: 13, marginBottom: 10, lineHeight: 1.5 }}>
-            {fieldError}
-          </p>
-        )}
-
-        {(() => {
-          const revolutLink = getRevolutPaymentLink(bumpAdded);
-          const amountLabel = `${getTotalPriceEur(bumpAdded)}€`;
-          return (
-            <button
-              onClick={() => {
-                if (!validateFields(customerName, customerEmail, setFieldError)) return;
-                sessionStorage.setItem("declic_name", customerName.trim());
-                sessionStorage.setItem("declic_email", customerEmail.trim());
-                window.open(revolutLink, "_blank", "noopener,noreferrer");
-              }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 12,
-                width: "100%",
-                background: "#ffffff",
-                color: "#191c1f",
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: 17,
-                fontWeight: 700,
-                letterSpacing: 0.3,
-                padding: "16px 20px",
-                border: "1px solid rgba(0,0,0,0.08)",
-                borderRadius: 8,
-                cursor: "pointer",
-                boxSizing: "border-box",
-                transition: "filter 0.2s",
-                marginBottom: 8,
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.filter = "brightness(0.95)")}
-              onMouseLeave={(e) => (e.currentTarget.style.filter = "brightness(1)")}
-            >
-              <svg width="22" height="22" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path fill="#191c1f" d="M40.5 22.1c0-6.7-5.4-12.1-12-12.1H13v40h7.6V34.3h5.6L36.3 50h8.9L34.7 33.6c3.4-1.9 5.8-5.5 5.8-9.7v-1.8Zm-7.6.5c0 2.7-2.2 4.9-4.9 4.9h-7.4v-9.8h7.4c2.7 0 4.9 2.2 4.9 4.9Z" />
-              </svg>
-              Payer {amountLabel} avec Revolut
-            </button>
-          );
-        })()}
-
-        {/* Bouton Klarna — inchangé */}
-        {(() => {
-          const klarnaLink = getRevolutPaymentLink(bumpAdded);
-          const klarnaInstalment = `3x ${(getTotalPriceEur(bumpAdded) / 3).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}€`;
-          return (
-            <>
-              <button
-                className="ob-klarna-btn"
-                onClick={() => {
-                  if (!validateFields(customerName, customerEmail, setFieldError)) return;
-                  sessionStorage.setItem("declic_name", customerName.trim());
-                  sessionStorage.setItem("declic_email", customerEmail.trim());
-                  window.open(klarnaLink, "_blank", "noopener,noreferrer");
-                }}
-              >
-                Payer en 3x avec&nbsp;
-                <span className="ob-klarna-logo">klarna</span>
-              </button>
-              <p className="ob-klarna-sub">Sans frais — {klarnaInstalment}</p>
-            </>
-          );
-        })()}
-
-        <p style={{ textAlign: "center", fontSize: 12, color: "#555", marginBottom: 24, marginTop: 16 }}>
-          🔒 Paiement sécurisé par Stripe · SSL 256 bits
-        </p>
       </div>
     </div>
   );

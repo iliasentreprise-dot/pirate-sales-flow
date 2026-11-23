@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { FORMATION_PRICE_EUR } from "@/lib/pricing";
+import { useEffect, useState } from "react";
 import avis1 from "@/assets/avis-1.jpeg";
 import avis3 from "@/assets/avis-3.png";
 import avis4 from "@/assets/avis-4.png";
@@ -10,11 +10,10 @@ import avisLamine from "@/assets/avis-lamine.png";
 import avisProofLock from "@/assets/avis-proof-lock.png";
 import mockup from "@/assets/mockup-systeme-pirate-v3.png.asset.json";
 import logo from "@/assets/logo-drop-digital.png";
-import PayPalCheckout from "@/components/PayPalCheckout";
+import SoldOutButton from "@/components/SoldOutButton";
 
 const Index = () => {
-  const navigate = useNavigate();
-  const [visitors, setVisitors] = useState(() => Math.floor(Math.random() * 12) + 11); // 11-22 initial
+  const [visitors, setVisitors] = useState(() => Math.floor(Math.random() * 4)); // 0-3 initial
   const [zoomedImg, setZoomedImg] = useState<string | null>(null);
 
   useEffect(() => {
@@ -26,10 +25,7 @@ const Index = () => {
       setVisitors((prev) => {
         const delta = Math.random() < 0.5 ? -1 : 1;
         const magnitude = Math.random() < 0.75 ? 1 : 2;
-        let next = prev + delta * magnitude;
-        if (next < 5) next = 5 + Math.floor(Math.random() * 3);
-        if (next > 27) next = 27 - Math.floor(Math.random() * 3);
-        return next;
+        return Math.max(0, Math.min(3, prev + delta * magnitude));
       });
     };
     const schedule = () => {
@@ -85,6 +81,7 @@ const Index = () => {
         .btn-cta { display: inline-block; background: var(--sp-purple); color: white; font-family: 'Bebas Neue', sans-serif; font-size: clamp(26px, 5vw, 40px); letter-spacing: 2px; padding: 22px 60px; border: none; cursor: pointer; position: relative; clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%); transition: all 0.2s; box-shadow: 0 8px 40px rgba(124,58,237,0.5); animation: pulse-btn 2s ease-in-out infinite; margin: 10px 0; }
         @keyframes pulse-btn { 0%, 100% { box-shadow: 0 8px 40px rgba(124,58,237,0.5); transform: scale(1); } 50% { box-shadow: 0 8px 60px rgba(124,58,237,0.8); transform: scale(1.02); } }
         .btn-cta:hover { background: var(--sp-purple-dark); transform: scale(1.04) !important; }
+        .btn-cta:disabled:hover { background: #312345; transform: none !important; }
         .cta-arrow { display: inline-block; margin-left: 12px; animation: cta-bounce 0.7s ease-in-out infinite alternate; }
         @keyframes cta-bounce { from { transform: translateY(0); } to { transform: translateY(6px); } }
         .btn-sub { display: block; font-size: 12px; color: #666; margin-top: 10px; }
@@ -187,21 +184,6 @@ const Index = () => {
     return () => { clearTimeout(t1); clearInterval(t2); };
   }, []);
 
-  const scrollToAcces = (e: React.MouseEvent) => {
-    e.preventDefault();
-    document.getElementById('acces')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const goOrderbump = (e: React.MouseEvent) => {
-    e.preventDefault();
-    navigate('/orderbump');
-  };
-
-  const handlePayPalSuccess = useCallback((email: string) => {
-    if (email) sessionStorage.setItem("declic_email", email);
-    navigate("/merci");
-  }, [navigate]);
-
   return (
     <div className="sp-page">
       <div className="live-visitors" aria-live="polite">
@@ -209,12 +191,7 @@ const Index = () => {
         <span><span className="live-visitors-count">{visitors}</span> {visitors > 1 ? 'personnes consultent' : 'personne consulte'} cette page en ce moment</span>
       </div>
       <div className="fixed-nav-wrapper">
-        <a href="/orderbump" className="fixed-btn-left" onClick={goOrderbump}>Réserver mon accès</a>
-        <a href="/orderbump" className="fixed-btn-right" onClick={goOrderbump}>
-          <span className="live-dot"></span>
-          <span>Offre exclusif Live</span>
-          <span className="badge-red">-400€</span>
-        </a>
+        <SoldOutButton className="fixed-btn-left" />
       </div>
 
       <section className="hero">
@@ -230,20 +207,18 @@ const Index = () => {
         </p>
         <div className="price-block">
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 14 }}>
-            <div className="price-new">97€</div>
-            <div className="price-old">497€</div>
+            <div className="price-new">{FORMATION_PRICE_EUR}€</div>
           </div>
           <div className="price-note">Formation seule</div>
         </div>
         <div className="urgency-bar">
-          <div className="urgency-live"><span className="live-dot"></span><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M13.6 1.5 4.4 13.2c-.3.4 0 1 .5 1h4.6l-1.4 7.6c-.1.6.6.9 1 .4l9.2-11.7c.3-.4 0-1-.5-1h-4.6l1.4-7.6c.1-.6-.6-.9-1-.4z"/></svg>5 NOUVELLES PLACES AUJOURD'HUI</div>
-          <div className="urgency-text-blink" style={{ fontSize: 24 }}>IL RESTE 4 PLACES — 1/5</div>
-          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '20%' }}></div></div>
-          <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>1 place prise</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>4 restantes</span></div>
+          <div className="urgency-live"><span className="live-dot"></span><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M13.6 1.5 4.4 13.2c-.3.4 0 1 .5 1h4.6l-1.4 7.6c-.1.6.6.9 1 .4l9.2-11.7c.3-.4 0-1-.5-1h-4.6l1.4-7.6c.1-.6-.6-.9-1-.4z"/></svg>5 PLACES ATTRIBUÉES AUJOURD'HUI</div>
+          <div className="urgency-text-blink" style={{ fontSize: 24 }}>PLACES COMPLÈTES — 5/5</div>
+          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '100%' }}></div></div>
+          <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>5 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>0 restante</span></div>
         </div>
-        <a href="/orderbump" onClick={goOrderbump} className="btn-cta">ACCÈDE À LA FORMATION + OUTIL D'AUTOMATISATION<span className="cta-arrow">↓</span></a>
-        <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
-        <span className="btn-sub">Accès immédiat · Paiement sécurisé · Garanti ou remboursé</span>
+        <SoldOutButton className="btn-cta" />
+        <span className="btn-sub">Les 5 places ont été attribuées.</span>
       </section>
 
       <div className="divider"></div>
@@ -343,45 +318,41 @@ const Index = () => {
         <div style={{ width: '100%', maxWidth: 600, height: 2, background: 'var(--sp-purple)', margin: '30px auto', opacity: 0.5 }}></div>
         <div className="recois-offer-box">
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 14, margin: '10px 0' }}>
-            <span style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 80, color: 'white', lineHeight: 1 }}>97€</span>
-            <span style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 30, color: '#888', textDecoration: 'line-through' }}>497€</span>
+            <span style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 80, color: 'white', lineHeight: 1 }}>{FORMATION_PRICE_EUR}€</span>
           </div>
           <div className="urgency-bar">
             <div style={{ fontSize: 13, color: '#888', textAlign: 'center', marginBottom: 10, letterSpacing: 0.5 }}>La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels automatisés</div>
-            <div className="urgency-live"><span className="live-dot"></span><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M13.6 1.5 4.4 13.2c-.3.4 0 1 .5 1h4.6l-1.4 7.6c-.1.6.6.9 1 .4l9.2-11.7c.3-.4 0-1-.5-1h-4.6l1.4-7.6c.1-.6-.6-.9-1-.4z"/></svg>5 NOUVELLES PLACES AUJOURD'HUI</div>
-            <div className="urgency-text-blink" style={{ fontSize: 24 }}>IL RESTE 4 PLACES — 1/5</div>
-            <div className="urgency-progress"><div className="urgency-fill" style={{ width: '20%' }}></div></div>
-            <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>1 place prise</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>4 restantes</span></div>
+            <div className="urgency-live"><span className="live-dot"></span><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M13.6 1.5 4.4 13.2c-.3.4 0 1 .5 1h4.6l-1.4 7.6c-.1.6.6.9 1 .4l9.2-11.7c.3-.4 0-1-.5-1h-4.6l1.4-7.6c.1-.6-.6-.9-1-.4z"/></svg>5 PLACES ATTRIBUÉES AUJOURD'HUI</div>
+            <div className="urgency-text-blink" style={{ fontSize: 24 }}>PLACES COMPLÈTES — 5/5</div>
+            <div className="urgency-progress"><div className="urgency-fill" style={{ width: '100%' }}></div></div>
+            <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>5 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>0 restante</span></div>
           </div>
-          <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(18px,3.5vw,30px)', marginTop: 10 }}>ACCÈDE À LA FORMATION + OUTIL D'AUTOMATISATION<span className="cta-arrow">↓</span></a>
-          <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
+          <SoldOutButton className="btn-cta" style={{ fontSize: 'clamp(18px,3.5vw,30px)', marginTop: 10 }} />
         </div>
       </div>
 
       <div className="divider"></div>
 
       <div id="acces" style={{ background: 'var(--sp-grey)', padding: '70px 20px', textAlign: 'center' }}>
-        <span className="section-tag" style={{ display: 'block', marginBottom: 16 }}>⚓ ACCÈS IMMÉDIAT</span>
+        <span className="section-tag" style={{ display: 'block', marginBottom: 16 }}>⚓ INSCRIPTIONS COMPLÈTES</span>
         <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(36px,6vw,64px)', color: 'white', lineHeight: 1, marginBottom: 20 }}>Tu es prêt à <span style={{ color: 'var(--sp-purple)' }}>passer pirate</span> ?</h2>
         <div className="price-block" style={{ margin: '24px 0' }}>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 14 }}>
-            <div className="price-new">97€</div>
-            <div className="price-old">497€</div>
+            <div className="price-new">{FORMATION_PRICE_EUR}€</div>
           </div>
           <div className="price-note">Formation seule</div>
         </div>
         <div className="urgency-bar">
           <div style={{ fontSize: 13, color: '#888', textAlign: 'center', marginBottom: 10, letterSpacing: 0.5 }}>La méthode pour vendre des produits digitaux sur TikTok avec de simples carrousels automatisés</div>
-          <div className="urgency-live"><span className="live-dot"></span><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M13.6 1.5 4.4 13.2c-.3.4 0 1 .5 1h4.6l-1.4 7.6c-.1.6.6.9 1 .4l9.2-11.7c.3-.4 0-1-.5-1h-4.6l1.4-7.6c.1-.6-.6-.9-1-.4z"/></svg>5 NOUVELLES PLACES AUJOURD'HUI</div>
-          <div className="urgency-text-blink" style={{ fontSize: 24 }}>IL RESTE 4 PLACES — 1/5</div>
-          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '20%' }}></div></div>
-          <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>1 place prise</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>4 restantes</span></div>
+          <div className="urgency-live"><span className="live-dot"></span><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M13.6 1.5 4.4 13.2c-.3.4 0 1 .5 1h4.6l-1.4 7.6c-.1.6.6.9 1 .4l9.2-11.7c.3-.4 0-1-.5-1h-4.6l1.4-7.6c.1-.6-.6-.9-1-.4z"/></svg>5 PLACES ATTRIBUÉES AUJOURD'HUI</div>
+          <div className="urgency-text-blink" style={{ fontSize: 24 }}>PLACES COMPLÈTES — 5/5</div>
+          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '100%' }}></div></div>
+          <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>5 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>0 restante</span></div>
         </div>
         <div style={{ maxWidth: 560, margin: '32px auto 0' }}>
-          <PayPalCheckout amount={97} onSuccess={handlePayPalSuccess} />
+          <SoldOutButton />
         </div>
-        <span className="warning-text" style={{ display: 'block', marginTop: 16 }}>⚠️ Cette offre disparaît dès la fin du live</span>
-        <span className="btn-sub">Accès immédiat après paiement · 100% sécurisé</span>
+        <span className="btn-sub">Les inscriptions sont actuellement fermées.</span>
       </div>
 
       <div className="divider"></div>
@@ -407,22 +378,20 @@ const Index = () => {
 
       <div className="final-cta">
         <h2>Arrête de <span>regarder</span> les autres vendre.</h2>
-        <p>Formation seule à 97€. Résultats garantis la première semaine.</p>
+        <p>Formation seule à {FORMATION_PRICE_EUR}€. Résultats garantis la première semaine.</p>
         <div className="price-block" style={{ marginBottom: 20 }}>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 14 }}>
-            <div className="price-new">97€</div>
-            <div className="price-old">497€</div>
+            <div className="price-new">{FORMATION_PRICE_EUR}€</div>
           </div>
           <div className="price-note">Formation seule</div>
         </div>
         <div className="urgency-bar">
-          <div className="urgency-live"><span className="live-dot"></span><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M13.6 1.5 4.4 13.2c-.3.4 0 1 .5 1h4.6l-1.4 7.6c-.1.6.6.9 1 .4l9.2-11.7c.3-.4 0-1-.5-1h-4.6l1.4-7.6c.1-.6-.6-.9-1-.4z"/></svg>5 NOUVELLES PLACES AUJOURD'HUI</div>
-          <div className="urgency-text-blink" style={{ fontSize: 24 }}>IL RESTE 4 PLACES — 1/5</div>
-          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '20%' }}></div></div>
-          <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>1 place prise</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>4 restantes</span></div>
+          <div className="urgency-live"><span className="live-dot"></span><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M13.6 1.5 4.4 13.2c-.3.4 0 1 .5 1h4.6l-1.4 7.6c-.1.6.6.9 1 .4l9.2-11.7c.3-.4 0-1-.5-1h-4.6l1.4-7.6c.1-.6-.6-.9-1-.4z"/></svg>5 PLACES ATTRIBUÉES AUJOURD'HUI</div>
+          <div className="urgency-text-blink" style={{ fontSize: 24 }}>PLACES COMPLÈTES — 5/5</div>
+          <div className="urgency-progress"><div className="urgency-fill" style={{ width: '100%' }}></div></div>
+          <div className="urgency-labels"><span style={{ color: '#a78bfa', fontSize: 16, fontWeight: 700 }}>5 places prises</span><span style={{ color: '#e8110a', fontSize: 16, fontWeight: 700 }}>0 restante</span></div>
         </div>
-        <a href="/orderbump" onClick={goOrderbump} className="btn-cta" style={{ fontSize: 'clamp(22px,4vw,36px)' }}>ACCÈDE À LA FORMATION + OUTIL D'AUTOMATISATION<span className="cta-arrow">↓</span></a>
-        <span className="warning-text">⚠️ Cette offre disparaît dès la fin du live</span>
+        <SoldOutButton className="btn-cta" style={{ fontSize: 'clamp(22px,4vw,36px)' }} />
       </div>
 
       <footer className="sp-footer">
